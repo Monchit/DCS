@@ -1,0 +1,1085 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DocumentControlModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="DocumentControlModelStoreContainer">
+          <EntitySet Name="TD_Document" EntityType="DocumentControlModel.Store.TD_Document" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TD_Transaction" EntityType="DocumentControlModel.Store.TD_Transaction" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TM_Action" EntityType="DocumentControlModel.Store.TM_Action" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TM_DocType" EntityType="DocumentControlModel.Store.TM_DocType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TM_GroupCode" EntityType="DocumentControlModel.Store.TM_GroupCode" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TM_Level" EntityType="DocumentControlModel.Store.TM_Level" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TM_Operation" EntityType="DocumentControlModel.Store.TM_Operation" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TM_Status" EntityType="DocumentControlModel.Store.TM_Status" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TM_User" EntityType="DocumentControlModel.Store.TM_User" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TM_UserType" EntityType="DocumentControlModel.Store.TM_UserType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="V_DistributionDoc" EntityType="DocumentControlModel.Store.V_DistributionDoc" store:Type="Views" store:Schema="dbo" store:Name="V_DistributionDoc">
+            <DefiningQuery>SELECT 
+      [V_DistributionDoc].[doc_no] AS [doc_no], 
+      [V_DistributionDoc].[group_id] AS [group_id], 
+      [V_DistributionDoc].[doc_type_short] AS [doc_type_short], 
+      [V_DistributionDoc].[group_code] AS [group_code], 
+      [V_DistributionDoc].[run_no] AS [run_no], 
+      [V_DistributionDoc].[rev_no] AS [rev_no], 
+      [V_DistributionDoc].[doc_name] AS [doc_name], 
+      [V_DistributionDoc].[eff_date] AS [eff_date]
+      FROM [dbo].[V_DistributionDoc] AS [V_DistributionDoc]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="V_Max_Transaction" EntityType="DocumentControlModel.Store.V_Max_Transaction" store:Type="Views" store:Schema="dbo" store:Name="V_Max_Transaction">
+            <DefiningQuery>SELECT 
+      [V_Max_Transaction].[doc_no] AS [doc_no], 
+      [V_Max_Transaction].[doc_type_short] AS [doc_type_short], 
+      [V_Max_Transaction].[group_code] AS [group_code], 
+      [V_Max_Transaction].[run_no] AS [run_no], 
+      [V_Max_Transaction].[rev_no] AS [rev_no], 
+      [V_Max_Transaction].[status_id] AS [status_id], 
+      [V_Max_Transaction].[doc_name] AS [doc_name], 
+      [V_Max_Transaction].[eff_date] AS [eff_date], 
+      [V_Max_Transaction].[attach_file] AS [attach_file], 
+      [V_Max_Transaction].[remark] AS [remark], 
+      [V_Max_Transaction].[operation_id] AS [operation_id], 
+      [V_Max_Transaction].[lv_id] AS [lv_id], 
+      [V_Max_Transaction].[org_id] AS [org_id], 
+      [V_Max_Transaction].[act_dt] AS [act_dt], 
+      [V_Max_Transaction].[reference] AS [reference], 
+      [V_Max_Transaction].[expect_cancel_date] AS [expect_cancel_date], 
+      [V_Max_Transaction].[check_date] AS [check_date], 
+      [V_Max_Transaction].[active] AS [active]
+      FROM [dbo].[V_Max_Transaction] AS [V_Max_Transaction]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="V_Transaction" EntityType="DocumentControlModel.Store.V_Transaction" store:Type="Views" store:Schema="dbo" store:Name="V_Transaction">
+            <DefiningQuery>SELECT 
+      [V_Transaction].[doc_no] AS [doc_no], 
+      [V_Transaction].[doc_type_short] AS [doc_type_short], 
+      [V_Transaction].[group_code] AS [group_code], 
+      [V_Transaction].[run_no] AS [run_no], 
+      [V_Transaction].[rev_no] AS [rev_no], 
+      [V_Transaction].[sub_rev] AS [sub_rev], 
+      [V_Transaction].[status_id] AS [status_id], 
+      [V_Transaction].[lv_id] AS [lv_id], 
+      [V_Transaction].[org_id] AS [org_id], 
+      [V_Transaction].[operation_id] AS [operation_id], 
+      [V_Transaction].[action_id] AS [action_id], 
+      [V_Transaction].[actor] AS [actor], 
+      [V_Transaction].[act_dt] AS [act_dt], 
+      [V_Transaction].[comment] AS [comment], 
+      [V_Transaction].[active] AS [active], 
+      [V_Transaction].[doc_name] AS [doc_name], 
+      [V_Transaction].[eff_date] AS [eff_date], 
+      [V_Transaction].[attach_file] AS [attach_file], 
+      [V_Transaction].[remark] AS [remark], 
+      [V_Transaction].[statusname] AS [statusname], 
+      [V_Transaction].[operation_name] AS [operation_name], 
+      [V_Transaction].[lv_name] AS [lv_name], 
+      [V_Transaction].[status_name] AS [status_name], 
+      [V_Transaction].[doc_type_full] AS [doc_type_full], 
+      [V_Transaction].[doc_lv] AS [doc_lv], 
+      [V_Transaction].[review_year] AS [review_year], 
+      [V_Transaction].[copy_flag] AS [copy_flag], 
+      [V_Transaction].[expect_cancel_date] AS [expect_cancel_date]
+      FROM [dbo].[V_Transaction] AS [V_Transaction]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_TD_Document_TM_DocType" Association="DocumentControlModel.Store.FK_TD_Document_TM_DocType">
+            <End Role="TM_DocType" EntitySet="TM_DocType" />
+            <End Role="TD_Document" EntitySet="TD_Document" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TD_Document_TM_GroupCode" Association="DocumentControlModel.Store.FK_TD_Document_TM_GroupCode">
+            <End Role="TM_GroupCode" EntitySet="TM_GroupCode" />
+            <End Role="TD_Document" EntitySet="TD_Document" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TD_Transaction_TD_Document" Association="DocumentControlModel.Store.FK_TD_Transaction_TD_Document">
+            <End Role="TD_Document" EntitySet="TD_Document" />
+            <End Role="TD_Transaction" EntitySet="TD_Transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TD_Transaction_TM_Action" Association="DocumentControlModel.Store.FK_TD_Transaction_TM_Action">
+            <End Role="TM_Action" EntitySet="TM_Action" />
+            <End Role="TD_Transaction" EntitySet="TD_Transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TD_Transaction_TM_Level" Association="DocumentControlModel.Store.FK_TD_Transaction_TM_Level">
+            <End Role="TM_Level" EntitySet="TM_Level" />
+            <End Role="TD_Transaction" EntitySet="TD_Transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TD_Transaction_TM_Operation" Association="DocumentControlModel.Store.FK_TD_Transaction_TM_Operation">
+            <End Role="TM_Operation" EntitySet="TM_Operation" />
+            <End Role="TD_Transaction" EntitySet="TD_Transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TD_Transaction_TM_Status" Association="DocumentControlModel.Store.FK_TD_Transaction_TM_Status">
+            <End Role="TM_Status" EntitySet="TM_Status" />
+            <End Role="TD_Transaction" EntitySet="TD_Transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TM_User_TM_UserType" Association="DocumentControlModel.Store.FK_TM_User_TM_UserType">
+            <End Role="TM_UserType" EntitySet="TM_UserType" />
+            <End Role="TM_User" EntitySet="TM_User" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="TD_Document">
+          <Key>
+            <PropertyRef Name="doc_type_short" />
+            <PropertyRef Name="group_code" />
+            <PropertyRef Name="run_no" />
+            <PropertyRef Name="rev_no" />
+          </Key>
+          <Property Name="doc_type_short" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="group_code" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="run_no" Type="int" Nullable="false" />
+          <Property Name="rev_no" Type="tinyint" Nullable="false" />
+          <Property Name="doc_name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="eff_date" Type="date" Nullable="false" />
+          <Property Name="attach_file" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="reference" Type="nvarchar(max)" />
+          <Property Name="expect_cancel_date" Type="date" />
+          <Property Name="check_date" Type="date" />
+          <Property Name="remark" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="TD_Transaction">
+          <Key>
+            <PropertyRef Name="doc_type_short" />
+            <PropertyRef Name="group_code" />
+            <PropertyRef Name="run_no" />
+            <PropertyRef Name="rev_no" />
+            <PropertyRef Name="sub_rev" />
+            <PropertyRef Name="status_id" />
+            <PropertyRef Name="lv_id" />
+            <PropertyRef Name="org_id" />
+            <PropertyRef Name="operation_id" />
+          </Key>
+          <Property Name="doc_type_short" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="group_code" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="run_no" Type="int" Nullable="false" />
+          <Property Name="rev_no" Type="tinyint" Nullable="false" />
+          <Property Name="sub_rev" Type="tinyint" Nullable="false" />
+          <Property Name="status_id" Type="tinyint" Nullable="false" />
+          <Property Name="lv_id" Type="tinyint" Nullable="false" />
+          <Property Name="org_id" Type="int" Nullable="false" />
+          <Property Name="operation_id" Type="tinyint" Nullable="false" />
+          <Property Name="action_id" Type="tinyint" />
+          <Property Name="actor" Type="nvarchar" MaxLength="10" />
+          <Property Name="act_dt" Type="datetime" />
+          <Property Name="comment" Type="ntext" />
+          <Property Name="active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TM_Action">
+          <Key>
+            <PropertyRef Name="action_id" />
+          </Key>
+          <Property Name="action_id" Type="tinyint" Nullable="false" />
+          <Property Name="action_name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="update_by" Type="nvarchar" Nullable="false" MaxLength="10" />
+          <Property Name="update_dt" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TM_DocType">
+          <Key>
+            <PropertyRef Name="doc_type_short" />
+          </Key>
+          <Property Name="doc_type_short" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="doc_type_full" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="doc_lv" Type="tinyint" Nullable="false" />
+          <Property Name="copy_flag" Type="bit" Nullable="false" />
+          <Property Name="review_year" Type="tinyint" Nullable="false" />
+          <Property Name="update_by" Type="nvarchar" Nullable="false" MaxLength="10" />
+          <Property Name="update_dt" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TM_GroupCode">
+          <Key>
+            <PropertyRef Name="group_code" />
+          </Key>
+          <Property Name="group_code" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="group_id" Type="int" Nullable="false" />
+          <Property Name="update_by" Type="nvarchar" Nullable="false" MaxLength="10" />
+          <Property Name="update_dt" Type="datetime" Nullable="false" />
+          <Property Name="responsible" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="TM_Level">
+          <Key>
+            <PropertyRef Name="lv_id" />
+          </Key>
+          <Property Name="lv_id" Type="tinyint" Nullable="false" />
+          <Property Name="lv_name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="position_min" Type="tinyint" Nullable="false" />
+          <Property Name="position_max" Type="tinyint" Nullable="false" />
+          <Property Name="update_by" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="update_dt" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TM_Operation">
+          <Key>
+            <PropertyRef Name="operation_id" />
+          </Key>
+          <Property Name="operation_id" Type="tinyint" Nullable="false" />
+          <Property Name="operation_name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="update_by" Type="nvarchar" Nullable="false" MaxLength="10" />
+          <Property Name="update_dt" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TM_Status">
+          <Key>
+            <PropertyRef Name="status_id" />
+          </Key>
+          <Property Name="status_id" Type="tinyint" Nullable="false" />
+          <Property Name="status_name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="update_by" Type="nvarchar" Nullable="false" MaxLength="10" />
+          <Property Name="update_dt" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TM_User">
+          <Key>
+            <PropertyRef Name="empcode" />
+          </Key>
+          <Property Name="empcode" Type="nvarchar" Nullable="false" MaxLength="10" />
+          <Property Name="utype_id" Type="tinyint" Nullable="false" />
+          <Property Name="update_dt" Type="datetime" Nullable="false" />
+          <Property Name="update_by" Type="nvarchar" Nullable="false" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="TM_UserType">
+          <Key>
+            <PropertyRef Name="utype_id" />
+          </Key>
+          <Property Name="utype_id" Type="tinyint" Nullable="false" />
+          <Property Name="utype_name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="update_dt" Type="datetime" Nullable="false" />
+          <Property Name="update_by" Type="nvarchar" Nullable="false" MaxLength="10" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'DocumentControl.dbo.V_DistributionDoc' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="V_DistributionDoc">
+          <Key>
+            <PropertyRef Name="group_id" />
+            <PropertyRef Name="doc_type_short" />
+            <PropertyRef Name="group_code" />
+            <PropertyRef Name="run_no" />
+            <PropertyRef Name="rev_no" />
+            <PropertyRef Name="doc_name" />
+            <PropertyRef Name="eff_date" />
+          </Key>
+          <Property Name="doc_no" Type="nvarchar" MaxLength="109" />
+          <Property Name="group_id" Type="int" Nullable="false" />
+          <Property Name="doc_type_short" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="group_code" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="run_no" Type="int" Nullable="false" />
+          <Property Name="rev_no" Type="tinyint" Nullable="false" />
+          <Property Name="doc_name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="eff_date" Type="date" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'DocumentControl.dbo.V_Max_Transaction' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="V_Max_Transaction">
+          <Key>
+            <PropertyRef Name="doc_type_short" />
+            <PropertyRef Name="group_code" />
+            <PropertyRef Name="run_no" />
+            <PropertyRef Name="rev_no" />
+            <PropertyRef Name="status_id" />
+            <PropertyRef Name="doc_name" />
+            <PropertyRef Name="eff_date" />
+            <PropertyRef Name="attach_file" />
+            <PropertyRef Name="operation_id" />
+            <PropertyRef Name="lv_id" />
+            <PropertyRef Name="org_id" />
+            <PropertyRef Name="active" />
+          </Key>
+          <Property Name="doc_no" Type="nvarchar" MaxLength="109" />
+          <Property Name="doc_type_short" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="group_code" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="run_no" Type="int" Nullable="false" />
+          <Property Name="rev_no" Type="tinyint" Nullable="false" />
+          <Property Name="status_id" Type="tinyint" Nullable="false" />
+          <Property Name="doc_name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="eff_date" Type="date" Nullable="false" />
+          <Property Name="attach_file" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="remark" Type="nvarchar(max)" />
+          <Property Name="operation_id" Type="tinyint" Nullable="false" />
+          <Property Name="lv_id" Type="tinyint" Nullable="false" />
+          <Property Name="org_id" Type="int" Nullable="false" />
+          <Property Name="act_dt" Type="datetime" />
+          <Property Name="reference" Type="nvarchar(max)" />
+          <Property Name="expect_cancel_date" Type="date" />
+          <Property Name="check_date" Type="date" />
+          <Property Name="active" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'DocumentControl.dbo.V_Transaction' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="V_Transaction">
+          <Key>
+            <PropertyRef Name="doc_type_short" />
+            <PropertyRef Name="group_code" />
+            <PropertyRef Name="run_no" />
+            <PropertyRef Name="rev_no" />
+            <PropertyRef Name="sub_rev" />
+            <PropertyRef Name="status_id" />
+            <PropertyRef Name="lv_id" />
+            <PropertyRef Name="org_id" />
+            <PropertyRef Name="operation_id" />
+            <PropertyRef Name="active" />
+            <PropertyRef Name="doc_name" />
+            <PropertyRef Name="eff_date" />
+            <PropertyRef Name="attach_file" />
+            <PropertyRef Name="statusname" />
+            <PropertyRef Name="operation_name" />
+            <PropertyRef Name="lv_name" />
+            <PropertyRef Name="status_name" />
+            <PropertyRef Name="doc_type_full" />
+            <PropertyRef Name="doc_lv" />
+            <PropertyRef Name="review_year" />
+            <PropertyRef Name="copy_flag" />
+          </Key>
+          <Property Name="doc_no" Type="nvarchar" MaxLength="109" />
+          <Property Name="doc_type_short" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="group_code" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="run_no" Type="int" Nullable="false" />
+          <Property Name="rev_no" Type="tinyint" Nullable="false" />
+          <Property Name="sub_rev" Type="tinyint" Nullable="false" />
+          <Property Name="status_id" Type="tinyint" Nullable="false" />
+          <Property Name="lv_id" Type="tinyint" Nullable="false" />
+          <Property Name="org_id" Type="int" Nullable="false" />
+          <Property Name="operation_id" Type="tinyint" Nullable="false" />
+          <Property Name="action_id" Type="tinyint" />
+          <Property Name="actor" Type="nvarchar" MaxLength="10" />
+          <Property Name="act_dt" Type="datetime" />
+          <Property Name="comment" Type="ntext" />
+          <Property Name="active" Type="bit" Nullable="false" />
+          <Property Name="doc_name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="eff_date" Type="date" Nullable="false" />
+          <Property Name="attach_file" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="remark" Type="nvarchar(max)" />
+          <Property Name="statusname" Type="nvarchar" Nullable="false" MaxLength="103" />
+          <Property Name="operation_name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="lv_name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="status_name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="doc_type_full" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="doc_lv" Type="tinyint" Nullable="false" />
+          <Property Name="review_year" Type="tinyint" Nullable="false" />
+          <Property Name="copy_flag" Type="bit" Nullable="false" />
+          <Property Name="expect_cancel_date" Type="date" />
+        </EntityType>
+        <Association Name="FK_TD_Document_TM_DocType">
+          <End Role="TM_DocType" Type="DocumentControlModel.Store.TM_DocType" Multiplicity="1" />
+          <End Role="TD_Document" Type="DocumentControlModel.Store.TD_Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TM_DocType">
+              <PropertyRef Name="doc_type_short" />
+            </Principal>
+            <Dependent Role="TD_Document">
+              <PropertyRef Name="doc_type_short" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TD_Document_TM_GroupCode">
+          <End Role="TM_GroupCode" Type="DocumentControlModel.Store.TM_GroupCode" Multiplicity="1" />
+          <End Role="TD_Document" Type="DocumentControlModel.Store.TD_Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TM_GroupCode">
+              <PropertyRef Name="group_code" />
+            </Principal>
+            <Dependent Role="TD_Document">
+              <PropertyRef Name="group_code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TD_Transaction_TD_Document">
+          <End Role="TD_Document" Type="DocumentControlModel.Store.TD_Document" Multiplicity="1" />
+          <End Role="TD_Transaction" Type="DocumentControlModel.Store.TD_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TD_Document">
+              <PropertyRef Name="doc_type_short" />
+              <PropertyRef Name="group_code" />
+              <PropertyRef Name="run_no" />
+              <PropertyRef Name="rev_no" />
+            </Principal>
+            <Dependent Role="TD_Transaction">
+              <PropertyRef Name="doc_type_short" />
+              <PropertyRef Name="group_code" />
+              <PropertyRef Name="run_no" />
+              <PropertyRef Name="rev_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TD_Transaction_TM_Action">
+          <End Role="TM_Action" Type="DocumentControlModel.Store.TM_Action" Multiplicity="0..1" />
+          <End Role="TD_Transaction" Type="DocumentControlModel.Store.TD_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TM_Action">
+              <PropertyRef Name="action_id" />
+            </Principal>
+            <Dependent Role="TD_Transaction">
+              <PropertyRef Name="action_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TD_Transaction_TM_Level">
+          <End Role="TM_Level" Type="DocumentControlModel.Store.TM_Level" Multiplicity="1" />
+          <End Role="TD_Transaction" Type="DocumentControlModel.Store.TD_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TM_Level">
+              <PropertyRef Name="lv_id" />
+            </Principal>
+            <Dependent Role="TD_Transaction">
+              <PropertyRef Name="lv_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TD_Transaction_TM_Operation">
+          <End Role="TM_Operation" Type="DocumentControlModel.Store.TM_Operation" Multiplicity="1" />
+          <End Role="TD_Transaction" Type="DocumentControlModel.Store.TD_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TM_Operation">
+              <PropertyRef Name="operation_id" />
+            </Principal>
+            <Dependent Role="TD_Transaction">
+              <PropertyRef Name="operation_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TD_Transaction_TM_Status">
+          <End Role="TM_Status" Type="DocumentControlModel.Store.TM_Status" Multiplicity="1" />
+          <End Role="TD_Transaction" Type="DocumentControlModel.Store.TD_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TM_Status">
+              <PropertyRef Name="status_id" />
+            </Principal>
+            <Dependent Role="TD_Transaction">
+              <PropertyRef Name="status_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TM_User_TM_UserType">
+          <End Role="TM_UserType" Type="DocumentControlModel.Store.TM_UserType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TM_User" Type="DocumentControlModel.Store.TM_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TM_UserType">
+              <PropertyRef Name="utype_id" />
+            </Principal>
+            <Dependent Role="TM_User">
+              <PropertyRef Name="utype_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DocumentControlModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="DocumentControlEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="TD_Document" EntityType="DocumentControlModel.TD_Document" />
+          <EntitySet Name="TD_Transaction" EntityType="DocumentControlModel.TD_Transaction" />
+          <EntitySet Name="V_Max_Transaction" EntityType="DocumentControlModel.V_Max_Transaction" />
+          <EntitySet Name="V_Transaction" EntityType="DocumentControlModel.V_Transaction" />
+          <AssociationSet Name="FK_TD_Transaction_TD_Document" Association="DocumentControlModel.FK_TD_Transaction_TD_Document">
+            <End Role="TD_Document" EntitySet="TD_Document" />
+            <End Role="TD_Transaction" EntitySet="TD_Transaction" />
+          </AssociationSet>
+          <EntitySet Name="TM_Action" EntityType="DocumentControlModel.TM_Action" />
+          <EntitySet Name="TM_DocType" EntityType="DocumentControlModel.TM_DocType" />
+          <EntitySet Name="TM_GroupCode" EntityType="DocumentControlModel.TM_GroupCode" />
+          <EntitySet Name="TM_Level" EntityType="DocumentControlModel.TM_Level" />
+          <EntitySet Name="TM_Operation" EntityType="DocumentControlModel.TM_Operation" />
+          <EntitySet Name="TM_Status" EntityType="DocumentControlModel.TM_Status" />
+          <EntitySet Name="TM_User" EntityType="DocumentControlModel.TM_User" />
+          <EntitySet Name="TM_UserType" EntityType="DocumentControlModel.TM_UserType" />
+          <AssociationSet Name="FK_TD_Document_TM_DocType" Association="DocumentControlModel.FK_TD_Document_TM_DocType">
+            <End Role="TM_DocType" EntitySet="TM_DocType" />
+            <End Role="TD_Document" EntitySet="TD_Document" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TD_Document_TM_GroupCode" Association="DocumentControlModel.FK_TD_Document_TM_GroupCode">
+            <End Role="TM_GroupCode" EntitySet="TM_GroupCode" />
+            <End Role="TD_Document" EntitySet="TD_Document" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TD_Transaction_TM_Action" Association="DocumentControlModel.FK_TD_Transaction_TM_Action">
+            <End Role="TM_Action" EntitySet="TM_Action" />
+            <End Role="TD_Transaction" EntitySet="TD_Transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TD_Transaction_TM_Level" Association="DocumentControlModel.FK_TD_Transaction_TM_Level">
+            <End Role="TM_Level" EntitySet="TM_Level" />
+            <End Role="TD_Transaction" EntitySet="TD_Transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TD_Transaction_TM_Operation" Association="DocumentControlModel.FK_TD_Transaction_TM_Operation">
+            <End Role="TM_Operation" EntitySet="TM_Operation" />
+            <End Role="TD_Transaction" EntitySet="TD_Transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TD_Transaction_TM_Status" Association="DocumentControlModel.FK_TD_Transaction_TM_Status">
+            <End Role="TM_Status" EntitySet="TM_Status" />
+            <End Role="TD_Transaction" EntitySet="TD_Transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TM_User_TM_UserType" Association="DocumentControlModel.FK_TM_User_TM_UserType">
+            <End Role="TM_UserType" EntitySet="TM_UserType" />
+            <End Role="TM_User" EntitySet="TM_User" />
+          </AssociationSet>
+          <EntitySet Name="V_DistributionDoc" EntityType="DocumentControlModel.V_DistributionDoc" />
+        </EntityContainer>
+        <EntityType Name="TD_Document">
+          <Key>
+            <PropertyRef Name="doc_type_short" />
+            <PropertyRef Name="group_code" />
+            <PropertyRef Name="run_no" />
+            <PropertyRef Name="rev_no" />
+          </Key>
+          <Property Name="doc_type_short" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="group_code" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="run_no" Type="Int32" Nullable="false" />
+          <Property Name="rev_no" Type="Byte" Nullable="false" />
+          <Property Name="doc_name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="eff_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="attach_file" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="remark" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="expect_cancel_date" Type="DateTime" Precision="0" />
+          <Property Name="check_date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="TD_Transaction" Relationship="DocumentControlModel.FK_TD_Transaction_TD_Document" FromRole="TD_Document" ToRole="TD_Transaction" />
+          <Property Type="String" Name="reference" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TM_DocType" Relationship="DocumentControlModel.FK_TD_Document_TM_DocType" FromRole="TD_Document" ToRole="TM_DocType" />
+          <NavigationProperty Name="TM_GroupCode" Relationship="DocumentControlModel.FK_TD_Document_TM_GroupCode" FromRole="TD_Document" ToRole="TM_GroupCode" />
+        </EntityType>
+        <EntityType Name="TD_Transaction">
+          <Key>
+            <PropertyRef Name="doc_type_short" />
+            <PropertyRef Name="group_code" />
+            <PropertyRef Name="run_no" />
+            <PropertyRef Name="rev_no" />
+            <PropertyRef Name="sub_rev" />
+            <PropertyRef Name="status_id" />
+            <PropertyRef Name="lv_id" />
+            <PropertyRef Name="org_id" />
+            <PropertyRef Name="operation_id" />
+          </Key>
+          <Property Name="doc_type_short" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="group_code" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="run_no" Type="Int32" Nullable="false" />
+          <Property Name="rev_no" Type="Byte" Nullable="false" />
+          <Property Name="sub_rev" Type="Byte" Nullable="false" />
+          <Property Name="status_id" Type="Byte" Nullable="false" />
+          <Property Name="lv_id" Type="Byte" Nullable="false" />
+          <Property Name="org_id" Type="Int32" Nullable="false" />
+          <Property Name="operation_id" Type="Byte" Nullable="false" />
+          <Property Name="action_id" Type="Byte" />
+          <Property Name="actor" Type="String" MaxLength="10" Unicode="true" FixedLength="false" />
+          <Property Name="act_dt" Type="DateTime" Precision="3" />
+          <Property Name="comment" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="TD_Document" Relationship="DocumentControlModel.FK_TD_Transaction_TD_Document" FromRole="TD_Transaction" ToRole="TD_Document" />
+          <NavigationProperty Name="TM_Action" Relationship="DocumentControlModel.FK_TD_Transaction_TM_Action" FromRole="TD_Transaction" ToRole="TM_Action" />
+          <NavigationProperty Name="TM_Level" Relationship="DocumentControlModel.FK_TD_Transaction_TM_Level" FromRole="TD_Transaction" ToRole="TM_Level" />
+          <NavigationProperty Name="TM_Operation" Relationship="DocumentControlModel.FK_TD_Transaction_TM_Operation" FromRole="TD_Transaction" ToRole="TM_Operation" />
+          <NavigationProperty Name="TM_Status" Relationship="DocumentControlModel.FK_TD_Transaction_TM_Status" FromRole="TD_Transaction" ToRole="TM_Status" />
+        </EntityType>
+        <EntityType Name="V_Max_Transaction">
+          <Key>
+            <PropertyRef Name="doc_type_short" />
+            <PropertyRef Name="group_code" />
+            <PropertyRef Name="run_no" />
+            <PropertyRef Name="rev_no" />
+            <PropertyRef Name="status_id" />
+            <PropertyRef Name="doc_name" />
+            <PropertyRef Name="eff_date" />
+            <PropertyRef Name="attach_file" />
+            <PropertyRef Name="operation_id" />
+            <PropertyRef Name="lv_id" />
+            <PropertyRef Name="org_id" />
+            <PropertyRef Name="active" />
+          </Key>
+          <Property Name="doc_no" Type="String" MaxLength="109" Unicode="true" FixedLength="false" />
+          <Property Name="doc_type_short" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="group_code" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="run_no" Type="Int32" Nullable="false" />
+          <Property Name="rev_no" Type="Byte" Nullable="false" />
+          <Property Name="status_id" Type="Byte" Nullable="false" />
+          <Property Name="doc_name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="eff_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="attach_file" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="remark" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="operation_id" Type="Byte" Nullable="false" />
+          <Property Name="lv_id" Type="Byte" Nullable="false" />
+          <Property Name="org_id" Type="Int32" Nullable="false" />
+          <Property Name="act_dt" Type="DateTime" Precision="3" />
+          <Property Type="String" Name="reference" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="expect_cancel_date" Precision="0" />
+          <Property Type="DateTime" Name="check_date" Precision="0" />
+          <Property Type="Boolean" Name="active" Nullable="false" />
+        </EntityType>
+        <EntityType Name="V_Transaction">
+          <Key>
+            <PropertyRef Name="doc_type_short" />
+            <PropertyRef Name="group_code" />
+            <PropertyRef Name="run_no" />
+            <PropertyRef Name="rev_no" />
+            <PropertyRef Name="sub_rev" />
+            <PropertyRef Name="status_id" />
+            <PropertyRef Name="lv_id" />
+            <PropertyRef Name="org_id" />
+            <PropertyRef Name="operation_id" />
+            <PropertyRef Name="active" />
+            <PropertyRef Name="doc_name" />
+            <PropertyRef Name="eff_date" />
+            <PropertyRef Name="attach_file" />
+            <PropertyRef Name="statusname" />
+            <PropertyRef Name="operation_name" />
+            <PropertyRef Name="lv_name" />
+            <PropertyRef Name="status_name" />
+            <PropertyRef Name="doc_type_full" />
+            <PropertyRef Name="doc_lv" />
+            <PropertyRef Name="review_year" />
+            <PropertyRef Name="copy_flag" />
+          </Key>
+          <Property Name="doc_no" Type="String" MaxLength="109" Unicode="true" FixedLength="false" />
+          <Property Name="doc_type_short" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="group_code" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="run_no" Type="Int32" Nullable="false" />
+          <Property Name="rev_no" Type="Byte" Nullable="false" />
+          <Property Name="sub_rev" Type="Byte" Nullable="false" />
+          <Property Name="status_id" Type="Byte" Nullable="false" />
+          <Property Name="lv_id" Type="Byte" Nullable="false" />
+          <Property Name="org_id" Type="Int32" Nullable="false" />
+          <Property Name="operation_id" Type="Byte" Nullable="false" />
+          <Property Name="action_id" Type="Byte" />
+          <Property Name="actor" Type="String" MaxLength="10" Unicode="true" FixedLength="false" />
+          <Property Name="act_dt" Type="DateTime" Precision="3" />
+          <Property Name="comment" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="active" Type="Boolean" Nullable="false" />
+          <Property Name="doc_name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="eff_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="attach_file" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="remark" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="statusname" Type="String" Nullable="false" MaxLength="103" Unicode="true" FixedLength="false" />
+          <Property Name="operation_name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="lv_name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="status_name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="doc_type_full" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="doc_lv" Type="Byte" Nullable="false" />
+          <Property Name="review_year" Type="Byte" Nullable="false" />
+          <Property Name="copy_flag" Type="Boolean" Nullable="false" />
+          <Property Name="expect_cancel_date" Type="DateTime" Precision="0" />
+        </EntityType>
+        <Association Name="FK_TD_Transaction_TD_Document">
+          <End Role="TD_Document" Type="DocumentControlModel.TD_Document" Multiplicity="1" />
+          <End Role="TD_Transaction" Type="DocumentControlModel.TD_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TD_Document">
+              <PropertyRef Name="doc_type_short" />
+              <PropertyRef Name="group_code" />
+              <PropertyRef Name="run_no" />
+              <PropertyRef Name="rev_no" />
+            </Principal>
+            <Dependent Role="TD_Transaction">
+              <PropertyRef Name="doc_type_short" />
+              <PropertyRef Name="group_code" />
+              <PropertyRef Name="run_no" />
+              <PropertyRef Name="rev_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="TM_Action">
+          <Key>
+            <PropertyRef Name="action_id" />
+          </Key>
+          <Property Type="Byte" Name="action_id" Nullable="false" />
+          <Property Type="String" Name="action_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="update_by" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="update_dt" Nullable="false" Precision="3" />
+          <NavigationProperty Name="TD_Transaction" Relationship="DocumentControlModel.FK_TD_Transaction_TM_Action" FromRole="TM_Action" ToRole="TD_Transaction" />
+        </EntityType>
+        <EntityType Name="TM_DocType">
+          <Key>
+            <PropertyRef Name="doc_type_short" />
+          </Key>
+          <Property Type="String" Name="doc_type_short" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="doc_type_full" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="Byte" Name="doc_lv" Nullable="false" />
+          <Property Type="Boolean" Name="copy_flag" Nullable="false" />
+          <Property Type="Byte" Name="review_year" Nullable="false" />
+          <Property Type="String" Name="update_by" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="update_dt" Nullable="false" Precision="3" />
+          <NavigationProperty Name="TD_Document" Relationship="DocumentControlModel.FK_TD_Document_TM_DocType" FromRole="TM_DocType" ToRole="TD_Document" />
+        </EntityType>
+        <EntityType Name="TM_GroupCode">
+          <Key>
+            <PropertyRef Name="group_code" />
+          </Key>
+          <Property Type="String" Name="group_code" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="group_id" Nullable="false" />
+          <Property Type="String" Name="update_by" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="update_dt" Nullable="false" Precision="3" />
+          <Property Type="String" Name="responsible" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TD_Document" Relationship="DocumentControlModel.FK_TD_Document_TM_GroupCode" FromRole="TM_GroupCode" ToRole="TD_Document" />
+        </EntityType>
+        <EntityType Name="TM_Level">
+          <Key>
+            <PropertyRef Name="lv_id" />
+          </Key>
+          <Property Type="Byte" Name="lv_id" Nullable="false" />
+          <Property Type="String" Name="lv_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Byte" Name="position_min" Nullable="false" />
+          <Property Type="Byte" Name="position_max" Nullable="false" />
+          <Property Type="String" Name="update_by" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="update_dt" Nullable="false" Precision="3" />
+          <NavigationProperty Name="TD_Transaction" Relationship="DocumentControlModel.FK_TD_Transaction_TM_Level" FromRole="TM_Level" ToRole="TD_Transaction" />
+        </EntityType>
+        <EntityType Name="TM_Operation">
+          <Key>
+            <PropertyRef Name="operation_id" />
+          </Key>
+          <Property Type="Byte" Name="operation_id" Nullable="false" />
+          <Property Type="String" Name="operation_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="update_by" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="update_dt" Nullable="false" Precision="3" />
+          <NavigationProperty Name="TD_Transaction" Relationship="DocumentControlModel.FK_TD_Transaction_TM_Operation" FromRole="TM_Operation" ToRole="TD_Transaction" />
+        </EntityType>
+        <EntityType Name="TM_Status">
+          <Key>
+            <PropertyRef Name="status_id" />
+          </Key>
+          <Property Type="Byte" Name="status_id" Nullable="false" />
+          <Property Type="String" Name="status_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="update_by" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="update_dt" Nullable="false" Precision="3" />
+          <NavigationProperty Name="TD_Transaction" Relationship="DocumentControlModel.FK_TD_Transaction_TM_Status" FromRole="TM_Status" ToRole="TD_Transaction" />
+        </EntityType>
+        <EntityType Name="TM_User">
+          <Key>
+            <PropertyRef Name="empcode" />
+          </Key>
+          <Property Type="String" Name="empcode" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="Byte" Name="utype_id" Nullable="false" />
+          <Property Type="DateTime" Name="update_dt" Nullable="false" Precision="3" />
+          <Property Type="String" Name="update_by" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TM_UserType" Relationship="DocumentControlModel.FK_TM_User_TM_UserType" FromRole="TM_User" ToRole="TM_UserType" />
+        </EntityType>
+        <EntityType Name="TM_UserType">
+          <Key>
+            <PropertyRef Name="utype_id" />
+          </Key>
+          <Property Type="Byte" Name="utype_id" Nullable="false" />
+          <Property Type="String" Name="utype_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="update_dt" Nullable="false" Precision="3" />
+          <Property Type="String" Name="update_by" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TM_User" Relationship="DocumentControlModel.FK_TM_User_TM_UserType" FromRole="TM_UserType" ToRole="TM_User" />
+        </EntityType>
+        <Association Name="FK_TD_Document_TM_DocType">
+          <End Type="DocumentControlModel.TM_DocType" Role="TM_DocType" Multiplicity="1" />
+          <End Type="DocumentControlModel.TD_Document" Role="TD_Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TM_DocType">
+              <PropertyRef Name="doc_type_short" />
+            </Principal>
+            <Dependent Role="TD_Document">
+              <PropertyRef Name="doc_type_short" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TD_Document_TM_GroupCode">
+          <End Type="DocumentControlModel.TM_GroupCode" Role="TM_GroupCode" Multiplicity="1" />
+          <End Type="DocumentControlModel.TD_Document" Role="TD_Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TM_GroupCode">
+              <PropertyRef Name="group_code" />
+            </Principal>
+            <Dependent Role="TD_Document">
+              <PropertyRef Name="group_code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TD_Transaction_TM_Action">
+          <End Type="DocumentControlModel.TM_Action" Role="TM_Action" Multiplicity="0..1" />
+          <End Type="DocumentControlModel.TD_Transaction" Role="TD_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TM_Action">
+              <PropertyRef Name="action_id" />
+            </Principal>
+            <Dependent Role="TD_Transaction">
+              <PropertyRef Name="action_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TD_Transaction_TM_Level">
+          <End Type="DocumentControlModel.TM_Level" Role="TM_Level" Multiplicity="1" />
+          <End Type="DocumentControlModel.TD_Transaction" Role="TD_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TM_Level">
+              <PropertyRef Name="lv_id" />
+            </Principal>
+            <Dependent Role="TD_Transaction">
+              <PropertyRef Name="lv_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TD_Transaction_TM_Operation">
+          <End Type="DocumentControlModel.TM_Operation" Role="TM_Operation" Multiplicity="1" />
+          <End Type="DocumentControlModel.TD_Transaction" Role="TD_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TM_Operation">
+              <PropertyRef Name="operation_id" />
+            </Principal>
+            <Dependent Role="TD_Transaction">
+              <PropertyRef Name="operation_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TD_Transaction_TM_Status">
+          <End Type="DocumentControlModel.TM_Status" Role="TM_Status" Multiplicity="1" />
+          <End Type="DocumentControlModel.TD_Transaction" Role="TD_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TM_Status">
+              <PropertyRef Name="status_id" />
+            </Principal>
+            <Dependent Role="TD_Transaction">
+              <PropertyRef Name="status_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TM_User_TM_UserType">
+          <End Type="DocumentControlModel.TM_UserType" Role="TM_UserType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DocumentControlModel.TM_User" Role="TM_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TM_UserType">
+              <PropertyRef Name="utype_id" />
+            </Principal>
+            <Dependent Role="TM_User">
+              <PropertyRef Name="utype_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="V_DistributionDoc">
+          <Key>
+            <PropertyRef Name="group_id" />
+            <PropertyRef Name="doc_type_short" />
+            <PropertyRef Name="group_code" />
+            <PropertyRef Name="run_no" />
+            <PropertyRef Name="rev_no" />
+            <PropertyRef Name="doc_name" />
+            <PropertyRef Name="eff_date" />
+          </Key>
+          <Property Type="String" Name="doc_no" MaxLength="109" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="group_id" Nullable="false" />
+          <Property Type="String" Name="doc_type_short" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="group_code" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="run_no" Nullable="false" />
+          <Property Type="Byte" Name="rev_no" Nullable="false" />
+          <Property Type="String" Name="doc_name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="eff_date" Nullable="false" Precision="0" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DocumentControlModelStoreContainer" CdmEntityContainer="DocumentControlEntities">
+          <EntitySetMapping Name="TD_Document">
+            <EntityTypeMapping TypeName="DocumentControlModel.TD_Document">
+              <MappingFragment StoreEntitySet="TD_Document">
+                <ScalarProperty Name="reference" ColumnName="reference" />
+                <ScalarProperty Name="doc_type_short" ColumnName="doc_type_short" />
+                <ScalarProperty Name="group_code" ColumnName="group_code" />
+                <ScalarProperty Name="run_no" ColumnName="run_no" />
+                <ScalarProperty Name="rev_no" ColumnName="rev_no" />
+                <ScalarProperty Name="doc_name" ColumnName="doc_name" />
+                <ScalarProperty Name="eff_date" ColumnName="eff_date" />
+                <ScalarProperty Name="attach_file" ColumnName="attach_file" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="expect_cancel_date" ColumnName="expect_cancel_date" />
+                <ScalarProperty Name="check_date" ColumnName="check_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TD_Transaction">
+            <EntityTypeMapping TypeName="DocumentControlModel.TD_Transaction">
+              <MappingFragment StoreEntitySet="TD_Transaction">
+                <ScalarProperty Name="doc_type_short" ColumnName="doc_type_short" />
+                <ScalarProperty Name="group_code" ColumnName="group_code" />
+                <ScalarProperty Name="run_no" ColumnName="run_no" />
+                <ScalarProperty Name="rev_no" ColumnName="rev_no" />
+                <ScalarProperty Name="sub_rev" ColumnName="sub_rev" />
+                <ScalarProperty Name="status_id" ColumnName="status_id" />
+                <ScalarProperty Name="lv_id" ColumnName="lv_id" />
+                <ScalarProperty Name="org_id" ColumnName="org_id" />
+                <ScalarProperty Name="operation_id" ColumnName="operation_id" />
+                <ScalarProperty Name="action_id" ColumnName="action_id" />
+                <ScalarProperty Name="actor" ColumnName="actor" />
+                <ScalarProperty Name="act_dt" ColumnName="act_dt" />
+                <ScalarProperty Name="comment" ColumnName="comment" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_Max_Transaction">
+            <EntityTypeMapping TypeName="DocumentControlModel.V_Max_Transaction">
+              <MappingFragment StoreEntitySet="V_Max_Transaction">
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="check_date" ColumnName="check_date" />
+                <ScalarProperty Name="expect_cancel_date" ColumnName="expect_cancel_date" />
+                <ScalarProperty Name="reference" ColumnName="reference" />
+                <ScalarProperty Name="doc_no" ColumnName="doc_no" />
+                <ScalarProperty Name="doc_type_short" ColumnName="doc_type_short" />
+                <ScalarProperty Name="group_code" ColumnName="group_code" />
+                <ScalarProperty Name="run_no" ColumnName="run_no" />
+                <ScalarProperty Name="rev_no" ColumnName="rev_no" />
+                <ScalarProperty Name="status_id" ColumnName="status_id" />
+                <ScalarProperty Name="doc_name" ColumnName="doc_name" />
+                <ScalarProperty Name="eff_date" ColumnName="eff_date" />
+                <ScalarProperty Name="attach_file" ColumnName="attach_file" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="operation_id" ColumnName="operation_id" />
+                <ScalarProperty Name="lv_id" ColumnName="lv_id" />
+                <ScalarProperty Name="org_id" ColumnName="org_id" />
+                <ScalarProperty Name="act_dt" ColumnName="act_dt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_Transaction">
+            <EntityTypeMapping TypeName="DocumentControlModel.V_Transaction">
+              <MappingFragment StoreEntitySet="V_Transaction">
+                <ScalarProperty Name="doc_no" ColumnName="doc_no" />
+                <ScalarProperty Name="doc_type_short" ColumnName="doc_type_short" />
+                <ScalarProperty Name="group_code" ColumnName="group_code" />
+                <ScalarProperty Name="run_no" ColumnName="run_no" />
+                <ScalarProperty Name="rev_no" ColumnName="rev_no" />
+                <ScalarProperty Name="sub_rev" ColumnName="sub_rev" />
+                <ScalarProperty Name="status_id" ColumnName="status_id" />
+                <ScalarProperty Name="lv_id" ColumnName="lv_id" />
+                <ScalarProperty Name="org_id" ColumnName="org_id" />
+                <ScalarProperty Name="operation_id" ColumnName="operation_id" />
+                <ScalarProperty Name="action_id" ColumnName="action_id" />
+                <ScalarProperty Name="actor" ColumnName="actor" />
+                <ScalarProperty Name="act_dt" ColumnName="act_dt" />
+                <ScalarProperty Name="comment" ColumnName="comment" />
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="doc_name" ColumnName="doc_name" />
+                <ScalarProperty Name="eff_date" ColumnName="eff_date" />
+                <ScalarProperty Name="attach_file" ColumnName="attach_file" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="statusname" ColumnName="statusname" />
+                <ScalarProperty Name="operation_name" ColumnName="operation_name" />
+                <ScalarProperty Name="lv_name" ColumnName="lv_name" />
+                <ScalarProperty Name="status_name" ColumnName="status_name" />
+                <ScalarProperty Name="doc_type_full" ColumnName="doc_type_full" />
+                <ScalarProperty Name="doc_lv" ColumnName="doc_lv" />
+                <ScalarProperty Name="review_year" ColumnName="review_year" />
+                <ScalarProperty Name="copy_flag" ColumnName="copy_flag" />
+                <ScalarProperty Name="expect_cancel_date" ColumnName="expect_cancel_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TM_Action">
+            <EntityTypeMapping TypeName="DocumentControlModel.TM_Action">
+              <MappingFragment StoreEntitySet="TM_Action">
+                <ScalarProperty Name="update_dt" ColumnName="update_dt" />
+                <ScalarProperty Name="update_by" ColumnName="update_by" />
+                <ScalarProperty Name="action_name" ColumnName="action_name" />
+                <ScalarProperty Name="action_id" ColumnName="action_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TM_DocType">
+            <EntityTypeMapping TypeName="DocumentControlModel.TM_DocType">
+              <MappingFragment StoreEntitySet="TM_DocType">
+                <ScalarProperty Name="update_dt" ColumnName="update_dt" />
+                <ScalarProperty Name="update_by" ColumnName="update_by" />
+                <ScalarProperty Name="review_year" ColumnName="review_year" />
+                <ScalarProperty Name="copy_flag" ColumnName="copy_flag" />
+                <ScalarProperty Name="doc_lv" ColumnName="doc_lv" />
+                <ScalarProperty Name="doc_type_full" ColumnName="doc_type_full" />
+                <ScalarProperty Name="doc_type_short" ColumnName="doc_type_short" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TM_GroupCode">
+            <EntityTypeMapping TypeName="DocumentControlModel.TM_GroupCode">
+              <MappingFragment StoreEntitySet="TM_GroupCode">
+                <ScalarProperty Name="responsible" ColumnName="responsible" />
+                <ScalarProperty Name="update_dt" ColumnName="update_dt" />
+                <ScalarProperty Name="update_by" ColumnName="update_by" />
+                <ScalarProperty Name="group_id" ColumnName="group_id" />
+                <ScalarProperty Name="group_code" ColumnName="group_code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TM_Level">
+            <EntityTypeMapping TypeName="DocumentControlModel.TM_Level">
+              <MappingFragment StoreEntitySet="TM_Level">
+                <ScalarProperty Name="update_dt" ColumnName="update_dt" />
+                <ScalarProperty Name="update_by" ColumnName="update_by" />
+                <ScalarProperty Name="position_max" ColumnName="position_max" />
+                <ScalarProperty Name="position_min" ColumnName="position_min" />
+                <ScalarProperty Name="lv_name" ColumnName="lv_name" />
+                <ScalarProperty Name="lv_id" ColumnName="lv_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TM_Operation">
+            <EntityTypeMapping TypeName="DocumentControlModel.TM_Operation">
+              <MappingFragment StoreEntitySet="TM_Operation">
+                <ScalarProperty Name="update_dt" ColumnName="update_dt" />
+                <ScalarProperty Name="update_by" ColumnName="update_by" />
+                <ScalarProperty Name="operation_name" ColumnName="operation_name" />
+                <ScalarProperty Name="operation_id" ColumnName="operation_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TM_Status">
+            <EntityTypeMapping TypeName="DocumentControlModel.TM_Status">
+              <MappingFragment StoreEntitySet="TM_Status">
+                <ScalarProperty Name="update_dt" ColumnName="update_dt" />
+                <ScalarProperty Name="update_by" ColumnName="update_by" />
+                <ScalarProperty Name="status_name" ColumnName="status_name" />
+                <ScalarProperty Name="status_id" ColumnName="status_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TM_User">
+            <EntityTypeMapping TypeName="DocumentControlModel.TM_User">
+              <MappingFragment StoreEntitySet="TM_User">
+                <ScalarProperty Name="update_by" ColumnName="update_by" />
+                <ScalarProperty Name="update_dt" ColumnName="update_dt" />
+                <ScalarProperty Name="utype_id" ColumnName="utype_id" />
+                <ScalarProperty Name="empcode" ColumnName="empcode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TM_UserType">
+            <EntityTypeMapping TypeName="DocumentControlModel.TM_UserType">
+              <MappingFragment StoreEntitySet="TM_UserType">
+                <ScalarProperty Name="update_by" ColumnName="update_by" />
+                <ScalarProperty Name="update_dt" ColumnName="update_dt" />
+                <ScalarProperty Name="utype_name" ColumnName="utype_name" />
+                <ScalarProperty Name="utype_id" ColumnName="utype_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_DistributionDoc">
+            <EntityTypeMapping TypeName="DocumentControlModel.V_DistributionDoc">
+              <MappingFragment StoreEntitySet="V_DistributionDoc">
+                <ScalarProperty Name="eff_date" ColumnName="eff_date" />
+                <ScalarProperty Name="doc_name" ColumnName="doc_name" />
+                <ScalarProperty Name="rev_no" ColumnName="rev_no" />
+                <ScalarProperty Name="run_no" ColumnName="run_no" />
+                <ScalarProperty Name="group_code" ColumnName="group_code" />
+                <ScalarProperty Name="doc_type_short" ColumnName="doc_type_short" />
+                <ScalarProperty Name="group_id" ColumnName="group_id" />
+                <ScalarProperty Name="doc_no" ColumnName="doc_no" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

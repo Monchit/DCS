@@ -1,0 +1,212 @@
+﻿@{
+    ViewBag.Title = "Document Initial";
+}
+<script type="text/javascript">
+    $.strPad = function (i, l, s) {
+        var o = i.toString();
+        if (!s) { s = '0'; }
+        while (o.length < l) { o = s + o; }
+        return o;
+    };
+    $(document).ready(function () {
+        //Datepicker Setting
+        $(".datepicker").datepicker({
+            dateFormat: 'dd-mm-yy'
+        });
+        
+        $("#txtRunno").change(function () {
+            $(this).val($.strPad($(this).val(), 4));
+        });
+
+        $("#txtRev").change(function () {
+            $(this).val($.strPad($(this).val(), 2));
+        });
+
+        $("#selDocType").change(function () {
+            $("#txtDocType").val($(this).val());
+            $.get("@Url.Action("ShowCopy","Home")", { docType: $(this).val() }, function (data) {
+                if (data == "show") {
+                    $("#hc-contain").show();
+                } else {
+                    $("#hc-contain").hide();
+                }
+            });
+        });
+
+        $('#sel2List').select2({
+            multiple: true,
+            placeholder: "Select Distribution Group",
+            ajax: {
+                url: '@Url.Action("Selecte2AllGroup", "Home")',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        searchTerm: term
+                    };
+                },
+                results: function (data, page) {
+                    return { results: data };
+                }
+            },
+            formatResult: function (item) { return item.text; },
+            formatSelection: function (item) { return item.text; }
+        });
+
+        $("#selGroupCode").change(function () {
+            $.get('@Url.Action("GetGroupByGroupCode", "Home")', 'groupcode=' + $(this).val(), function (data) {
+                $("#sel2List").select2("data", data);
+            });
+        });
+
+        $('#sel2hc').select2({
+            placeholder: "Select Group",
+            ajax: {
+                url: '@Url.Action("Selecte2AllGroup", "Home")',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        searchTerm: term
+                    };
+                },
+                results: function (data, page) {
+                    return { results: data };
+                }
+            },
+            formatResult: function (item) { return item.text; },
+            formatSelection: function (item) { return item.text; }
+        });
+
+        $("#txtQty,#txtRunno,#txtRev").keypress(function (e) {
+            //if the letter is not digit then display error and don't type anything
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            }
+        });
+
+        $(document).on("click", ".delRow", function (event) {
+            var tr = $(this).closest('tr');
+            tr.remove();
+            return false;
+        });
+
+        $('#btnAdd').click(function () {
+            if ($("#txtQty").val() == "") {
+                alert("Please fill in Q'ty !!!");
+            } else if ($("#txtNote").val().length < 4) {
+                alert("Please fill in Paper size !!!");
+            } else {
+                $("#tablehc tbody").append("<tr><td>" + $("#sel2hc").select2("data").text + "</td>" +
+                    "<td><input type='text' name='hcQty' class='input-mini' value='" + $("#txtQty").val() +
+                    "' /><input type='hidden' name='hcGroup' value='" + $("#sel2hc").select2("val") + "' /></td>" +
+                    "<td><input type='text' name='hcNote' class='input-large' value='" + $("#txtNote").val() + "' maxlength='50' readonly='true' /></td>" +
+                    "<td><button type='button' class='delRow btn btn-danger'>X</button></td></tr>");
+                $("#txtQty").val("");
+                $("#txtNote").val("A4=");
+                return false;
+            }
+        });
+        
+        $("#btnSubmit").click(function () {
+            if (!$.validate({ form: 'formDoc' })) {
+                return false;
+            }
+
+            if (confirm("Are you sure you want to submit this document ?")) {
+                document.forms["formDoc"].submit();
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+<h2>@ViewBag.Title</h2>
+<form id="formDoc" name="formDoc" class="form-horizontal" action="@Url.Action("InitialDoc", "Home")" method="post" enctype="multipart/form-data">
+    <div class="control-group">
+        <label class="control-label" for="selDocType">Document Type</label>
+        <div class="controls">
+            <select id="selDocType" name="selDocType" data-validate="required" class="span4">
+                <option value="">--Select Type--</option>
+                @foreach (var item in ViewBag.DocType)
+                {
+                    <option value="@item.doc_type_short">@item.doc_type_full</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="txtDocType">Document No.</label>
+        <div class="controls">
+            <input type="text" class="input-small" id="txtDocType" name="txtDocType" readonly="true" data-validate="required" />-
+                <select class="input-small" id="selGroupCode" name="selGroupCode" data-validate="required">
+                @foreach (var item in ViewBag.GCode)
+                {
+                    <option value="@item.group_code">@item.group_code</option>
+                }
+                </select>-
+                <input type="text" class="input-mini" id="txtRunno" name="txtRunno" data-validate="number" placeholder="0000" maxlength="4" />
+                &nbsp;revision <input type="text" class="input-mini" id="txtRev" name="txtRev" placeholder="00" data-validate="number" maxlength="2" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="txtRemark">Reference from Document No. & Rev. No.</label>
+        <div class="controls">
+            <input type="text" class="span11" id="txtRemark" name="txtRemark" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="txtDocName">Document Name</label>
+        <div class="controls">
+            <input type="text" class="span11" id="txtDocName" name="txtDocName" data-validate="required" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="dtEff">Effective Date</label>
+        <div class="controls">
+            <input type="text" class="datepicker" id="dtEff" name="dtEff" readonly="true" placeholder="dd-mm-yyyy" data-validate="required" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="flAtt">Attach File <span class="label label-important">PDF Only</span></label>
+        <div class="controls">
+            <input type="file" id="flAtt" name="flAtt" data-validate="file" accept="application/pdf" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="flSrc">Source File <span class="label label-info">Word</span><span class="label label-success">Excel</span></label>
+        <div class="controls">
+            <input type="file" id="flSrc" name="flSrc" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="sel2List">Distribution List by E-mail</label>
+        <div class="controls">
+            <input type="text" id="sel2List" name="sel2List" class="span11"/>
+        </div>
+    </div>
+    <div class="control-group" id="hc-contain" style="display:none;">
+        <label class="control-label" for="sel2hc">Distribution List by Hard-Copy</label>
+        <div class="controls">
+            <input type="text" id="sel2hc" name="sel2hc" class="span3" />
+            <input type="text" id="txtQty" name="txtQty" class="input-mini" placeholder="Total Q'ty" maxlength="3">
+            <input type="text" id="txtNote" name="txtNote" class="input-large" placeholder="Explain Paper size" value="A4=" maxlength="50">
+            <button type="button" id="btnAdd" name="btnAdd" class="btn btn-inverse">ADD</button>
+            <table id="tablehc" class="table table-bordered table-condensed" style="width:600px;">
+                <thead>
+                    <tr>
+                        <th style="width:220px">Group</th>
+                        <th style="width:80px">Total Q'ty</th>
+                        <th style="width:220px">Explain Paper size</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <input class="btn btn-primary" type="button" id="btnSubmit" value="Submit" />
+        </div>
+    </div>
+</form>

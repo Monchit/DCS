@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "User Type Management";
+}
+<link href="~/Scripts/jtable/themes/metro/purple/jtable.min.css" rel="stylesheet" />
+<style type="text/css">
+    /*fix jTable*/
+    span.jtable-goto-page select, span.jtable-page-size-change select {
+        height: 25px;
+        width: 60px;
+        padding: 2px 2px;
+        margin-bottom:auto;
+    }
+    div.jtable-main-container table.jtable thead th {
+        text-align: center;
+    }
+    div.jtable-main-container > table.jtable > tbody > tr.jtable-data-row > td {
+        text-align: center;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#jTableUType').jtable({
+            title: 'User Type Master',
+            paging: true, //Enable paging
+            pageSize: 10, //Set page size (default: 10)
+            sorting: true, //Enable sorting
+            selecting: true, //Enable selecting
+            defaultSorting: 'utype_id ASC', //Set default sorting
+            actions: {
+                listAction: '@Url.Action("UTypeList","Master")',
+                deleteAction: '@Url.Action("DeleteUType","Master")',
+                updateAction: '@Url.Action("UpdateUType","Master")',
+                createAction: '@Url.Action("CreateUType","Master")'
+            },
+            fields: {
+                utype_id: { title: 'ID', key: true, create: true, edit: false, width: '35%' },
+                utype_name: { title: 'User Type Name', create: true, edit: true, width: '60%' }
+            }
+        });
+        //Load student list from server
+        $('#jTableUType').jtable('load');
+    });
+</script>
+
+<div id="jTableUType" style="width:600px;"></div>

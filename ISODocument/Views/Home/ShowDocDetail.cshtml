@@ -1,0 +1,127 @@
+﻿@model ISODocument.Models.TD_Document
+@{
+    ViewBag.Title = "Document Detail";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#sel2List').select2({
+            multiple: true,
+            placeholder: "No Distribution Group Selected",
+            ajax: {
+                url: '@Url.Action("Selecte2AllGroup", "Home")',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        searchTerm: term
+                    };
+                },
+                results: function (data, page) {
+                    return { results: data };
+                }
+            },
+            formatResult: function (item) { return item.text; },
+            formatSelection: function (item) { return item.text; }
+        });
+
+        var obj = new Object();
+        obj.doctype = '@Model.doc_type_short';
+        obj.groupcode = '@Model.group_code';
+        obj.runno = '@Model.run_no';
+        obj.revno = '@Model.rev_no';
+        obj.copy_runno = 0;
+
+        $.get('@Url.Action("GetDistributionList", "Home")', obj, function (data) {
+            $("#sel2List").select2("data", data);
+        });
+
+        $.get("@Url.Action("ShowCopy","Home")", { docType: obj.doctype }, function (data) {
+            if (data == "show") {
+                $("#hc-contain").show();
+                $.get("@Url.Action("GetCopyList","Home")", obj, function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        $("#tablehc tbody").append("<tr>" +
+                         "<td>" + data[i].group_name + "</td>" +
+                         "<td>" + data[i].qty + "</td>" +
+                         "<td>" + data[i].note + "</td>" +
+                         "</tr>");
+                    }
+                });
+            } else {
+                $("#hc-contain").hide();
+            }
+        });
+    });
+</script>
+<style>
+    .thead {
+        font-weight: bold;
+    }
+</style>
+<h2>@ViewBag.Title</h2>
+
+<table class="table table-bordered table-striped table-condensed">
+    <tr>
+        <td style="width:280px;" class="thead">Document Type </td>
+        <td>@Html.DisplayFor(model => model.TM_DocType.doc_type_full)</td>
+    </tr>
+    <tr>
+        <td class="thead">Document No. </td>
+        <td>
+            @Html.DisplayFor(model => model.doc_type_short)-@Html.DisplayFor(model => model.group_code)-@Model.run_no.ToString("0000")
+            rev.@Model.rev_no.ToString("00")
+        </td>
+    </tr>
+    @if (Model.reference != null && Model.reference != ""){
+    <tr>
+        <td class="thead">Reference from Document No. & Rev. No. </td>
+        <td>@Html.DisplayFor(model => model.reference)</td>
+    </tr>
+    }
+    <tr>
+        <td class="thead">Document Name </td>
+        <td>@Html.DisplayFor(model => model.doc_name)</td>
+    </tr>
+    <tr>
+        <td class="thead">Effective Date </td>
+        <td>@Model.eff_date.ToString("dd/MM/yyyy")</td>
+    </tr>
+    <tr>
+        <td class="thead">Attach File </td>
+        <td><a href="@Url.Content(Model.attach_file)" target="_blank"><img src="~/Images/Document-icon.png" /></a>
+
+        </td>
+    </tr>
+    <tr>
+        <td class="thead">Distribution List by E-mail</td>
+        <td><input type="text" id="sel2List" name="sel2List" disabled="disabled" class="input-xxlarge" /></td>
+    </tr>
+    <tr>
+        <td class="thead">Distribution List by Hard-Copy</td>
+        <td><div id="hc-contain" style="display:none;">
+                <table id="tablehc" class="table table-bordered" style="width:600px;">
+                    <thead>
+                        <tr>
+                            <th style="width:330px">Group</th>
+                            <th>Quantity</th>
+                            <th>Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </td>
+    </tr>
+    @if(Model.remark != null && Model.remark != ""){
+    <tr>
+        <td class="thead">Reason of Revise </td>
+        <td>@Html.DisplayFor(model => model.remark)</td>
+    </tr>
+    }
+    @if(Model.expect_cancel_date != null){
+    <tr>
+        <td class="thead">Expected Cancel Date </td>
+        <td>@Model.expect_cancel_date.Value.ToString("dd/MM/yyyy")</td>
+    </tr>
+    }
+</table>

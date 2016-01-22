@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "Chart Copy";
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#dtFrom").datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            numberOfMonths: 1,
+            maxDate: "0",
+            onClose: function (selectedDate) {
+                $("#dtTo").datepicker("option", "minDate", selectedDate);
+            }
+        });
+        $("#dtTo").datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            numberOfMonths: 1,
+            maxDate: "0",
+            onClose: function (selectedDate) {
+                $("#dtFrom").datepicker("option", "maxDate", selectedDate);
+            }
+        });
+
+        $('#btnSubmit').click(function () {
+            var obj = new Object();
+            obj.yy = $("#selyy").val();
+            $.get("@Url.Action("_GetChartCopy", "Chart")", obj, function (data) {
+                $("#divShowGraph").html(data);
+            });
+        });
+    });
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+<form class="form-inline">
+    @*Select Date From : <input type="text" id="dtFrom" name="dtFrom" />
+    Select Date To : <input type="text" id="dtTo" name="dtTo" />*@
+    <label for="selyy">
+        Select Year : 
+        <select id="selyy" name="selyy">
+        @for (var i = 0; i < 6; i++){
+            <option>@(DateTime.Now.AddYears(-i).Year)</option>
+        }
+        </select>
+    </label>
+    <button type="button" id="btnSubmit" name="btnSubmit">Submit</button>
+</form>
+
+<div id="divShowGraph"></div>

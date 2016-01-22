@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Document List";
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        
+    });
+</script>
+
+<h2>@ViewBag.Titley</h2>
+
+<form name="formFilter" id="formFilter" class="form-inline" action="@Url.Action("PDFGroupCopyList")" method="post">
+    <label for="selGroup">Select Group : </label>
+    <select id="selGroup" name="selGroup">
+        @foreach (var item in ViewBag.AllGroup)
+        {
+            <option value="@item.id">@item.group_name</option>
+        }
+    </select>
+    <button type="submit" id="btnExportEmail" name="btnExportEmail" class="btn btn-info"><i class="icon-list-alt icon-white"></i> Export Document List by Email</button>
+    <button type="submit" id="btnExportCopy" name="btnExportCopy" class="btn btn-inverse"><i class="icon-list-alt icon-white"></i> Export Document List by Hard-Copy</button>
+</form>

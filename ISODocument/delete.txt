@@ -1,0 +1,3 @@
+TRUNCATE TABLE DocumentControl.dbo.TD_TranCopy
+DELETE FROM DocumentControl.dbo.TD_ReqCopy WHERE req_id < 10
+DBCC CHECKIDENT('DocumentControl.dbo.TD_ReqCopy',RESEED, 0)

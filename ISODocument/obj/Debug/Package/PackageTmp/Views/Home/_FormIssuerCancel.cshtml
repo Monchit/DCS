@@ -1,0 +1,59 @@
+﻿@model ISODocument.Models.TD_Document
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //Datepicker Setting
+        //$(".datepicker").datepicker({
+        //    dateFormat: 'dd-mm-yy',
+        //    minDate: new Date()//set minDate is today
+        //});
+
+        $("#btnSubmit").click(function () {
+            if (!$.validate({ form: 'formCancel' })) {
+                return false;
+            }
+
+            if (confirm("Are you sure ?")) {
+                //document.forms["formCancel"].submit();
+                return true;
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+<style>
+    .thead {
+        font-weight: bold;
+        vertical-align:text-top;
+    }
+</style>
+
+<form id="formCancel" name="formCancel" action="@Url.Action("IssuerCancelDoc","Home")" method="post">
+    <table class="table">
+        <tr>
+            <td class="thead">Document No. </td>
+            <td>
+                @Html.DisplayFor(model => model.doc_type_short)-@Html.DisplayFor(model => model.group_code)-@Model.run_no.ToString("0000")
+                rev.@Model.rev_no.ToString("00")
+            </td>
+        </tr>
+        <tr>
+            <td class="thead">Document Name </td>
+            <td>@Html.DisplayFor(model => model.doc_name)</td>
+        </tr>
+        <tr>
+            <td class="thead">Reason : </td>
+            <td><textarea rows="4" style="width:250px;" id="txaReason" name="txaReason" data-validate="required"></textarea>
+                <input type="hidden" id="hdDT" name="hdDT" value="@Model.doc_type_short" />
+                <input type="hidden" id="hdGC" name="hdGC" value="@Model.group_code" />
+                <input type="hidden" id="hdRN" name="hdRN" value="@Model.run_no" />
+                <input type="hidden" id="hdRV" name="hdRV" value="@Model.rev_no" />
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:left;"></td>
+            <td><input type="submit" id="btnSubmit" class="btn btn-primary" value="Submit" /></td>
+        </tr>
+    </table>
+</form>

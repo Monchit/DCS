@@ -1,0 +1,78 @@
+﻿@model ISODocument.Models.TD_Document
+@{
+    ViewBag.Title = "Hard-Copy Form";
+}
+<link href="~/Content/form-validator.css" rel="stylesheet" />
+<script src="~/Scripts/form-validator/jquery.form-validator.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.validate({
+            form: '#formHC',
+            onError: function () {
+                alert('Validation failed');
+            },
+            onSuccess: function () {
+                $("#tablehc tbody").append("<tr>" +
+                "<td>" + $("#selGroup option:selected").text() + "</td>" +
+                "<td><input type='text' name='hcQty' class='input-mini' value='" + $("#txtQty").val() +
+                "' /><input type='hidden' name='hcGroup' value='" + $("#selGroup option:selected").val() + "' /></td>" +
+                "<td><button type='button' class='delRow btn btn-danger'>X</button></td>" +
+                "</tr>");
+                $("#sel2List").select2("val", "88");
+                $("#txtQty").val("");
+                return false;
+            }
+        });
+
+        $(document).on("click", ".delRow", function (event) {
+            var tr = $(this).closest('tr');
+            //tr.css("background-color", "#FF3700");
+            //tr.fadeOut(1000, function () {
+            //    tr.remove();
+            //});
+            tr.remove();
+            return false;
+        });
+    });
+</script>
+<h2>@ViewBag.Title</h2>
+
+@Html.Partial("_DocDetail", Model)
+
+<form class="form-inline" id="formHC">
+    @*<input type="text" id="sel2List" name="sel2List" class="input-xlarge" />*@
+    <select id="selGroup" name="selGroup" data-validation="required">
+        @foreach (var item in @ViewBag.AllGroup)
+        {
+            <option value="@item.id">@item.group_name</option>
+        }
+    </select>
+    <input type="text" id="txtQty" name="txtQty" class="input-mini" placeholder="Quantity" data-validation="number" data-validation-allowing="range[1;100]">
+    <button type="submit" id="btnAdd" name="btnAdd" class="btn btn-inverse">Add</button>
+</form>
+
+<form id="formHC1" action="@Url.Action("AddHC", "Home")" method="post">
+    <table id="tablehc" class="table table-bordered table-condensed" style="width:400px;">
+        <thead>
+            <tr>
+                <th style="width:220px">Group</th>
+                <th style="width:100px">Quantity</th>
+                <th>
+                    <input type="hidden" name="hdDocType" value="@Model.doc_type_short" />
+                    <input type="hidden" name="hdGroupCode" value="@Model.group_code" />
+                    <input type="hidden" name="hdRunNo" value="@Model.run_no" />
+                    <input type="hidden" name="hdRevNo" value="@Model.rev_no" />
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" style="text-align:center;">
+                    <button class="btn btn-primary" type="submit" id="btnSubmit">Submit</button></td>
+            </tr>
+        </tfoot>
+    </table>
+</form>

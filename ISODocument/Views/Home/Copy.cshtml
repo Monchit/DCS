@@ -1,0 +1,281 @@
+﻿@{
+    ViewBag.Title = "Request Copy Document";
+}
+<link href="~/Scripts/jtable/themes/metro/brown/jtable.min.css" rel="stylesheet" />
+<style type="text/css">
+    /*fix jTable*/
+    span.jtable-goto-page select, span.jtable-page-size-change select {
+        height: 25px;
+        width: 60px;
+        padding: 2px 2px;
+        margin-bottom:auto;
+    }
+    div.jtable-main-container table.jtable thead th {
+        text-align: center;
+    }
+    div.jtable-main-container > table.jtable > tbody > tr.jtable-data-row > td {
+        text-align: center;
+    }
+    div.accordion-heading {
+        font-weight:600;
+    }
+    .td_title {
+        text-align:right !important;
+        font-weight:600;
+    }
+    .ui-dialog-title {
+        color:white;
+    }
+</style>
+
+<script type="text/javascript">
+    function clearForm(form) {
+        // iterate over all of the inputs for the form
+        // element that was passed in
+        $(':input', form).each(function () {
+            var type = this.type;
+            var tag = this.tagName.toLowerCase(); // normalize case
+            // it's ok to reset the value attr of text inputs,
+            // password inputs, and textareas
+            if (type == 'text' || type == 'password' || type == 'file' || tag == 'textarea')
+                this.value = "";
+                // checkboxes and radios need to have their checked state cleared
+                // but should *not* have their 'value' changed
+            else if (type == 'checkbox' || type == 'radio')
+                this.checked = false;
+                // select elements need to have their 'selectedIndex' property set to -1
+                // (this works for both single and multiple select elements)
+            else if (tag == 'select')
+                this.selectedIndex = 0;//-1
+        });
+    };
+    $(document).ready(function () {
+        $.strPad = function (i, l, s) {
+            var o = i.toString();
+            if (!s) { s = '0'; }
+            while (o.length < l) { o = s + o; }
+            return o;
+        };
+
+        $('#jTableReqCopy').jtable({
+            title: 'Request Copy Document',
+            paging: true, //Enable paging
+            pageSize: 10, //Set page size (default: 10)
+            sorting: true, //Enable sorting
+            selecting: false, //Enable selecting
+            defaultSorting: 'doc_no', //Set default sorting
+            actions: {
+                listAction: '@Url.Action("ReqCopyList","Home")'
+            },
+            fields: {
+                doc_type_short: { title: 'Document Type', list: false },
+                group_code: { title: 'Group Code', list: false },
+                run_no: { title: 'Run No.', list: false },
+                rev_no: { title: 'Revision', list: false },
+                doc_no: {
+                    title: 'Document No.', width: '18%',
+                    visibility: 'fixed', //This column always will be shown
+                    display: function (data) {
+                        return $('<a href="#" class="ShowDocNo" data-dt="' + data.record.doc_type_short + '" data-gc="' + data.record.group_code + '" data-rn="' + data.record.run_no + '" data-rv="' + data.record.rev_no + '">' + data.record.doc_no + '</a>');
+                    }
+                },
+                doc_name: { title: 'Document Name', width: '62%' },
+                eff_date: { title: 'Effective Date', width: '12%', type: 'date', displayFormat: 'dd-mm-yy' },
+                yesno: { list: false },
+                showcopy: {
+                    title: 'Copy', width: '8%', visibility: 'fixed', //This column always will be shown
+                    display: function (data) {
+                        if (data.record.yesno == true)
+                            return $('<a href="#" class="req_copy" data-dt="' + data.record.doc_type_short + '" data-gc="' + data.record.group_code + '" data-rn="' + data.record.run_no + '" data-rv="' + data.record.rev_no + '"><i class="icon-file"></i></a>');
+                        else
+                            return "";
+                    }
+                }
+            }
+        });
+
+        //Load list from server
+        //$('#jTableReqCopy').jtable('load');
+
+        //Re-load records when user click 'load records' button.
+        $('#btSearch').click(function (e) {
+            e.preventDefault();
+            $('#jTableReqCopy').jtable('load', {
+                doc_no: $('#s_docno').val(),
+                doc_name: $('#s_docname').val(),
+                group_id: $('#s_group').val(),
+                rev_no: $('#s_rev').val(),
+                mode: 1
+            });
+        });
+
+        $('#btMy').click(function (e) {
+            e.preventDefault();
+            $('#jTableReqCopy').jtable('load', { mode: 0 });
+        });
+
+        $('#divDocDetail').dialog({
+            autoOpen: false,
+            width: 900,//'auto',
+            height: 'auto',
+            modal: true
+        });
+
+        $(document).on("click", ".ShowDocNo", function (event) {
+            var obj = new Object();
+            obj.doctype = $(this).attr('data-dt');
+            obj.groupcode = $(this).attr('data-gc');
+            obj.runno = $(this).attr('data-rn');
+            obj.revno = $(this).attr('data-rv');
+            obj.check = true;
+            var remote = "@Url.Action("_ShowDocDetail")";
+            $.get(remote, obj, function (data) {
+                $("#divDocDetail").html(data);
+                $("#divDocDetail").dialog("open");
+                return false;
+            });
+        });
+
+        //var originalContent;
+        $('#divDialogCopy').dialog({
+            autoOpen: false,
+            width: 500,//'auto',
+            height: 'auto',
+            modal: true
+            //open : function(event, ui) { 
+            //    originalContent = $("#divDialogCopy").html();
+            //},
+            //close : function(event, ui) {
+            //    $("#divDialogCopy").html(originalContent);
+            //}
+        });
+
+        $(document).on("click", ".req_copy", function (event) {
+            clearForm("#formCopy");
+            $('#divDialogCopy').dialog("open");
+
+            $('#spanDocNo').text($(this).parent().parent().children().eq(0).text());
+            $('#spanDocName').text($(this).parent().parent().children().eq(1).text());
+
+            $('#hdDT').val($(this).attr('data-dt'));
+            $('#hdGC').val($(this).attr('data-gc'));
+            $('#hdRN').val($(this).attr('data-rn'));
+            $('#hdRV').val($(this).attr('data-rv'));
+        });
+
+        //$("#formCopy").submit(function() {
+        $("#btnSubmit").click(function () {
+            if (!$.validate({ form: 'formCopy' })) {
+                return false;
+            }
+
+            if (confirm("Are you sure ?")) {
+                var obj = new Object();
+                obj.doctype = $('#hdDT').val();
+                obj.groupcode = $('#hdGC').val();
+                obj.runno = $('#hdRN').val();
+                obj.revno = $('#hdRV').val();
+                obj.qty = $('#txtQty').val();
+                obj.type = $('#selType').val();
+                obj.size = $('#selPaper').val();
+                obj.reason = $('#txaReason').val();
+
+                $.post("@Url.Action("CopyDoc")", obj, function (data) {
+                    $("#formCopy").closest(".ui-dialog-content").dialog("close");
+                    alert(data);
+                });
+                return false;
+            }
+        });
+    });
+</script>
+
+<form>
+    <table class="table table-condensed" style="width:auto;">
+        <thead>
+            <tr>
+                <th>Group</th>
+                <th>Document No.</th>
+                <th>Revision</th>
+                <th>Document Name</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <select id="s_group" name="s_group"> 
+                    @foreach (var item in ViewBag.AllGroup)
+                    {
+                        <option value="@item.id">@item.group_name</option>
+                    }
+                    <option value="-1">--Not Selected Group--</option>
+                    </select>
+                </td>
+                <td><input type="text" id="s_docno" name="s_docno" class="input-medium" placeholder="Document No." /></td>
+                <td><input type="text" id="s_rev" name="s_rev" class="input-mini" placeholder="Revision" maxlength="2" /></td>
+                <td><input type="text" id="s_docname" name="s_docname" class="input-large" placeholder="Document Name" /></td>
+                <td><button type="submit" id="btSearch" class="btn btn-primary"><i class="icon-search icon-white"></i> Search</button></td>
+                <td><button type="reset" id="btReset" class="btn btn-warning"><i class="icon-trash icon-white"></i> Clear</button></td>
+                @*<td>@if(ViewBag.ULv <= 2){
+                    <button type="button" id="btMy" class="btn btn-info"><i class="icon-user icon-white"></i> My Document</button>
+                    }</td>*@
+            </tr>
+        </tbody>
+    </table>
+</form>
+<div id="jTableReqCopy"></div>
+
+<div id="divDocDetail" title="Detail"></div>
+
+<div id="divDialogCopy" title="Request Copy">
+    <form id="formCopy" name="formCopy">
+    <table class="table">
+        <tr>
+            <td class="thead" style="width:150px;">Document No. </td>
+            <td><span id="spanDocNo"></span>
+            </td>
+        </tr>
+        <tr>
+            <td class="thead">Document Name </td>
+            <td><span id="spanDocName"></span></td>
+        </tr>
+        <tr>
+            <td class="thead">Q'ty</td>
+            <td><input type="text" id="txtQty" name="txtQty" data-validate="number" maxlength="3" /></td>
+        </tr>
+        <tr>
+            <td class="thead">Type</td>
+            <td><select id="selType" name="selType">
+                    <option value="Control">Control</option>
+                    <option value="Uncontrol">Uncontrol</option>
+                </select></td>
+        </tr>
+        <tr>
+            <td class="thead">Size</td>
+            <td>
+                <select id="selPaper" name="selPaper">
+                    @foreach (var item in ViewBag.Paper)
+                    {
+                    <option value="@item.paper_id">@item.paper_name</option>
+                    }
+                </select></td>
+        </tr>
+        <tr>
+            <td class="thead">Reason</td>
+            <td><textarea rows="4" style="width:250px;" id="txaReason" name="txaReason" data-validate="required"></textarea>
+                <input type="hidden" id="hdDT" name="hdDT" />
+                <input type="hidden" id="hdGC" name="hdGC" />
+                <input type="hidden" id="hdRN" name="hdRN" />
+                <input type="hidden" id="hdRV" name="hdRV" />
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:left;"></td>
+            <td><input type="submit" id="btnSubmit" class="btn btn-primary" value="Submit" /></td>
+        </tr>
+    </table>
+</form>
+</div>

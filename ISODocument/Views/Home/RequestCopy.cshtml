@@ -1,0 +1,147 @@
+﻿@{
+    ViewBag.Title = "Request Copy";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#sel2doc').select2({
+            placeholder: "Select Document",
+            ajax: {
+                url: '@Url.Action("Selecte2ControlDoc", "Home")',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        searchTerm: term
+                    };
+                },
+                results: function (data, page) {
+                    return { results: data };
+                }
+            },
+            dropdownAutoWidth: true,
+            formatResult: function (item) { return item.id + "->" + item.text; },//Show in select list
+            formatSelection: function (item) { return item.id; }//Show on selected.
+        });
+
+        $("#txtQty").keypress(function (e) {
+            //if the letter is not digit then display error and don't type anything
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                //display error message
+                //$("#errmsg").html("Please enter a valid number.").show().fadeOut("slow");
+                return false;
+            }
+        });
+
+        $(document).on("click", ".delRow", function (event) {
+            var tr = $(this).closest('tr');
+            tr.remove();
+            return false;
+        });
+
+        $('#btnAdd').click(function () {
+            //if ($("#sel2doc").select2("data") == "") {
+            //    alert("Please select Document.");
+            //} else 
+            if ($("#txtQty").val() == "") {
+                alert("Please fill in Q'ty !!!");
+            //} else if ($("#txtSize").val() == "") {
+            //    alert("Please fill in Paper size !!!");
+            } else {
+                $("#tablehc tbody").append("<tr><td>" + $("#sel2doc").select2("data").id + "</td>" +
+                    "<td>" + $("#sel2doc").select2("data").text + "</td>" +
+                    "<td><input type='text' name='hcQty' class='input-mini' value='" + $("#txtQty").val() + "' readonly='true'  /></td>" +
+                    "<td><input type='text' name='hcSize' class='input-medium' value='" + $("#selSize option:selected").text() + "' readonly='true'  /><input type='hidden' name='hdSize' value='" + $("#selSize").val() + "' /></td>" +
+                    "<td><input type='text' name='hcType' class='input-medium' value='" + $("#selType option:selected").text() + "' readonly='true' /></td>" +
+                    "<td><input type='hidden' name='hddt' value='" + $("#sel2doc").select2("data").dt + "' /><input type='hidden' name='hdgc' value='" + $("#sel2doc").select2("data").gc + "' /><input type='hidden' name='hdrn' value='" + $("#sel2doc").select2("data").rn + "' /><input type='hidden' name='hdrv' value='" + $("#sel2doc").select2("data").rv + "' /><button type='button' class='delRow btn btn-danger'> X </button></td></tr>");
+                $("#txtQty").val("");
+                $("#txtSize").val("");
+                return false;
+            }
+        });
+
+        $("#btnSubmit").click(function () {
+            if (!$.validate({ form: 'ReqCopy' })) {
+                return false;
+            }
+            //else {
+            //    var file = $("#flAtt").val();
+            //    if (file.substr(file.lastIndexOf('.') + 1).toUpperCase() != "PDF") {
+            //        alert("Please upload only pdf file.");
+            //        return false;
+            //    }
+            //}
+
+            if (confirm("Are you sure you want to submit ?")) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+<form id="ReqCopy" class="form-horizontal" action="@Url.Action("AddRequestCopy", "Home")" method="post" >
+    @*onsubmit="return confirm('Do you really want to submit the form?');"*@
+
+    <div class="control-group">
+        <label class="control-label" for="txtReason">Reason for Request</label>
+        <div class="controls">
+            <input type="text" id="txtReason" name="txtReason" class="span6" data-validate="required" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="sel2doc">Select Document</label>
+        <div class="controls">
+            <input type="text" id="sel2doc" name="sel2doc" class="span6" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="txtQty">Quantity</label>
+        <div class="controls">
+            <input type="text" id="txtQty" name="txtQty" class="span2" placeholder="Quantity" maxlength="3">
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="txtSize">Paper Size</label>
+        <div class="controls">
+            <select id="selSize" name="selSize" class="span2">
+                @foreach (var item in ViewBag.Paper)
+                {
+                    <option value="@item.paper_id">@item.paper_name</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="selType">Type of Document</label>
+        <div class="controls">
+            <select id="selType" name="selType" class="span2">
+                <option value="Control">Control</option>
+                <option value="Uncontrol">Uncontrol</option>
+                <option value="Reference">Reference</option>
+            </select>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <button type="button" id="btnAdd" name="btnAdd" class="btn btn-inverse">Add</button>
+        </div>
+    </div>
+    
+    <table id="tablehc" class="table table-bordered table-condensed">
+        <thead>
+            <tr>
+                <th>Document No.</th>
+                <th>Document Name</th>
+                <th>Quantity</th>
+                <th>Paper Size</th>
+                <th>Type of Document</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    @*<input class="btn btn-primary" type="submit" id="btnSubmit" value="Submit" />*@
+</form>

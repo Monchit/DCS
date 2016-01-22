@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "Document List by Hard-Copy";
+}
+
+<link href="~/Scripts/jtable/themes/metro/lightgray/jtable.min.css" rel="stylesheet" />
+<style type="text/css">
+    /*fix jTable*/
+    span.jtable-goto-page select, span.jtable-page-size-change select {
+        height: 25px;
+        width: 60px;
+        padding: 2px 2px;
+        margin-bottom:auto;
+    }
+    div.jtable-main-container table.jtable thead th {
+        text-align: center;
+    }
+    div.jtable-main-container > table.jtable > tbody > tr.jtable-data-row > td {
+        text-align: center;
+    }
+    div.accordion-heading {
+        font-weight:600;
+    }
+    .td_title {
+        text-align:right !important;
+        font-weight:600;
+    }
+    .ui-dialog-title {
+        color:white;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.strPad = function (i, l, s) {
+            var o = i.toString();
+            if (!s) { s = '0'; }
+            while (o.length < l) { o = s + o; }
+            return o;
+        };
+        $('#jTableDocList').jtable({
+            title: 'Document',
+            paging: true, //Enable paging
+            pageSize: 10, //Set page size (default: 10)
+            sorting: true, //Enable sorting
+            selecting: true, //Enable selecting
+            defaultSorting: 'doc_no', //Set default sorting
+            actions: {
+                listAction: '@Url.Action("DocCopyList","Report")'
+            },
+            fields: {
+                doc_no: { title: 'Doc. No.', width: '15%', visibility: 'fixed' },
+                rev_no: {
+                    title: 'Rev.', width: '8%',
+                    display: function (data) {
+                        return $.strPad(data.record.rev_no, 2);
+                    }
+                },
+                doc_name: { title: 'Doc. Name', width: '40%' },
+                eff_date: { title: 'Eff. Date', width: '10%', type: 'date', displayFormat: 'dd-mm-yy' },
+                group_name: { title: 'Originator', width: '19%' },
+                qty: { title: 'Qty', width: '8%' }
+            }
+        });
+
+        //Re-load records when user click 'load records' button.
+        $('#btnSubmit').click(function (e) {
+            e.preventDefault();
+            $('#jTableDocList').jtable('load', {
+                group_id: $('#selGroup').val()
+            });
+        });
+    });
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+<form name="formFilter" id="formFilter" class="form-inline" action="@Url.Action("ExportCopyList")" method="post">
+    <label for="selGroup">Select Group : </label>
+    <select id="selGroup" name="selGroup">
+        @foreach (var item in ViewBag.AllGroup)
+        {
+            <option value="@item.id">@item.group_name</option>
+        }
+    </select>
+    <button type="button" id="btnSubmit" name="btnSubmit" class="btn btn-primary"><i class="icon-filter icon-white"></i> Filter</button>
+    <button type="submit" id="btnExport" name="btnExport" class="btn btn-success"><i class="icon-list-alt icon-white"></i> Export to PDF</button>
+</form>
+
+<div id="jTableDocList"></div>

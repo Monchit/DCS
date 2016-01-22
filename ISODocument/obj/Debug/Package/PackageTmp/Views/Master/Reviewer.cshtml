@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "Reviewer Management";
+}
+<link href="~/Scripts/jtable/themes/metro/darkgray/jtable.min.css" rel="stylesheet" />
+<style type="text/css">
+    /*fix jTable*/
+    span.jtable-goto-page select, span.jtable-page-size-change select {
+        height: 25px;
+        width: 60px;
+        padding: 2px 2px;
+        margin-bottom:auto;
+    }
+    div.jtable-main-container table.jtable thead th {
+        text-align: center;
+    }
+    div.jtable-main-container > table.jtable > tbody > tr.jtable-data-row > td {
+        text-align: center;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#jTableReviewer').jtable({
+            title: 'Reviewer Master',
+            paging: true, //Enable paging
+            pageSize: 10, //Set page size (default: 10)
+            sorting: true, //Enable sorting
+            selecting: true, //Enable selecting
+            defaultSorting: 'group_id', //Set default sorting
+            actions: {
+                listAction: '@Url.Action("ReviewerList","Master")',
+                deleteAction: '@Url.Action("DeleteReviewer","Master")',
+                updateAction: '@Url.Action("UpdateReviewer","Master")',
+                createAction: '@Url.Action("CreateReviewer","Master")'
+            },
+            fields: {
+                group_id: { title: 'Group', key: true, create: true, edit: false, width: '33%', options: '@Url.Action("GetTNCGroupList","Master")' },
+                qc_group: { title: 'QC Reviewer', create: true, edit: true, width: '33%', options: '@Url.Action("GetTNCGroupList","Master")' },
+                en_group: { title: 'ENG Reviewer', create: true, edit: true, width: '33%', options: '@Url.Action("GetTNCGroupList","Master")' }
+            }
+        });
+        //Load student list from server
+        $('#jTableReviewer').jtable('load');
+
+        //Re-load records when user click 'load records' button.
+        $('#btSearch').click(function (e) {
+            e.preventDefault();
+            $('#jTableReviewer').jtable('load', {
+                group_id: $('#selGroup').val()
+            });
+        });
+    });
+</script>
+
+<form class="form-inline">
+    <label for="selGroup">Group : </label>
+    <select id="selGroup" name="selGroup" class="input-xlarge">
+        <option value="0">--Select Group--</option>
+    @foreach (var item in ViewBag.AllGroup)
+    {
+        <option value="@item.id">@item.group_name</option>
+    }
+    </select>
+    <button type="button" id="btSearch" name="btSearch" class="btn btn-inverse">Search</button>
+</form>
+
+<div id="jTableReviewer"></div>

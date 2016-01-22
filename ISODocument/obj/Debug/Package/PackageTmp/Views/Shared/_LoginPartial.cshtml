@@ -1,0 +1,33 @@
+﻿@if (Session["DC_Auth"] == null)
+{
+    <text>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#formLogin").submit(function () {
+                    if (!$.validate({ form: 'formLogin' })) {
+                        return false;
+                    }
+                });
+            });
+        </script>
+        <form id="formLogin" name="formLogin" class="navbar-form pull-right" action="@Url.Action("Login", "Home")" method="post">
+            <input id="Username" name="Username" class="input-small" type="text" placeholder="Username" data-validate="required">
+            <input id="Password" name="Password" class="input-small" type="password" placeholder="Password" data-validate="required">
+            <button type="submit" class="btn btn-success">Login</button>
+        </form>
+    </text>
+} else {
+    <text>
+        @*<li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Logged in as <b>@Session["DC_Name"].ToString()</b> <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li>@Html.ActionLink("Log out", "Logout", "Home")</li>
+            </ul>
+        </li>*@
+        <li><a href="#" onclick="alert('Hello!!!');return false;">Logged in as <b>@Session["DC_Name"].ToString()</b></a></li>
+        <li>@Html.ActionLink("Log out", "Logout", "Home")</li>
+        @*<form class="navbar-form pull-right" action="@Url.Action("Logout", "Home")" method="post">
+            <button type="submit" class="btn btn-danger">Log out</button>
+        </form>*@
+  </text>
+}

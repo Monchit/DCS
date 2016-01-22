@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BD61F576-ED8A-4C30-BF9B-DB4AF38AAF86}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DCS_EmailReminder</RootNamespace>
+    <AssemblyName>DCS_EmailReminder</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WebCommonFunction">
+      <HintPath>\\webexternal\SourceControl\WebCommonFunction\SourceCode\WebCommonFunction\bin\Debug\WebCommonFunction.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DocControl.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DocControl.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DocControl.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DocControl.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DocControl.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DocControl.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="MailCenter.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MailCenter.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MailCenter.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MailCenter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MailCenter.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MailCenter.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TD_Document.cs">
+      <DependentUpon>DocControl.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TD_Transaction.cs">
+      <DependentUpon>DocControl.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TM_Action.cs">
+      <DependentUpon>DocControl.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TM_DocType.cs">
+      <DependentUpon>DocControl.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TM_GroupCode.cs">
+      <DependentUpon>DocControl.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TM_Level.cs">
+      <DependentUpon>DocControl.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TM_Operation.cs">
+      <DependentUpon>DocControl.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TM_Status.cs">
+      <DependentUpon>DocControl.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TM_User.cs">
+      <DependentUpon>DocControl.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TM_UserType.cs">
+      <DependentUpon>DocControl.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TNCAdmin.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TNCAdmin.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TNCAdmin.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TNCAdmin.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TNCAdmin.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TNCAdmin.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="tnc_dept_master.cs">
+      <DependentUpon>TNCAdmin.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tnc_group_master.cs">
+      <DependentUpon>TNCAdmin.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tnc_plant_master.cs">
+      <DependentUpon>TNCAdmin.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tnc_position_master.cs">
+      <DependentUpon>TNCAdmin.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tnc_user.cs">
+      <DependentUpon>TNCAdmin.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TT_MAIL_WIP.cs">
+      <DependentUpon>MailCenter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="View_Organization.cs">
+      <DependentUpon>TNCAdmin.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_DistributionDoc.cs">
+      <DependentUpon>DocControl.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_Employee_Info.cs">
+      <DependentUpon>TNCAdmin.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_Max_Transaction.cs">
+      <DependentUpon>DocControl.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_Transaction.cs">
+      <DependentUpon>DocControl.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <EntityDeploy Include="DocControl.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DocControl.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DocControl.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DocControl.edmx</DependentUpon>
+      <LastGenOutput>DocControl.Context.cs</LastGenOutput>
+    </None>
+    <None Include="DocControl.edmx.diagram">
+      <DependentUpon>DocControl.edmx</DependentUpon>
+    </None>
+    <None Include="DocControl.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DocControl.edmx</DependentUpon>
+      <LastGenOutput>DocControl.cs</LastGenOutput>
+    </None>
+    <EntityDeploy Include="MailCenter.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>MailCenter.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="MailCenter.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MailCenter.edmx</DependentUpon>
+      <LastGenOutput>MailCenter.Context.cs</LastGenOutput>
+    </None>
+    <None Include="MailCenter.edmx.diagram">
+      <DependentUpon>MailCenter.edmx</DependentUpon>
+    </None>
+    <None Include="MailCenter.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MailCenter.edmx</DependentUpon>
+      <LastGenOutput>MailCenter.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+    <EntityDeploy Include="TNCAdmin.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TNCAdmin.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="TNCAdmin.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TNCAdmin.edmx</DependentUpon>
+      <LastGenOutput>TNCAdmin.Context.cs</LastGenOutput>
+    </None>
+    <None Include="TNCAdmin.edmx.diagram">
+      <DependentUpon>TNCAdmin.edmx</DependentUpon>
+    </None>
+    <None Include="TNCAdmin.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TNCAdmin.edmx</DependentUpon>
+      <LastGenOutput>TNCAdmin.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

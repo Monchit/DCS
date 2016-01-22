@@ -1,0 +1,281 @@
+﻿@using ISODocument.ViewModels
+@model ISODocument.Models.TD_Document
+
+<script type="text/javascript">
+    function ShowHideComment(v) {
+        if (v == 1) {
+            $("#divComment").hide();
+            $("#txaComment").removeAttr("data-validate");
+        } else {
+            $("#divComment").show();
+            $("#txaComment").attr("data-validate", "required");
+        }
+    }
+    $(document).ready(function () {
+        $('#sel2List').select2({
+            multiple: true,
+            placeholder: "No Distribution Group Selected",
+            ajax: {
+                url: '@Url.Action("Selecte2AllGroup", "Home")',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        searchTerm: term
+                    };
+                },
+                results: function (data, page) {
+                    return { results: data };
+                }
+            },
+            formatResult: function (item) { return item.text; },
+            formatSelection: function (item) { return item.text; }
+        });
+
+        var obj = new Object();
+        obj.doctype = '@Model.doc_type_short';
+        obj.groupcode = '@Model.group_code';
+        obj.runno = '@Model.run_no';
+        obj.revno = '@Model.rev_no';
+        obj.copy_runno = 0;
+        obj.lockx = true;
+
+        @*$(document).on("click", "#btnCancelDoc", function (event) {
+            $.post("@Url.Action("IssuerCancelDoc","Home")", obj, function (data) {
+                alert("Cancel ok!!!");
+            });
+        });*@
+
+        $.get('@Url.Action("GetDistributionList", "Home")', obj, function (data) {
+            $("#sel2List").select2("data", data);
+        });
+
+        $.get("@Url.Action("ShowCopy","Home")", { docType: obj.doctype }, function (data) {
+            if (data == "show") {
+                $("#hc-contain").show();
+                $.get("@Url.Action("GetCopyList","Home")", obj, function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        $("#tablehc tbody").append("<tr>" +
+                         "<td>" + data[i].group_name + "</td>" +
+                         "<td>" + data[i].qty + "</td>" +
+                         "<td>" + data[i].note + "</td>" +
+                         "</tr>");
+                    }
+                });
+            } else {
+                $("#hc-contain").hide();
+            }
+        });
+        
+        ShowHideComment($("#selDecision").val());
+        $("#selDecision").change(function () {
+            ShowHideComment($(this).val());
+        });
+
+        $("#btnApprove").click(function () {
+            if (!$.validate({ form: 'formApprove' })) {
+                return false;
+            }
+
+            if (confirm("Are you sure ?")) {
+                document.forms["formApprove"].submit();
+            } else {
+                return false;
+            }
+        });
+
+        $('#DialogIssuerCancel').dialog({
+            autoOpen: false,
+            width: 500,//'auto',
+            height: 'auto',
+            modal: true
+        });
+
+        $(document).on("click", "#btnCancelDoc", function (event) {
+            var remote = "@Url.Action("_FormIssuerCancel","Home")";
+            $.get(remote, obj, function (data) {
+                $("#DialogIssuerCancel").html(data);
+                $("#DialogIssuerCancel").dialog("open");
+            });
+        });
+
+        $(document).on("click", "#btnUpdateDist", function (event) {
+            var obj1 = new Object();
+            obj1.doctype = '@Model.doc_type_short';
+            obj1.groupcode = '@Model.group_code';
+            obj1.runno = '@Model.run_no';
+            obj1.revno = '@Model.rev_no';
+            obj1.dist = $('#sel2List').val();
+            var remote = "@Url.Action("UpdateDist","Home")";
+            $.post(remote, obj1, function (data) {
+                alert(data);
+            });
+        });
+    });
+</script>
+<style>
+    .thead {
+        font-weight: bold;
+    }
+</style>
+<table class="table table-bordered table-striped table-condensed">
+    <tr>
+        <td style="width:185px;" class="thead">Document Type </td>
+        <td>@Html.DisplayFor(model => model.TM_DocType.doc_type_full)</td>
+    </tr>
+    <tr>
+        <td class="thead">Document No. </td>
+        <td>
+            @Html.DisplayFor(model => model.doc_type_short)-@Html.DisplayFor(model => model.group_code)-@Model.run_no.ToString("0000")
+            rev.@Model.rev_no.ToString("00")
+        </td>
+    </tr>
+    @if (Model.reference != null && Model.reference != ""){
+    <tr>
+        <td class="thead">Reference from Document No. & Rev. No. </td>
+        <td>@Html.DisplayFor(model => model.reference)</td>
+    </tr>
+    }
+    <tr>
+        <td class="thead">Document Name </td>
+        <td>@Html.DisplayFor(model => model.doc_name)</td>
+    </tr>
+    <tr>
+        <td class="thead">Effective Date </td>
+        <td>@Model.eff_date.ToString("dd/MM/yyyy")</td>
+    </tr>
+    <tr>
+        <td class="thead">Attach File </td>
+        <td>@if(TempData["ShowFile"] != null){
+                if(TempData["ShowFile"].ToString() == "show"){
+                    <text><a href="@Url.Content(Model.attach_file)" target="_blank"><img src="~/Images/Document-icon.png" /></a></text>
+                } else {
+                    <text><b>You don't have permission to view this file.</b></text>
+                }
+            }
+            @if (!string.IsNullOrEmpty(Model.src_file)) { <a href="@Url.Content(Model.src_file)" target="_blank">Source File</a>}
+        </td>
+    </tr>
+    <tr>
+        <td class="thead">Distribution List by E-mail</td>
+        <td>@{ var editDist = TempData["EditDist"] == null ? false : true; }
+            <input type="text" id="sel2List" name="sel2List" @if (!editDist){ <text>disabled="disabled"</text> } class="input-xxlarge" />
+            @if (editDist){ <button type="button" class="btn" id="btnUpdateDist" name="btnUpdateDist">Update</button> }
+        </td>
+    </tr>
+    <tr>
+        <td class="thead">Distribution List by Hard-Copy</td>
+        <td><div id="hc-contain" style="display:none;">
+                <table id="tablehc" class="table table-bordered" style="width:600px;">
+                    <thead>
+                        <tr>
+                            <th style="width:330px">Group</th>
+                            <th>Quantity</th>
+                            <th>Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </td>
+    </tr>
+    @if(Model.remark != null && Model.remark != ""){
+    <tr>
+        <td class="thead">Reason of Revise </td>
+        <td>@Html.DisplayFor(model => model.remark)</td>
+    </tr>
+    }
+    @if(Model.expect_cancel_date != null){
+    <tr>
+        <td class="thead">Expected Cancel Date </td>
+        <td>@Model.expect_cancel_date.Value.ToString("dd/MM/yyyy")</td>
+    </tr>
+    }
+</table>
+
+@if (ViewBag.Transaction != null)
+{
+<form id="formApprove" class="form-horizontal" method="post" action="@Url.Action("ApproveDoc", "Home")">
+    <div class="control-group">
+        <div style="font-weight:700; color:white; background-color:#54B4EB/*#3eb3d4*/; padding: 5px;">Form @ViewBag.Transaction.TM_Operation.operation_name Document</div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="selDecision">Decision :</label>
+        <div class="controls">
+            <select id="selDecision" name="selDecision">
+            @if (ViewBag.OverDue == 1)
+            {
+                <option value="1">Approve</option>
+                <option value="0">Reject</option>
+            }
+            else if (ViewBag.OverDue == 2)
+            {
+                <option value="0">Reject</option>
+            }
+            else
+            {
+                <option value="1">Approve</option>
+            }
+            </select>
+            <button type="button" id="btnApprove" name="btnApprove" class="btn btn-success"><i class="icon-ok-sign icon-white"></i> Submit</button>
+        </div>
+        <input type="hidden" id="hdDT" name="hdDT" value="@ViewBag.Transaction.doc_type_short" />
+        <input type="hidden" id="hdGC" name="hdGC" value="@ViewBag.Transaction.group_code" />
+        <input type="hidden" id="hdRN" name="hdRN" value="@ViewBag.Transaction.run_no" />
+        <input type="hidden" id="hdRV" name="hdRV" value="@ViewBag.Transaction.rev_no" />
+        <input type="hidden" id="hdSR" name="hdSR" value="@ViewBag.Transaction.sub_rev" />
+        <input type="hidden" id="hdST" name="hdST" value="@ViewBag.Transaction.status_id" />
+        <input type="hidden" id="hdLV" name="hdLV" value="@ViewBag.Transaction.lv_id" />
+        <input type="hidden" id="hdOR" name="hdOR" value="@ViewBag.Transaction.org_id" />
+        <input type="hidden" id="hdOP" name="hdOP" value="@ViewBag.Transaction.operation_id" />
+    </div>
+    <div class="control-group" id="divComment">
+        <label class="control-label" for="txaComment">Reason :</label>
+        <div class="controls">
+            <textarea rows="3" id="txaComment" name="txaComment" placeholder="Comment" class="span5" >@if (ViewBag.OverDue == 2){<text>Over Effective Date Please re-issue.</text>}</textarea>
+        </div>
+    </div>
+</form>
+}
+
+<p>
+@if (ViewBag.EditDoc != null)
+{
+    <a href="@Url.Action("DocEdit", "Home", new { doctype = ViewBag.EditDoc.doc_type_short, groupcode = ViewBag.EditDoc.group_code, runno = ViewBag.EditDoc.run_no, revno = ViewBag.EditDoc.rev_no })" class="btn btn-warning">Edit</a>
+    @*<button type="button" class="btn btn-danger" id="btnCancelDoc" name="btnCancelDoc">Cancel</button>*@
+}
+</p>
+
+<button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#divTransactionDetail">Transaction Detail</button>
+<div id="divTransactionDetail" class="collapse">
+<table class="table table-bordered table-striped table-condensed" style="font-size:0.85em;">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Level</th>
+            <th>Organize</th>
+            <th>Status</th>
+            <th>Operation</th>
+            <th>Judgement</th>
+            <th style="width:65px;">Date-Time</th>
+            <th>Comment</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (VM_Comment item in ViewBag.CommentList)//Model.TD_Transaction)
+    {
+        <tr>
+            <td>@item.actor</td>
+            <td>@item.lv_name</td>
+            <td>@item.org_name</td>
+            <td>@item.status_name</td>
+            <td>@item.operation_name</td>
+            <td>@item.act_name</td>
+            <td>@item.act_dt.Value.ToString("dd-MM-yyyy HH:mm")</td>
+            <td>@item.comment</td>
+        </tr>
+    }
+    </tbody>
+</table>
+</div>
+<div id="DialogIssuerCancel" title="Issuer Cancel"></div>

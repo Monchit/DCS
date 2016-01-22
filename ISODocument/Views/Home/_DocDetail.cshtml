@@ -1,0 +1,66 @@
+﻿@model ISODocument.Models.TD_Document
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#distList").select2({
+            multiple: true,
+            placeholder: "Select Distribution Group",
+            ajax: {
+                url: '@Url.Action("Selecte2AllGroup", "Home")',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        searchTerm: term
+                    };
+                },
+                results: function (data, page) {
+                    return { results: data };
+                }
+            },
+            formatResult: function (item) { return item.text; },
+            formatSelection: function (item) { return item.text; }
+        });
+
+        $.get('@Url.Action("GetDistibutionList","Home")', 'doc_type_short=@Model.doc_type_short&group_code=@Model.group_code&run_no= @Model.run_no&rev_no=@Model.rev_no', function (data) {
+            $("#distList").select2("data", data).select2("enable", false);
+        });
+    });
+</script>
+<button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#divMainDetail">
+Main Detail
+</button>
+<div id="divMainDetail" class="collapse in">
+    <table class="table table-striped table-condensed">
+        <tr>
+            <td style="width:150px;">Document No. </td>
+            <td>
+                @Html.DisplayFor(model => model.doc_type_short)-@Html.DisplayFor(model => model.group_code)-@Model.run_no.ToString("0000")
+                rev.@Model.rev_no.ToString("00")
+            </td>
+        </tr>
+        <tr>
+            <td style="width:150px;">Document Type </td>
+            <td>@Html.DisplayFor(model => model.TM_DocType.doc_type_full)</td>
+        </tr>
+        <tr>
+            <td>Document Name </td>
+            <td>@Html.DisplayFor(model => model.doc_name)</td>
+        </tr>
+        <tr>
+            <td>Effective Date </td>
+            <td>@Model.eff_date.ToString("dd/MM/yyyy")</td>
+        </tr>
+        <tr>
+            <td>Distribution List </td>
+            <td><input type="text" id="distList" name="distList" /></td>
+        </tr>
+        <tr>
+            <td>Attach File </td>
+            <td><a href="@Url.Content(Model.attach_file)" target="_blank">View</a></td>
+        </tr>
+        <tr>
+            <td>Remark </td>
+            <td>@Html.DisplayFor(model => model.remark)</td>
+        </tr>
+    </table>
+</div><br />

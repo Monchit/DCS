@@ -1,0 +1,43 @@
+﻿@{
+    Layout = null;
+}
+@model IEnumerable<ISODocument.ViewModels.VM_GroupCopyList>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Copy List</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+    <div style="font-size:1.5em; font-weight:700; text-align:center;">COPY LIST</div>
+    <br />
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Document No.</th>
+                <th>Revision</th>
+                <th>Document Name</th>
+                <th>Effective Date</th>
+                <th>Round</th>
+                <th>Qty</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>@item.doc_no</td>
+                <td>@item.rev_no</td>
+                <td>@item.doc_name</td>
+                <td>@item.eff_date</td>
+                <td>@item.round</td>
+                <td>@item.qty</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

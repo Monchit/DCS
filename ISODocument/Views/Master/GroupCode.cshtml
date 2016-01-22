@@ -1,0 +1,60 @@
+﻿@{
+    ViewBag.Title = "Group Code Management";
+}
+<link href="~/Scripts/jtable/themes/metro/brown/jtable.min.css" rel="stylesheet" />
+<style type="text/css">
+    /*fix jTable*/
+    span.jtable-goto-page select, span.jtable-page-size-change select {
+        height: 25px;
+        width: 60px;
+        padding: 2px 2px;
+        margin-bottom:auto;
+    }
+    div.jtable-main-container table.jtable thead th {
+        text-align: center;
+    }
+    div.jtable-main-container > table.jtable > tbody > tr.jtable-data-row > td {
+        text-align: center;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#jTableGCode').jtable({
+            title: 'Group Code Master',
+            paging: true, //Enable paging
+            pageSize: 10, //Set page size (default: 10)
+            sorting: true, //Enable sorting
+            selecting: true, //Enable selecting
+            defaultSorting: 'group_code', //Set default sorting
+            actions: {
+                listAction: '@Url.Action("GCodeList","Master")',
+                deleteAction: '@Url.Action("DeleteGCode","Master")',
+                updateAction: '@Url.Action("UpdateGCode","Master")',
+                createAction: '@Url.Action("CreateGCode","Master")'
+            },
+            fields: {
+                group_code: { title: 'Group Code', key: true, create: true, edit: false, width: '20%' },
+                group_id: { title: 'Group', create: true, edit: true, width: '50%', options: '@Url.Action("GetTNCGroupList","Master")' },
+                responsible: { title: 'Responsible', create: true, edit: true, width: '30%', options: '@Url.Action("GetDCCList","Master")' }
+            }
+        });
+        //Load student list from server
+        $('#jTableGCode').jtable('load');
+
+        //Re-load records when user click 'load records' button.
+        $('#btSearch').click(function (e) {
+            e.preventDefault();
+            $('#jTableGCode').jtable('load', {
+                code: $('#txtCode').val()
+            });
+        });
+    });
+</script>
+
+<form class="form-inline">
+    <label for="txtCode">Group Code : </label>
+    <input type="text" id="txtCode" name="txtCode" class="input-medium" />
+    <button type="button" id="btSearch" name="btSearch" class="btn btn-inverse">Search</button>
+</form>
+
+<div id="jTableGCode"></div>

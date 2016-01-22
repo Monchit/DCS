@@ -1,0 +1,56 @@
+﻿<style>
+#newDialog {
+	width: 860px; /* SET THE WIDTH OF THE MODAL */
+	margin-left: -430px;/*width 800/2 = 400*/
+}
+</style>
+<script type="text/javascript">
+    $(function () {
+        $("#btnNew").click(function () {
+            var url = "@Url.Action("_FormDoc")";
+            $.get(url, function (data) {
+                $(".modal-body").html(data);
+                $('#newDialog').modal('show');
+            });
+            return false;
+        });
+
+        $("button#submit").click(function () {
+            $("#formNew").submit();
+            @*$.ajax({
+                type: "POST",
+                url: "@Url.Action("AddDoc")",
+                data: JSON.stringify({
+                    DocNo: $('#txtDocNo').val(),
+                    GCode: $('#selGroupCode').val(),
+                    Runno: $('#txtRunno').val(),
+                    Rev: $('#txtRev').val(),
+                    DocName: $('#txtDocName').val()
+                }),
+                success: function (msg) {
+                    //$("#thanks").html(msg)
+                    $("#newDialog").modal('hide');
+                },
+                error: function () {
+                    alert("failure");
+                }
+            });*@
+        });
+    });
+</script>
+
+<div id="newDialog" class="modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>New Document</h3>
+    </div>
+    <div class="modal-body">
+        <form id="formNew" name="formNew" method="post" action="@Url.Action("AddDoc","Home")" enctype="multipart/form-data">
+
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button class="btn btn-primary" id="submit">Submit</button>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+﻿@model IEnumerable<ISODocument.Models.TD_Transaction>
+@{
+    ViewBag.Title = "ReportComplete2Year";
+}
+
+<h2>ReportComplete2Year</h2>
+
+<table class="table">
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>@item.doc_type_short</td>
+        <td>@item.group_code</td>
+        <td>@item.run_no</td>
+        <td>@item.rev_no</td>
+        <td>@item.TD_Document.eff_date</td>
+        <td>@item.TD_Document.check_date</td>
+    </tr>   
+    }
+    
+</table>

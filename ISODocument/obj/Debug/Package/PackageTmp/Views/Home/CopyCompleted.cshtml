@@ -1,0 +1,150 @@
+﻿@{
+    ViewBag.Title = "Completed Request Copy";
+}
+<link href="~/Scripts/jtable/themes/metro/green/jtable.min.css" rel="stylesheet" />
+<style type="text/css">
+    /*fix jTable*/
+    span.jtable-goto-page select, span.jtable-page-size-change select {
+        height: 25px;
+        width: 60px;
+        padding: 2px 2px;
+        margin-bottom:auto;
+    }
+    div.jtable-main-container table.jtable thead th {
+        text-align: center;
+    }
+    div.jtable-main-container > table.jtable > tbody > tr.jtable-data-row > td {
+        text-align: center;
+    }
+    div.accordion-heading {
+        font-weight:600;
+    }
+    .td_title {
+        text-align:right !important;
+        font-weight:600;
+    }
+    .ui-dialog-title {
+        color:white;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.strPad = function (i, l, s) {
+            var o = i.toString();
+            if (!s) { s = '0'; }
+            while (o.length < l) { o = s + o; }
+            return o;
+        };
+
+        $('#jTableCompCopy').jtable({
+            title: 'Completed Request Copy Document',
+            paging: true, //Enable paging
+            pageSize: 10, //Set page size (default: 10)
+            sorting: true, //Enable sorting
+            selecting: true, //Enable selecting
+            defaultSorting: 'status_name', //Set default sorting
+            actions: {
+                listAction: '@Url.Action("CompCopyList","Home")'
+            },
+            fields: {
+                doc_type_short: { title: 'Document Type', list: false },
+                group_code: { title: 'Group Code', list: false },
+                run_no: { title: 'Run No.', list: false },
+                rev_no: { title: 'Revision', list: false },
+                req_id: { title: 'Req. ID', list: false },
+                doc_no: {
+                    title: 'Document No.', width: '18%',
+                    visibility: 'fixed', //This column always will be shown
+                    display: function (data) {
+                        return $('<a href="#" class="ShowDocNo" data-dt="' + data.record.doc_type_short + '" data-gc="' + data.record.group_code + '" data-rn="' + data.record.run_no + '" data-rv="' + data.record.rev_no + '" data-req="' + data.record.req_id + '">' + data.record.doc_no + '</a>');
+                    }
+                },
+                type: { title: 'Type', width: '9%' },
+                paper_name: { title: 'Paper Size', width: '9%' },
+                qty: { title: 'Qty', width: '9%' },
+                reason: { title: 'Reason', width: '33%' },
+                status_name: { title: 'Status', width: '10%' },
+                act_dt: { title: 'Completed Date', width: '12%', type: 'date', displayFormat: 'dd-mm-yy' }
+            }
+        });
+
+        //Re-load records when user click 'load records' button.
+        $('#btSearch').click(function (e) {
+            e.preventDefault();
+            $('#jTableCompCopy').jtable('load', {
+                doc_no: $('#s_docno').val(),
+                rev_no: $('#s_rev').val(),
+                type: $('#s_type').val(),
+                paper: $('#s_paper').val(),
+                qty: $('#s_qty').val()
+                //doc_name: $('#s_docname').val()
+            });
+        });
+
+
+        $('#divDocDetail').dialog({
+            autoOpen: false,
+            width: 900,//'auto',
+            height: 'auto',
+            modal: true
+        });
+
+        $(document).on("click", ".ShowDocNo", function (event) {
+            var obj = new Object();
+            obj.doctype = $(this).attr('data-dt');
+            obj.groupcode = $(this).attr('data-gc');
+            obj.runno = $(this).attr('data-rn');
+            obj.revno = $(this).attr('data-rv');
+            obj.reqid = $(this).attr('data-req');
+            var remote = "@Url.Action("_ShowDocDetailOnly")";
+            $.get(remote, obj, function (data) {
+                $("#divDocDetail").html(data);
+                $("#divDocDetail").dialog("open");
+                return false;
+            });
+        });
+    });
+</script>
+
+<form>
+    <table class="table table-condensed" style="width:auto;">
+        <thead>
+            <tr>
+                <th>Document No.</th>
+                <th>Revision</th>
+                @*<th>Document Name</th>*@
+                <th>Type</th>
+                <th>Paper Size</th>
+                <th>Q'ty</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" id="s_docno" name="s_docno" class="input-medium" placeholder="Document No." /></td>
+                <td><input type="text" id="s_rev" name="s_rev" class="input-mini" placeholder="Revision" maxlength="2" /></td>
+                @*<td><input type="text" id="s_docname" name="s_docname" class="input-large" placeholder="Document Name" /></td>*@
+                <td><select id="s_type" name="s_type" class="input-medium">
+                    <option value="">-</option>
+                    <option value="Control">Control</option>
+                    <option value="Uncontrol">Uncontrol</option>
+                </select></td>
+                <td><select id="s_paper" name="s_paper" class="input-medium">
+                    <option value="0">-</option>
+                    @foreach (var item in ViewBag.Paper)
+                    {
+                    <option value="@item.paper_id">@item.paper_name</option>
+                    }
+                </select></td>
+                <td><input type="text" id="s_qty" name="s_qty" class="input-mini" placeholder="Q'ty" maxlength="3" /></td>
+                <td><button type="submit" id="btSearch" class="btn btn-primary"><i class="icon-search icon-white"></i> Search</button>
+                    <button type="reset" id="btReset" class="btn btn-warning"><i class="icon-trash icon-white"></i> Clear</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+<div id="jTableCompCopy"></div>
+
+<div id="divDocDetail" title="Detail"></div>

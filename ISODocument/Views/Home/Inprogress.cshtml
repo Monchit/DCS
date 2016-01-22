@@ -1,0 +1,163 @@
+﻿@{
+    ViewBag.Title = "In-progress Document";
+}
+<link href="~/Scripts/jtable/themes/metro/blue/jtable.min.css" rel="stylesheet" />
+<style type="text/css">
+    /*fix jTable*/
+    span.jtable-goto-page select, span.jtable-page-size-change select {
+        height: 25px;
+        width: 60px;
+        padding: 2px 2px;
+        margin-bottom:auto;
+    }
+    div.jtable-main-container table.jtable thead th {
+        text-align: center;
+    }
+    div.jtable-main-container > table.jtable > tbody > tr.jtable-data-row > td {
+        text-align: center;
+    }
+    div.accordion-heading {
+        font-weight:600;
+    }
+    .td_title {
+        text-align:right !important;
+        font-weight:600;
+    }
+    .ui-dialog-title {
+        color:white;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.strPad = function (i, l, s) {
+            var o = i.toString();
+            if (!s) { s = '0'; }
+            while (o.length < l) { o = s + o; }
+            return o;
+        };
+
+        @if (TempData["result"] != null)
+        {
+            <text>noty({
+            text: '@TempData["result"].ToString()',
+            type: 'information',
+            layout: 'bottomRight',
+            timeout: 5000
+            });
+            </text>
+        }
+        
+
+        $('#jTableInProgress').jtable({
+            title: 'In-Progress Document',
+            paging: true, //Enable paging
+            pageSize: 10, //Set page size (default: 10)
+            sorting: true, //Enable sorting
+            //selecting: true, //Enable selecting
+            defaultSorting: 'doc_no', //Set default sorting
+            actions: {
+                listAction: '@Url.Action("InProgressList","Home")'
+            },
+            fields: {
+                doc_type_short: { title: 'Document Type', list: false },
+                group_code: { title: 'Group Code', list: false },
+                run_no: { title: 'Run No.', list: false },
+                rev_no: { title: 'Revision', list: false },
+                operation_id: { title: 'Operation', list: false },
+                doc_no: {
+                    title: 'Document No.', width: '20%',
+                    visibility: 'fixed', //This column always will be shown
+                    display: function (data) {
+                        return $('<a href="#" class="ShowDocNo" data-dt="' + data.record.doc_type_short + '" data-gc="' + data.record.group_code + '" data-rn="' + data.record.run_no + '" data-rv="' + data.record.rev_no + '" data-op="' + data.record.operation_id + '">' + data.record.doc_no + '</a>');
+                    }
+                },
+                doc_name: { title: 'Document Name', width: '35%' },
+                operation_name: { title: 'Operation', width: '11%' },
+                statusname: { title: 'Status', width: '12%' },
+                eff_date: { title: 'Effective Date', width: '12%', type: 'date', displayFormat: 'dd-mm-yy' }
+            }
+        });
+        //Load list from server
+        $('#jTableInProgress').jtable('load');
+
+        //Re-load records when user click 'load records' button.
+        $('#btSearch').click(function (e) {
+            e.preventDefault();
+            $('#jTableInProgress').jtable('load', {
+                doc_no: $('#s_docno').val(),
+                rev_no: $('#s_rev').val(),
+                doc_name: $('#s_docname').val(),
+                statusname: $('#s_status').val(),
+                user: 2
+            });
+        });
+
+        $('#btMy').click(function (e) {
+            e.preventDefault();
+            $('#jTableInProgress').jtable('load', { user: 1 });
+        });
+
+        $('#btWait').click(function (e) {
+            e.preventDefault();
+            $('#jTableInProgress').jtable('load');
+        });
+
+        $('#divDocDetail').dialog({
+            autoOpen: false,
+            width: 900,//'auto',
+            height: 'auto',
+            modal: true
+        });
+
+        $(document).on("click", ".ShowDocNo", function (event) {
+            var obj = new Object();
+            obj.doctype = $(this).attr('data-dt');
+            obj.groupcode = $(this).attr('data-gc');
+            obj.runno = $(this).attr('data-rn');
+            obj.revno = $(this).attr('data-rv');
+            obj.check = false;
+            obj.operation = $(this).attr('data-op');
+            obj.appv = 1;
+            var remote = "@Url.Action("_ShowDocDetail")";
+            $.get(remote, obj, function (data) {
+                $("#divDocDetail").html(data);
+                $("#divDocDetail").dialog("open");
+                return false;
+            });
+        });
+    });
+</script>
+
+<form>
+    <table class="table table-condensed" style="width:auto;">
+        <thead>
+            <tr>
+                <th>Document No.</th>
+                <th>Revision</th>
+                <th>Document Name</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" id="s_docno" name="s_docno" class="input-medium" placeholder="Document No." /></td>
+                <td><input type="text" id="s_rev" name="s_rev" class="input-mini" placeholder="Revision" maxlength="2" /></td>
+                <td><input type="text" id="s_docname" name="s_docname" class="input-large" placeholder="Document Name" /></td>
+                <td><input type="text" id="s_status" name="s_status" class="input-large" placeholder="Status" /></td>
+                <td><button type="submit" id="btSearch" class="btn btn-primary"><i class="icon-search icon-white"></i> Search</button>
+                    <button type="reset" id="btReset" class="btn btn-warning"><i class="icon-trash icon-white"></i> Clear</button>
+                    <button type="button" id="btWait" class="btn btn-inverse"><i class="icon-repeat icon-white"></i> Waiting</button>
+                    @if(ViewBag.ULv <= 2){
+                    <button type="button" id="btMy" class="btn btn-info"><i class="icon-user icon-white"></i> My Document</button>
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+
+<div id="jTableInProgress"></div>
+
+<div id="divDocDetail" title="Detail"></div>

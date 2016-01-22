@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e77e8f858ae94333845446c3e546fed0" Name="Diagram1">
+        <EntityTypeShape EntityType="DocumentControlModel.TD_Document" Width="1.5" PointX="2.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DocumentControlModel.TD_Transaction" Width="1.5" PointX="4.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DocumentControlModel.V_Max_Transaction" Width="1.5" PointX="7.875" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DocumentControlModel.V_Transaction" Width="1.5" PointX="9.625" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="DocumentControlModel.FK_TD_Transaction_TD_Document" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DocumentControlModel.TM_Action" Width="1.5" PointX="6.125" PointY="8.75" />
+        <EntityTypeShape EntityType="DocumentControlModel.TM_DocType" Width="1.5" PointX="2.25" PointY="5" />
+        <EntityTypeShape EntityType="DocumentControlModel.TM_GroupCode" Width="1.5" PointX="0.5" PointY="4.25" />
+        <EntityTypeShape EntityType="DocumentControlModel.TM_Level" Width="1.5" PointX="6.125" PointY="5.875" />
+        <EntityTypeShape EntityType="DocumentControlModel.TM_Operation" Width="1.5" PointX="4" PointY="9.875" />
+        <EntityTypeShape EntityType="DocumentControlModel.TM_Status" Width="1.5" PointX="2.25" PointY="8" />
+        <EntityTypeShape EntityType="DocumentControlModel.TM_User" Width="1.5" PointX="6.125" PointY="3.5" />
+        <EntityTypeShape EntityType="DocumentControlModel.TM_UserType" Width="1.5" PointX="7.875" PointY="5.75" />
+        <AssociationConnector Association="DocumentControlModel.FK_TD_Document_TM_DocType" />
+        <AssociationConnector Association="DocumentControlModel.FK_TD_Document_TM_GroupCode" />
+        <AssociationConnector Association="DocumentControlModel.FK_TD_Transaction_TM_Action" />
+        <AssociationConnector Association="DocumentControlModel.FK_TD_Transaction_TM_Level" />
+        <AssociationConnector Association="DocumentControlModel.FK_TD_Transaction_TM_Operation" />
+        <AssociationConnector Association="DocumentControlModel.FK_TD_Transaction_TM_Status" />
+        <AssociationConnector Association="DocumentControlModel.FK_TM_User_TM_UserType" />
+        <EntityTypeShape EntityType="DocumentControlModel.V_DistributionDoc" Width="1.5" PointX="6.125" PointY="0.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

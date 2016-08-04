@@ -898,6 +898,7 @@
     <Content Include="Views\Chart\_GetChartCopy.cshtml" />
     <Content Include="Views\Report\ReportOverdue.cshtml" />
     <Content Include="Views\Report\ReportComplete2Year.cshtml" />
+    <Content Include="Views\Report\OverdueByDate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

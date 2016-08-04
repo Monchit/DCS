@@ -49,8 +49,8 @@ namespace ISODocument.Models
         public DbSet<V_Transaction> V_Transaction { get; set; }
         public DbSet<TD_TranCopy> TD_TranCopy { get; set; }
         public DbSet<V_TranCopy> V_TranCopy { get; set; }
-        public DbSet<V_Report_Copy> V_Report_Copy { get; set; }
         public DbSet<V_User_Info> V_User_Info { get; set; }
         public DbSet<V_ReqCopy> V_ReqCopy { get; set; }
+        public DbSet<V_Report_Copy> V_Report_Copy { get; set; }
     }
 }

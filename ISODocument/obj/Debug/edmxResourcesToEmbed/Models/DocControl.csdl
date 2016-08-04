@@ -89,9 +89,9 @@
       <End Role="TD_Document" EntitySet="TD_Document" />
       <End Role="TD_ReqCopy" EntitySet="TD_ReqCopy" />
     </AssociationSet>
-    <EntitySet Name="V_Report_Copy" EntityType="DocumentControlModel.V_Report_Copy" />
     <EntitySet Name="V_User_Info" EntityType="DocumentControlModel.V_User_Info" />
     <EntitySet Name="V_ReqCopy" EntityType="DocumentControlModel.V_ReqCopy" />
+    <EntitySet Name="V_Report_Copy" EntityType="DocumentControlModel.V_Report_Copy" />
   </EntityContainer>
   <EntityType Name="TD_Copy">
     <Key>
@@ -791,38 +791,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityType Name="V_Report_Copy">
-    <Key>
-      <PropertyRef Name="qty" />
-      <PropertyRef Name="type" />
-      <PropertyRef Name="paper_name" />
-      <PropertyRef Name="act_dt" />
-      <PropertyRef Name="org_id" />
-      <PropertyRef Name="lv_id" />
-      <PropertyRef Name="status_id" />
-      <PropertyRef Name="req_id" />
-      <PropertyRef Name="statusname" />
-      <PropertyRef Name="lv_name" />
-      <PropertyRef Name="status_name" />
-      <PropertyRef Name="doc_name" />
-    </Key>
-    <Property Type="String" Name="doc_no" MaxLength="109" FixedLength="false" Unicode="true" />
-    <Property Type="Int32" Name="qty" Nullable="false" />
-    <Property Type="String" Name="type" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Type="String" Name="reason" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Type="String" Name="paper_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Type="DateTime" Name="act_dt" Nullable="false" Precision="3" />
-    <Property Type="String" Name="actor" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Type="Int32" Name="org_id" Nullable="false" />
-    <Property Type="Byte" Name="lv_id" Nullable="false" />
-    <Property Type="Byte" Name="status_id" Nullable="false" />
-    <Property Type="Int32" Name="req_id" Nullable="false" />
-    <Property Type="String" Name="statusname" Nullable="false" MaxLength="103" FixedLength="false" Unicode="true" />
-    <Property Type="String" Name="lv_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Type="String" Name="status_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Type="String" Name="action_name" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Type="String" Name="doc_name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-  </EntityType>
   <EntityType Name="V_User_Info">
     <Key>
       <PropertyRef Name="emp_code" />
@@ -876,5 +844,37 @@
     <Property Type="String" Name="reason" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Type="String" Name="paper_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Type="String" Name="doc_name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="V_Report_Copy">
+    <Key>
+      <PropertyRef Name="qty" />
+      <PropertyRef Name="type" />
+      <PropertyRef Name="paper_name" />
+      <PropertyRef Name="act_dt" />
+      <PropertyRef Name="org_id" />
+      <PropertyRef Name="lv_id" />
+      <PropertyRef Name="status_id" />
+      <PropertyRef Name="req_id" />
+      <PropertyRef Name="statusname" />
+      <PropertyRef Name="lv_name" />
+      <PropertyRef Name="status_name" />
+      <PropertyRef Name="doc_name" />
+    </Key>
+    <Property Type="String" Name="doc_no" MaxLength="109" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="qty" Nullable="false" />
+    <Property Type="String" Name="type" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="reason" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="paper_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="act_dt" Nullable="false" Precision="3" />
+    <Property Type="Int32" Name="org_id" Nullable="false" />
+    <Property Type="Byte" Name="lv_id" Nullable="false" />
+    <Property Type="Byte" Name="status_id" Nullable="false" />
+    <Property Type="Int32" Name="req_id" Nullable="false" />
+    <Property Type="String" Name="statusname" Nullable="false" MaxLength="103" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="lv_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="status_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="action_name" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="doc_name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="group_name" MaxLength="255" FixedLength="false" Unicode="true" />
   </EntityType>
 </Schema>

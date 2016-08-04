@@ -67,7 +67,6 @@
       [V_Report_Copy].[reason] AS [reason], 
       [V_Report_Copy].[paper_name] AS [paper_name], 
       [V_Report_Copy].[act_dt] AS [act_dt], 
-      [V_Report_Copy].[actor] AS [actor], 
       [V_Report_Copy].[org_id] AS [org_id], 
       [V_Report_Copy].[lv_id] AS [lv_id], 
       [V_Report_Copy].[status_id] AS [status_id], 
@@ -76,7 +75,8 @@
       [V_Report_Copy].[lv_name] AS [lv_name], 
       [V_Report_Copy].[status_name] AS [status_name], 
       [V_Report_Copy].[action_name] AS [action_name], 
-      [V_Report_Copy].[doc_name] AS [doc_name]
+      [V_Report_Copy].[doc_name] AS [doc_name], 
+      [V_Report_Copy].[group_name] AS [group_name]
       FROM [dbo].[V_Report_Copy] AS [V_Report_Copy]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="V_ReqCopy" EntityType="DocumentControlModel.Store.V_ReqCopy" store:Type="Views" store:Schema="dbo" store:Name="V_ReqCopy">
@@ -614,7 +614,6 @@
     <Property Name="reason" Type="ntext" />
     <Property Name="paper_name" Type="nvarchar" Nullable="false" MaxLength="50" />
     <Property Name="act_dt" Type="datetime" Nullable="false" />
-    <Property Name="actor" Type="nvarchar" MaxLength="10" />
     <Property Name="org_id" Type="int" Nullable="false" />
     <Property Name="lv_id" Type="tinyint" Nullable="false" />
     <Property Name="status_id" Type="tinyint" Nullable="false" />
@@ -624,6 +623,7 @@
     <Property Name="status_name" Type="nvarchar" Nullable="false" MaxLength="50" />
     <Property Name="action_name" Type="nvarchar" MaxLength="50" />
     <Property Name="doc_name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="group_name" Type="nvarchar" MaxLength="255" />
   </EntityType>
   <!--Errors Found During Generation:
       warning 6002: The table/view 'DocumentControl.dbo.V_ReqCopy' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.

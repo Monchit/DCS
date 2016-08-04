@@ -72,7 +72,6 @@
       [V_Report_Copy].[reason] AS [reason], 
       [V_Report_Copy].[paper_name] AS [paper_name], 
       [V_Report_Copy].[act_dt] AS [act_dt], 
-      [V_Report_Copy].[actor] AS [actor], 
       [V_Report_Copy].[org_id] AS [org_id], 
       [V_Report_Copy].[lv_id] AS [lv_id], 
       [V_Report_Copy].[status_id] AS [status_id], 
@@ -81,7 +80,8 @@
       [V_Report_Copy].[lv_name] AS [lv_name], 
       [V_Report_Copy].[status_name] AS [status_name], 
       [V_Report_Copy].[action_name] AS [action_name], 
-      [V_Report_Copy].[doc_name] AS [doc_name]
+      [V_Report_Copy].[doc_name] AS [doc_name], 
+      [V_Report_Copy].[group_name] AS [group_name]
       FROM [dbo].[V_Report_Copy] AS [V_Report_Copy]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="V_ReqCopy" EntityType="DocumentControlModel.Store.V_ReqCopy" store:Type="Views" store:Schema="dbo" store:Name="V_ReqCopy">
@@ -619,7 +619,6 @@
           <Property Name="reason" Type="ntext" />
           <Property Name="paper_name" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="act_dt" Type="datetime" Nullable="false" />
-          <Property Name="actor" Type="nvarchar" MaxLength="10" />
           <Property Name="org_id" Type="int" Nullable="false" />
           <Property Name="lv_id" Type="tinyint" Nullable="false" />
           <Property Name="status_id" Type="tinyint" Nullable="false" />
@@ -629,6 +628,7 @@
           <Property Name="status_name" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="action_name" Type="nvarchar" MaxLength="50" />
           <Property Name="doc_name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="group_name" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'DocumentControl.dbo.V_ReqCopy' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -1131,9 +1131,9 @@
             <End Role="TD_Document" EntitySet="TD_Document" />
             <End Role="TD_ReqCopy" EntitySet="TD_ReqCopy" />
           </AssociationSet>
-          <EntitySet Name="V_Report_Copy" EntityType="DocumentControlModel.V_Report_Copy" />
           <EntitySet Name="V_User_Info" EntityType="DocumentControlModel.V_User_Info" />
           <EntitySet Name="V_ReqCopy" EntityType="DocumentControlModel.V_ReqCopy" />
+          <EntitySet Name="V_Report_Copy" EntityType="DocumentControlModel.V_Report_Copy" />
           </EntityContainer>
         <EntityType Name="TD_Copy">
           <Key>
@@ -1833,38 +1833,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="V_Report_Copy">
-          <Key>
-            <PropertyRef Name="qty" />
-            <PropertyRef Name="type" />
-            <PropertyRef Name="paper_name" />
-            <PropertyRef Name="act_dt" />
-            <PropertyRef Name="org_id" />
-            <PropertyRef Name="lv_id" />
-            <PropertyRef Name="status_id" />
-            <PropertyRef Name="req_id" />
-            <PropertyRef Name="statusname" />
-            <PropertyRef Name="lv_name" />
-            <PropertyRef Name="status_name" />
-            <PropertyRef Name="doc_name" />
-          </Key>
-          <Property Type="String" Name="doc_no" MaxLength="109" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="qty" Nullable="false" />
-          <Property Type="String" Name="type" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="reason" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="paper_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="act_dt" Nullable="false" Precision="3" />
-          <Property Type="String" Name="actor" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="org_id" Nullable="false" />
-          <Property Type="Byte" Name="lv_id" Nullable="false" />
-          <Property Type="Byte" Name="status_id" Nullable="false" />
-          <Property Type="Int32" Name="req_id" Nullable="false" />
-          <Property Type="String" Name="statusname" Nullable="false" MaxLength="103" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="lv_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="status_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="action_name" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="doc_name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="V_User_Info">
           <Key>
             <PropertyRef Name="emp_code" />
@@ -1918,6 +1886,38 @@
           <Property Type="String" Name="reason" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="paper_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="doc_name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="V_Report_Copy">
+          <Key>
+            <PropertyRef Name="qty" />
+            <PropertyRef Name="type" />
+            <PropertyRef Name="paper_name" />
+            <PropertyRef Name="act_dt" />
+            <PropertyRef Name="org_id" />
+            <PropertyRef Name="lv_id" />
+            <PropertyRef Name="status_id" />
+            <PropertyRef Name="req_id" />
+            <PropertyRef Name="statusname" />
+            <PropertyRef Name="lv_name" />
+            <PropertyRef Name="status_name" />
+            <PropertyRef Name="doc_name" />
+          </Key>
+          <Property Type="String" Name="doc_no" MaxLength="109" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="qty" Nullable="false" />
+          <Property Type="String" Name="type" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="reason" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="paper_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="act_dt" Nullable="false" Precision="3" />
+          <Property Type="Int32" Name="org_id" Nullable="false" />
+          <Property Type="Byte" Name="lv_id" Nullable="false" />
+          <Property Type="Byte" Name="status_id" Nullable="false" />
+          <Property Type="Int32" Name="req_id" Nullable="false" />
+          <Property Type="String" Name="statusname" Nullable="false" MaxLength="103" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="lv_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="status_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="action_name" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="doc_name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="group_name" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -2307,28 +2307,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="V_Report_Copy">
-            <EntityTypeMapping TypeName="DocumentControlModel.V_Report_Copy">
-              <MappingFragment StoreEntitySet="V_Report_Copy">
-                <ScalarProperty Name="doc_name" ColumnName="doc_name" />
-                <ScalarProperty Name="action_name" ColumnName="action_name" />
-                <ScalarProperty Name="status_name" ColumnName="status_name" />
-                <ScalarProperty Name="lv_name" ColumnName="lv_name" />
-                <ScalarProperty Name="statusname" ColumnName="statusname" />
-                <ScalarProperty Name="req_id" ColumnName="req_id" />
-                <ScalarProperty Name="status_id" ColumnName="status_id" />
-                <ScalarProperty Name="lv_id" ColumnName="lv_id" />
-                <ScalarProperty Name="org_id" ColumnName="org_id" />
-                <ScalarProperty Name="actor" ColumnName="actor" />
-                <ScalarProperty Name="act_dt" ColumnName="act_dt" />
-                <ScalarProperty Name="paper_name" ColumnName="paper_name" />
-                <ScalarProperty Name="reason" ColumnName="reason" />
-                <ScalarProperty Name="type" ColumnName="type" />
-                <ScalarProperty Name="qty" ColumnName="qty" />
-                <ScalarProperty Name="doc_no" ColumnName="doc_no" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="V_User_Info">
             <EntityTypeMapping TypeName="DocumentControlModel.V_User_Info">
               <MappingFragment StoreEntitySet="V_User_Info">
@@ -2371,6 +2349,28 @@
                 <ScalarProperty Name="group_code" ColumnName="group_code" />
                 <ScalarProperty Name="doc_type_short" ColumnName="doc_type_short" />
                 <ScalarProperty Name="req_id" ColumnName="req_id" />
+                <ScalarProperty Name="doc_no" ColumnName="doc_no" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_Report_Copy">
+            <EntityTypeMapping TypeName="DocumentControlModel.V_Report_Copy">
+              <MappingFragment StoreEntitySet="V_Report_Copy">
+                <ScalarProperty Name="group_name" ColumnName="group_name" />
+                <ScalarProperty Name="doc_name" ColumnName="doc_name" />
+                <ScalarProperty Name="action_name" ColumnName="action_name" />
+                <ScalarProperty Name="status_name" ColumnName="status_name" />
+                <ScalarProperty Name="lv_name" ColumnName="lv_name" />
+                <ScalarProperty Name="statusname" ColumnName="statusname" />
+                <ScalarProperty Name="req_id" ColumnName="req_id" />
+                <ScalarProperty Name="status_id" ColumnName="status_id" />
+                <ScalarProperty Name="lv_id" ColumnName="lv_id" />
+                <ScalarProperty Name="org_id" ColumnName="org_id" />
+                <ScalarProperty Name="act_dt" ColumnName="act_dt" />
+                <ScalarProperty Name="paper_name" ColumnName="paper_name" />
+                <ScalarProperty Name="reason" ColumnName="reason" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="qty" ColumnName="qty" />
                 <ScalarProperty Name="doc_no" ColumnName="doc_no" />
               </MappingFragment>
             </EntityTypeMapping>

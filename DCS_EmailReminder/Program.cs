@@ -26,7 +26,7 @@ namespace DCS_EmailReminder
 
                 //Review every 2 years and send email before due date 1 month.
                 var query = from a in dbDoc.V_Max_Transaction
-                            where a.check_date <= dtNow && a.status_id == 100//100 = Controlled
+                            where a.check_date <= dtCheck && a.status_id == 100//100 = Controlled
                             select a;
 
                 //var count_query = 0;
@@ -50,7 +50,7 @@ namespace DCS_EmailReminder
 
                     cc = !string.IsNullOrEmpty(cc) ? cc.Substring(1) : null;
                     
-                    //Console.WriteLine("doc no:" + q.doc_no);
+                    //Console.WriteLine("doc no:" + q.doc_no);//Comment for Real
 
                     if (!string.IsNullOrEmpty(email))
                     {

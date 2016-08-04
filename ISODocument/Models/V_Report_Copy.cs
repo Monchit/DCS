@@ -20,7 +20,6 @@ namespace ISODocument.Models
         public string reason { get; set; }
         public string paper_name { get; set; }
         public System.DateTime act_dt { get; set; }
-        public string actor { get; set; }
         public int org_id { get; set; }
         public byte lv_id { get; set; }
         public byte status_id { get; set; }
@@ -30,5 +29,6 @@ namespace ISODocument.Models
         public string status_name { get; set; }
         public string action_name { get; set; }
         public string doc_name { get; set; }
+        public string group_name { get; set; }
     }
 }

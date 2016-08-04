@@ -19,10 +19,17 @@ namespace ISODocument.Controllers
         DocumentControlEntities dbDC = new DocumentControlEntities();
         TNC_ADMINEntities dbTNC = new TNC_ADMINEntities();
 
-        public ActionResult Index()
+        public ActionResult Index(string key = null)
         {
-            ViewBag.Menu = 0;
-            return View();
+            if (key != null)
+            {
+                return Login(key);
+            }
+            else
+            {
+                ViewBag.Menu = 0;
+                return View();
+            }
         }
 
         public ActionResult Contact()
@@ -275,6 +282,7 @@ namespace ISODocument.Controllers
         }
 
         [HttpGet]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
         public ActionResult _FormCopy1(string doctype, string groupcode, int runno, byte revno)
         {
             var query = (from a in dbDC.TD_Document
@@ -290,6 +298,7 @@ namespace ISODocument.Controllers
         }
 
         [HttpGet]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
         public ActionResult _FormCancel(string doctype, string groupcode, int runno, byte revno)
         {
             var query = (from a in dbDC.TD_Document
@@ -300,6 +309,7 @@ namespace ISODocument.Controllers
         }
 
         [HttpGet]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
         public ActionResult _FormIssuerCancel(string doctype, string groupcode, int runno, byte revno)
         {
             var query = (from a in dbDC.TD_Document
@@ -310,6 +320,7 @@ namespace ISODocument.Controllers
         }
 
         [HttpGet]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
         public ActionResult _FormReview(string doctype, string groupcode, int runno, byte revno)
         {
             var query = (from a in dbDC.TD_Document
@@ -320,6 +331,7 @@ namespace ISODocument.Controllers
         }
 
         [HttpGet]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
         public ActionResult _ShowDocDetail(string doctype, string groupcode, int runno, byte revno, bool check = false, byte operation = 0, byte appv = 0)
         {
             List<VM_Comment> vobj = new List<VM_Comment>();
@@ -350,8 +362,12 @@ namespace ISODocument.Controllers
             string user = Session["DC_Auth"].ToString();
 
             //------------------------------------------//
-            if (Session["DC_UType"] != null && Session["DC_UType"].ToString() == "1")
+            if (Session["DC_UType"] != null && Session["DC_UType"].ToString() != "0")
             {
+                TempData["ShowFile"] = "show";
+            }
+            else if (Session["DC_ULv"] != null && (Session["DC_ULv"].ToString() == "3" || Session["DC_ULv"].ToString() == "4"))
+            {//Add Date 2016-05-03 by Monchit W.
                 TempData["ShowFile"] = "show";
             }
             else
@@ -460,6 +476,7 @@ namespace ISODocument.Controllers
         }
 
         [HttpGet]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
         public ActionResult _ShowDocDetailOnly(string doctype, string groupcode, int runno, byte revno, int reqid)
         {
             List<VM_TranCopy> vobj = new List<VM_TranCopy>();
@@ -489,10 +506,19 @@ namespace ISODocument.Controllers
             //------------------------------------------------//
             var get_dis = dbDC.TD_DistributionList.Any(a => a.doc_type_short == doctype && a.group_code == groupcode
                                   && a.run_no == runno && a.rev_no == revno && (a.group_id == org || a.group_id == 0));
-            if (get_dis)
+            
+            //Add Date 2016-02-16 by Monchit
+            if (Session["DC_UType"] != null && Session["DC_UType"].ToString() != "0")
+            {
                 TempData["ShowFile"] = "show";
+            }
             else
-                TempData["ShowFile"] = "hide";
+            {
+                if (get_dis)
+                    TempData["ShowFile"] = "show";
+                else
+                    TempData["ShowFile"] = "hide";
+            }
 
             //------------------------------------------------//
             //var comment = from t in dbDC.V_TranCopy
@@ -604,11 +630,19 @@ namespace ISODocument.Controllers
         //-------------------------------------------//
 
         [AllowAnonymous]
-        public ActionResult Login()
+        public ActionResult Login(string key = null)
         {
-            string username = Request.Form["Username"].ToString();
-            string pass = Request.Form["Password"].ToString();
+            string username = key == null ? Request.Form["Username"].ToString() : "";
+            string pass = key == null ? Request.Form["Password"].ToString() : "";
+
             var chklogin = secure.Login(username, pass, true);//set false to true for Real
+
+            if (key != null)
+            {
+                username = secure.WebCenterDecode(key);
+                chklogin = secure.Login(username, "a", false);
+            }
+
             if (chklogin != null)
             {
                 Session["DC_Auth"] = chklogin.emp_code;
@@ -869,6 +903,12 @@ namespace ISODocument.Controllers
                             tnc_org.GetApprover(actor);
                             SendEmailCenter(docType, gCode, runno, revno, tnc_org.ManagerEMail, operate);
                         }
+
+                        //if (operate == 2)
+                        //{
+                        //    UpdateCheckDate(docType, gCode, runno, (byte)(revno - 1), effdt);
+                        //}
+
                         scope.Complete();
                         
                         TempData["result"] = "Document No. " + docType + "-" + gCode + "-" + runno.ToString("0000") + " rev." + revno.ToString("00") + " action success";
@@ -1015,15 +1055,16 @@ namespace ISODocument.Controllers
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Suppress))
                 {
                     DateTime dt = DateTime.Now;
+                    var effdt = Request.Form["dtEff"] != null ? ParseToDate(Request.Form["dtEff"].ToString()) : dt;
                     var doc = dbDC.TD_Document.Find(docType, gCode, runno, revno);
                     doc.doc_name = Request.Form["txtDocName"].ToString();
-                    doc.eff_date = Request.Form["dtEff"] != null ? ParseToDate(Request.Form["dtEff"].ToString()) : dt;
+                    doc.eff_date = effdt;
                     doc.reference = Request.Form["txtRemark"].ToString();
                     doc.remark = Request.Form["txaRemark"] != null ? Request.Form["txaRemark"].ToString() : "";
 
                     // Add data to DB TD_File //
                     string subPath = "~/UploadFiles/" + dt.Year + "/" + dt.Month + "/";// +docType + "/";// +gCode + "/";
-                    string target = "~/UploadFiles/Old/";
+                    //string target = "~/UploadFiles/Old/";
                     if (!Directory.Exists(Server.MapPath(subPath)))
                         Directory.CreateDirectory(Server.MapPath(subPath));
 
@@ -1067,18 +1108,34 @@ namespace ISODocument.Controllers
 
                     var distribution_list = Request.Form["sel2List"] != null ? Request.Form["sel2List"].ToString() : null;
 
-                    DelDistributionList(docType, gCode, runno, revno);
-                    AddDistributionList(docType, gCode, runno, revno, distribution_list);
-
-                    if (CheckHasHardCopy(docType) && hcGroup != null && hcQty != null)
+                    if (distribution_list != null)
                     {
-                        DelHC(docType, gCode, runno, revno, 0);
-                        AddHC(hcGroup, hcQty, hcNote, docType, gCode, runno, revno, 0);
+                        DelDistributionList(docType, gCode, runno, revno);
+                        AddDistributionList(docType, gCode, runno, revno, distribution_list);
+                    }
+
+                    if (CheckHasHardCopy(docType))
+                    {
+                        if (hcGroup != null && hcQty != null)
+                        {
+                            DelHC(docType, gCode, runno, revno, 0);
+                            AddHC(hcGroup, hcQty, hcNote, docType, gCode, runno, revno, 0);
+                        }
+                        else
+                        {
+                            DelHC(docType, gCode, runno, revno, 0);
+                        }
                     }
 
                     UpdateTransaction(docType, gCode, runno, revno, sub_rev, 9, lv, org, operate, false, 1, actor, save: true);
                     GetNextTransaction(docType, gCode, runno, revno, sub_rev, 0, lv, org, operate, 4, actor);
                     dbDC.SaveChanges();
+
+                    //if (operate == 2)
+                    //{
+                    //    UpdateCheckDate(docType, gCode, runno, (byte)(revno - 1), effdt);
+                    //}
+
                     scope.Complete();
                     TempData["result"] = "Document No. " + docType + "-" + gCode + "-" + runno.ToString("0000") + " rev." + revno.ToString("00") + " action success";
                 }
@@ -1408,19 +1465,33 @@ namespace ISODocument.Controllers
             }
         }
 
-        private bool UpdateCheckDate(string doc_type_short, string group_code, int run_no, byte rev_no)
+        private bool UpdateCheckDate(string doc_type_short, string group_code, int run_no, byte rev_no, DateTime? dt = null)
         {
-            var query = dbDC.TD_Document.Find(doc_type_short, group_code, run_no, rev_no);
-            if (query != null)
+            using (var localdb = new DocumentControlEntities())
             {
-                //var dt = query.check_date != null ? query.check_date : query.eff_date;
-                //query.check_date = dt.Value.AddYears(2);
-                byte review_dt = query.TM_DocType.review_year;
-                query.check_date = query.check_date != null ? DateTime.Now.AddYears(review_dt) : query.eff_date.AddYears(review_dt);
-                dbDC.SaveChanges();
-                return true;
-            }else{
-                return false;
+                var query = localdb.TD_Document.Find(doc_type_short, group_code, run_no, rev_no);
+                if (query != null)
+                {
+                    if (dt == null)
+                    {
+                        byte review_dt = query.TM_DocType.review_year;
+                        query.check_date = query.check_date != null ? DateTime.Now.AddYears(review_dt) : query.eff_date.AddYears(review_dt);
+                        localdb.SaveChanges();
+                    }
+                    else
+                    {
+                        if (query.check_date > dt)
+                        {
+                            query.check_date = dt;
+                            localdb.SaveChanges();
+                        }
+                    }
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
 
@@ -1629,15 +1700,19 @@ namespace ISODocument.Controllers
 
         public void DelHC(string docType, string gCode, int runno, byte revno, int cprun)
         {
-            var get_all = from a in dbDC.TD_Copy
-                          where a.doc_type_short == docType && a.group_code == gCode && a.run_no == runno && a.rev_no == revno && a.copy_runno == cprun
-                          select a.group_id;
-            foreach (var item in get_all)
+            using (var db = new DocumentControlEntities())
             {
-                TD_Copy copy = dbDC.TD_Copy.Find(docType, gCode, runno, revno, item, cprun);
-                dbDC.TD_Copy.Remove(copy);
+                var get_all = from a in db.TD_Copy
+                              where a.doc_type_short == docType && a.group_code == gCode && a.run_no == runno
+                              && a.rev_no == revno && a.copy_runno == cprun
+                              select a.group_id;
+                foreach (var item in get_all)
+                {
+                    TD_Copy copy = db.TD_Copy.Find(docType, gCode, runno, revno, item, cprun);
+                    db.TD_Copy.Remove(copy);
+                }
+                db.SaveChanges();
             }
-            dbDC.SaveChanges();
         }
 
         public bool AddDistributionList(string docType, string gCode, int runno, byte revno, string list)
@@ -1705,6 +1780,7 @@ namespace ISODocument.Controllers
         }
 
         [HttpGet]
+        [OutputCache(Duration = 0, VaryByParam = "*", NoStore = true)]
         public string ShowCopy(string docType)
         {
             var chk = (from a in dbDC.TM_DocType
@@ -1715,6 +1791,7 @@ namespace ISODocument.Controllers
         }
 
         [HttpGet]
+        [OutputCache(Duration = 0, VaryByParam = "*", NoStore = true)]
         public ActionResult Selecte2AllGroup(string searchTerm)
         {
             var group = dbDC.V_Group
@@ -1726,6 +1803,7 @@ namespace ISODocument.Controllers
         }
 
         [HttpGet]
+        [OutputCache(Duration = 0, VaryByParam = "*", NoStore = true)]
         public ActionResult Selecte2TNCGroup(string searchTerm)
         {
             var group = dbTNC.tnc_group_master.Where(w => w.group_name.Contains(searchTerm))
@@ -1736,6 +1814,7 @@ namespace ISODocument.Controllers
         }
 
         [HttpGet]
+        [OutputCache(Duration = 0, VaryByParam = "*", NoStore = true)]
         public ActionResult Selecte2ControlDoc(string searchTerm)
         {
             int org = int.Parse(Session["DC_Org"].ToString());
@@ -2183,7 +2262,7 @@ namespace ISODocument.Controllers
         }
 
         [HttpPost]
-        public JsonResult ControlledList(string doc_no, string doc_name, byte rev_no = 100, int mode = 0, int jtStartIndex = 0, int jtPageSize = 0, string jtSorting = null)
+        public JsonResult ControlledList(string doc_no, string doc_name, byte rev_no = 255, int mode = 0, int jtStartIndex = 0, int jtPageSize = 0, string jtSorting = null)
         {
             try
             {
@@ -2236,18 +2315,27 @@ namespace ISODocument.Controllers
                     {
                         query = query.Where(w => w.doc_name.ToUpper().Contains(doc_name.ToUpper()));
                     }
-                    if (rev_no != 100)
+                    if (rev_no != 255)
                     {
                         query = query.Where(w => w.rev_no == rev_no);
                     }
+                    //if (date_from != null)
+                    //{
+                    //    query = query.Where(w => w.check_date >= date_from.Value);
+                    //}
+                    //if (date_to != null)
+                    //{
+                    //    query = query.Where(w => w.check_date <= date_to.Value);
+                    //}
                 }
 
                 //Get data from database
                 int TotalRecord = query.Count();
 
-                var doctype = from a in dbDC.TM_DocType
-                              where a.doc_lv == 1
-                              select a.doc_type_short;
+                //var doctype = from a in dbDC.TM_DocType
+                //              where a.doc_lv == 1
+                //              select a.doc_type_short;
+
                 // Paging
                 var output = query
                     .Select(s => new

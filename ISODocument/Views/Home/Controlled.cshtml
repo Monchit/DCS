@@ -110,9 +110,25 @@
             $('#jTableControlled').jtable('load', {
                 doc_no: $('#s_docno').val(),
                 doc_name: $('#s_docname').val(),
+                //date_from: $('#date_from').val(),
+                //date_to: $('#date_to').val(),
                 rev_no: $('#s_rev').val(),
                 mode: 1
             });
+        });
+
+        $("#date_from").datepicker({
+            dateFormat: 'yy-mm-dd',
+            minDate: new Date(),
+            onClose: function (selectedDate) {
+                $("#date_to").datepicker("option", "minDate", selectedDate);
+            }
+        });
+        $("#date_to").datepicker({
+            dateFormat: 'yy-mm-dd',
+            onClose: function (selectedDate) {
+                $("#date_from").datepicker("option", "maxDate", selectedDate);
+            }
         });
 
         $('#btMy').click(function (e) {
@@ -226,6 +242,8 @@
                 <th>Document No.</th>
                 <th>Revision</th>
                 <th>Document Name</th>
+                @*<th>Date From</th>
+                <th>Date To</th>*@
                 <th></th>
                 <th></th>
                 <th></th>
@@ -236,6 +254,8 @@
                 <td><input type="text" id="s_docno" name="s_docno" class="input-medium" placeholder="Document No." /></td>
                 <td><input type="text" id="s_rev" name="s_rev" class="input-mini" placeholder="Revision" maxlength="2" /></td>
                 <td><input type="text" id="s_docname" name="s_docname" class="input-large" placeholder="Document Name" /></td>
+                @*<td><input type="text" id="date_from" name="date_from" class="input-small"></td>
+                <td><input type="text" id="date_to" name="date_to" class="input-small"></td>*@
                 <td><button type="submit" id="btSearch" class="btn btn-primary"><i class="icon-search icon-white"></i> Search</button></td>
                 <td><button type="reset" id="btReset" class="btn btn-warning"><i class="icon-trash icon-white"></i> Clear</button></td>
                 <td>@if(ViewBag.ULv <= 2){
@@ -248,8 +268,6 @@
 <div id="jTableControlled"></div>
 
 <div id="divDocDetail" title="Detail"></div>
-
-@*<div id="divDialogCopy" title="Request Copy"></div>*@
 
 <div id="divDialogCancel" title="Request Cancel"></div>
 

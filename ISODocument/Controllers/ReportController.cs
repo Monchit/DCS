@@ -410,7 +410,7 @@ namespace ISODocument.Controllers
             {
                 var dateto = date_to.AddDays(1);
                 var query = from a in dbDC.V_Report_Copy
-                            where a.status_id == 105 && (a.act_dt >= date_from && a.act_dt <= dateto)
+                            where (a.act_dt >= date_from && a.act_dt <= dateto)
                             select a;
 
                 //Get data from database
@@ -425,6 +425,7 @@ namespace ISODocument.Controllers
                         s.qty,
                         s.type,
                         s.paper_name,
+                        s.group_name,
                         s.act_dt,
                         s.reason
                     }).AsQueryable().OrderBy(jtSorting).Skip(jtStartIndex).Take(jtPageSize);
@@ -442,7 +443,7 @@ namespace ISODocument.Controllers
         {
             TNCUtility util = new TNCUtility();
             var dateto = date_to.AddDays(1);
-            var query = (from a in dbDC.V_Report_Copy.Where(w => w.status_id == 105 && (w.act_dt >= date_from && w.act_dt <= dateto)).ToList()
+            var query = (from a in dbDC.V_Report_Copy.Where(w => (w.act_dt >= date_from && w.act_dt <= dateto)).ToList()
                          orderby a.doc_no ascending
                          select new
                          {
@@ -451,6 +452,7 @@ namespace ISODocument.Controllers
                              Qty = a.qty,
                              DocType = a.type,
                              Paper = a.paper_name,
+                             Group = a.group_name,
                              CompleteDate = a.act_dt.ToString("dd-MM-yyyy"),
                              Reason = a.reason
                          });
@@ -583,6 +585,46 @@ namespace ISODocument.Controllers
                         where a.status_id == 100 && a.TD_Document.eff_date <= chk_date
                         select a;
             return View(query);
+        }
+
+        //-------------------------------------------//
+
+        public ActionResult OverdueByDate()
+        {
+            return View();
+        }
+
+        public void ExportOverdueByDate(DateTime date_from, DateTime date_to)
+        {
+            TNCUtility util = new TNCUtility();
+            var query = from a in dbDC.V_Max_Transaction.Where(w => w.status_id == 100 && (w.check_date >= date_from && w.check_date <= date_to)).ToList()
+                        join b in dbTNC.tnc_group_master.ToList()
+                        on a.org_id equals b.id
+                        select new
+                        {
+                            a.doc_type_short,
+                            a.group_code,
+                            a.run_no,
+                            a.rev_no,
+                            a.doc_no,
+                            a.doc_name,
+                            a.eff_date,
+                            a.check_date,
+                            a.org_id,
+                            b.group_name
+                        };
+
+            var output = query
+                    .Select(s => new
+                    {
+                        DocNo = s.doc_no,
+                        DocName = s.doc_name,
+                        EffDate = s.eff_date.ToString("dd-MM-yyyy"),
+                        CheckDate = s.check_date.Value.ToString("dd-MM-yyyy"),//s.check_date != null ? s.check_date.Value.ToString("dd-MM-yyyy") : "",
+                        Group = s.group_name,
+                    });
+
+            util.CreateExcel(output.ToList(), "OverDue_" + date_from.ToString("dd-MM-yyyy") + "_" + date_to.ToString("dd-MM-yyyy"));
         }
 
         //[HttpPost]

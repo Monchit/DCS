@@ -383,28 +383,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="V_Report_Copy">
-      <EntityTypeMapping TypeName="DocumentControlModel.V_Report_Copy">
-        <MappingFragment StoreEntitySet="V_Report_Copy">
-          <ScalarProperty Name="doc_name" ColumnName="doc_name" />
-          <ScalarProperty Name="action_name" ColumnName="action_name" />
-          <ScalarProperty Name="status_name" ColumnName="status_name" />
-          <ScalarProperty Name="lv_name" ColumnName="lv_name" />
-          <ScalarProperty Name="statusname" ColumnName="statusname" />
-          <ScalarProperty Name="req_id" ColumnName="req_id" />
-          <ScalarProperty Name="status_id" ColumnName="status_id" />
-          <ScalarProperty Name="lv_id" ColumnName="lv_id" />
-          <ScalarProperty Name="org_id" ColumnName="org_id" />
-          <ScalarProperty Name="actor" ColumnName="actor" />
-          <ScalarProperty Name="act_dt" ColumnName="act_dt" />
-          <ScalarProperty Name="paper_name" ColumnName="paper_name" />
-          <ScalarProperty Name="reason" ColumnName="reason" />
-          <ScalarProperty Name="type" ColumnName="type" />
-          <ScalarProperty Name="qty" ColumnName="qty" />
-          <ScalarProperty Name="doc_no" ColumnName="doc_no" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="V_User_Info">
       <EntityTypeMapping TypeName="DocumentControlModel.V_User_Info">
         <MappingFragment StoreEntitySet="V_User_Info">
@@ -447,6 +425,28 @@
           <ScalarProperty Name="group_code" ColumnName="group_code" />
           <ScalarProperty Name="doc_type_short" ColumnName="doc_type_short" />
           <ScalarProperty Name="req_id" ColumnName="req_id" />
+          <ScalarProperty Name="doc_no" ColumnName="doc_no" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="V_Report_Copy">
+      <EntityTypeMapping TypeName="DocumentControlModel.V_Report_Copy">
+        <MappingFragment StoreEntitySet="V_Report_Copy">
+          <ScalarProperty Name="group_name" ColumnName="group_name" />
+          <ScalarProperty Name="doc_name" ColumnName="doc_name" />
+          <ScalarProperty Name="action_name" ColumnName="action_name" />
+          <ScalarProperty Name="status_name" ColumnName="status_name" />
+          <ScalarProperty Name="lv_name" ColumnName="lv_name" />
+          <ScalarProperty Name="statusname" ColumnName="statusname" />
+          <ScalarProperty Name="req_id" ColumnName="req_id" />
+          <ScalarProperty Name="status_id" ColumnName="status_id" />
+          <ScalarProperty Name="lv_id" ColumnName="lv_id" />
+          <ScalarProperty Name="org_id" ColumnName="org_id" />
+          <ScalarProperty Name="act_dt" ColumnName="act_dt" />
+          <ScalarProperty Name="paper_name" ColumnName="paper_name" />
+          <ScalarProperty Name="reason" ColumnName="reason" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="qty" ColumnName="qty" />
           <ScalarProperty Name="doc_no" ColumnName="doc_no" />
         </MappingFragment>
       </EntityTypeMapping>

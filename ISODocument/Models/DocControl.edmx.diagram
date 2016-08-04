@@ -45,9 +45,9 @@
         <EntityTypeShape EntityType="DocumentControlModel.V_TranCopy" Width="1.5" PointX="9.625" PointY="21.625" />
         <AssociationConnector Association="DocumentControlModel.FK_TD_TranCopy_TM_Action" />
         <AssociationConnector Association="DocumentControlModel.FK_TD_ReqCopy_TD_Document" />
-        <EntityTypeShape EntityType="DocumentControlModel.V_Report_Copy" Width="1.5" PointX="11.75" PointY="26.75" />
         <EntityTypeShape EntityType="DocumentControlModel.V_User_Info" Width="1.5" PointX="13.625" PointY="24" />
-        <EntityTypeShape EntityType="DocumentControlModel.V_ReqCopy" Width="1.5" PointX="13.625" PointY="20" />
+        <EntityTypeShape EntityType="DocumentControlModel.V_ReqCopy" Width="1.5" PointX="11.75" PointY="26.75" />
+        <EntityTypeShape EntityType="DocumentControlModel.V_Report_Copy" Width="1.5" PointX="13.625" PointY="19.625" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

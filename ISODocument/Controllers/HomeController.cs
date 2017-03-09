@@ -1,23 +1,23 @@
-﻿using System;
+﻿using ISODocument.Models;
+using ISODocument.ViewModels;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Dynamic;
+using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
 using WebCommonFunction;
-using ISODocument.Models;
-using System.Transactions;
-using System.IO;
-using ISODocument.ViewModels;
 
 namespace ISODocument.Controllers
 {
     public class HomeController : Controller
     {
-        TNCSecurity secure = new TNCSecurity();
+        private TNCSecurity secure = new TNCSecurity();
 
-        DocumentControlEntities dbDC = new DocumentControlEntities();
-        TNC_ADMINEntities dbTNC = new TNC_ADMINEntities();
+        private DocumentControlEntities dbDC = new DocumentControlEntities();
+        private TNC_ADMINEntities dbTNC = new TNC_ADMINEntities();
 
         public ActionResult Index(string key = null)
         {
@@ -27,7 +27,7 @@ namespace ISODocument.Controllers
             }
             else
             {
-                ViewBag.Menu = 0;
+                //ViewBag.Menu = 0;
                 return View();
             }
         }
@@ -40,15 +40,18 @@ namespace ISODocument.Controllers
         [Check_Authen]
         public ActionResult Inprogress()
         {
-            ViewBag.Menu = 1;
+            //ViewBag.Menu = 1;
             ViewBag.ULv = byte.Parse(Session["DC_ULv"].ToString());
+            var paper = from a in dbDC.TM_Paper
+                        select a;
+            ViewBag.Paper = paper;
             return View();
         }
 
         [Check_Authen]
         public ActionResult Controlled()
         {
-            ViewBag.Menu = 2;
+            //ViewBag.Menu = 2;
             ViewBag.ULv = byte.Parse(Session["DC_ULv"].ToString());
             return View();
         }
@@ -56,7 +59,7 @@ namespace ISODocument.Controllers
         [Check_Authen]
         public ActionResult Copy()
         {
-            ViewBag.Menu = 8;
+            //ViewBag.Menu = 8;
             ViewBag.ULv = byte.Parse(Session["DC_ULv"].ToString());
             var get_group = from a in dbDC.V_Group
                             orderby a.group_name
@@ -72,7 +75,7 @@ namespace ISODocument.Controllers
         [Check_Authen]
         public ActionResult CopyCompleted()
         {
-            ViewBag.Menu = 14;
+            //ViewBag.Menu = 14;
             var paper = from a in dbDC.TM_Paper
                         select a;
             ViewBag.Paper = paper;
@@ -95,35 +98,35 @@ namespace ISODocument.Controllers
         [Check_Authen]
         public ActionResult Cancelled()
         {
-            ViewBag.Menu = 3;
+            //ViewBag.Menu = 3;
             return View();
         }
 
         [Check_Authen]
         public ActionResult IssuerCancel()
         {
-            ViewBag.Menu = 4;
+            //ViewBag.Menu = 4;
             return View();
         }
 
         [Check_Authen]
         public ActionResult Obsolete()
         {
-            ViewBag.Menu = 5;
+            //ViewBag.Menu = 5;
             return View();
         }
 
         [Check_Authen]
         public ActionResult FutureUse()
         {
-            ViewBag.Menu = 7;
+            //ViewBag.Menu = 7;
             return View();
         }
 
         [Check_Authen]
         public ActionResult OverDueReview()
         {
-            ViewBag.Menu = 11;
+            //ViewBag.Menu = 11;
             return View();
         }
 
@@ -181,7 +184,7 @@ namespace ISODocument.Controllers
                     ViewBag.DocType = docType;
                 }
             }
-            ViewBag.Menu = 6;
+            //ViewBag.Menu = 6;
             return View();
         }
 
@@ -201,9 +204,94 @@ namespace ISODocument.Controllers
         }
 
         [Check_Authen]
+        public ActionResult NewVDO()
+        {
+            if (Session["DC_ULv"] != null)
+            {
+                int lv = int.Parse(Session["DC_ULv"].ToString());
+                int org = int.Parse(Session["DC_Org"].ToString());
+                if (lv == 1)
+                {
+                    var gcode = from g in dbDC.TM_GroupCode
+                                where g.group_id == org
+                                select g;
+                    ViewBag.GCode = gcode;
+                }
+                else if (lv <= 2)//Mgr. Down
+                {
+                    var gcode = from g in dbDC.TM_GroupCode
+                                where g.group_id == org
+                                select g;
+                    ViewBag.GCode = gcode;
+                }
+                else if (lv == 3)//Dept.
+                {
+                    var groupindept = (from a in dbTNC.tnc_costcentercode
+                                       where a.dept_id == org && a.group_id != 0
+                                       select a.group_id).Distinct().ToList();
+                    var gcode = from a in dbDC.TM_GroupCode
+                                where groupindept.Contains(a.group_id)
+                                select a;
+                    ViewBag.GCode = gcode;
+                }
+
+                string subPath = "~/UploadFiles/VDO/" + Session["DC_Auth"].ToString() + "/";
+                if (!Directory.Exists(Server.MapPath(subPath)))
+                    Directory.CreateDirectory(Server.MapPath(subPath));
+            }
+            return View();
+        }
+
+        [Check_Authen]
+        public ActionResult NewVDO1()
+        {
+            if (Session["DC_ULv"] != null)
+            {
+                int lv = int.Parse(Session["DC_ULv"].ToString());
+                int org = int.Parse(Session["DC_Org"].ToString());
+                if (lv == 1)
+                {
+                    var gcode = from g in dbDC.TM_GroupCode
+                                where g.group_id == org
+                                select g;
+                    ViewBag.GCode = gcode;
+                }
+                else if (lv <= 2)//Mgr. Down
+                {
+                    var gcode = from g in dbDC.TM_GroupCode
+                                where g.group_id == org
+                                select g;
+                    ViewBag.GCode = gcode;
+                }
+                else if (lv == 3)//Dept.
+                {
+                    var groupindept = (from a in dbTNC.tnc_costcentercode
+                                       where a.dept_id == org && a.group_id != 0
+                                       select a.group_id).Distinct().ToList();
+                    var gcode = from a in dbDC.TM_GroupCode
+                                where groupindept.Contains(a.group_id)
+                                select a;
+                    ViewBag.GCode = gcode;
+                }
+            }
+            return View();
+        }
+
+        [Check_Authen]
         public ActionResult Questionair()
         {
             return View();
+        }
+
+        [Check_Authen]
+        public ActionResult MgrEdit(string doctype, string groupcode, int runno, byte revno)
+        {
+            TD_Document td_document = dbDC.TD_Document.Find(doctype, groupcode, runno, revno);
+            if (td_document == null)
+            {
+                return HttpNotFound();
+            }
+            return View(td_document);
         }
 
         [Check_Authen]
@@ -234,14 +322,14 @@ namespace ISODocument.Controllers
             var paper = from a in dbDC.TM_Paper
                         select a;
             ViewBag.Paper = paper;
-            ViewBag.Menu = 11;
+            //ViewBag.Menu = 11;
             return View();
         }
 
         [Check_Authen]
         public ActionResult DocCopyRequest()
         {
-            ViewBag.Menu = 7;
+            //ViewBag.Menu = 7;
             return View();
         }
 
@@ -506,7 +594,7 @@ namespace ISODocument.Controllers
             //------------------------------------------------//
             var get_dis = dbDC.TD_DistributionList.Any(a => a.doc_type_short == doctype && a.group_code == groupcode
                                   && a.run_no == runno && a.rev_no == revno && (a.group_id == org || a.group_id == 0));
-            
+
             //Add Date 2016-02-16 by Monchit
             if (Session["DC_UType"] != null && Session["DC_UType"].ToString() != "0")
             {
@@ -568,7 +656,7 @@ namespace ISODocument.Controllers
                                        where b.plant_id == org && b.dept_id != 0
                                        select b.dept_id).Distinct().ToList();
 
-                    var get_approve = comment.Where(w => w.active == true && w.status_id != 0 
+                    var get_approve = comment.Where(w => w.active == true && w.status_id != 0
                                                     && ((w.lv_id == lv && w.org_id == org)
                                                     || (w.lv_id == 3 && deptinplant.Contains(w.org_id))
                                                     || (w.lv_id == 2 && groupinplant.Contains(w.org_id)))).FirstOrDefault();
@@ -622,7 +710,7 @@ namespace ISODocument.Controllers
                          select u).FirstOrDefault();
             if (query != null)
             {
-                name = query.emp_fname + " " + query.emp_lname.Substring(0,2) + ".";
+                name = query.emp_fname + " " + query.emp_lname.Substring(0, 2) + ".";
             }
             return name;
         }
@@ -655,7 +743,7 @@ namespace ISODocument.Controllers
                 {
                     Session["DC_QC"] = 0;
                 }
-                
+
                 var pos_lv = (from lv in dbDC.TM_Level
                               where lv.position_min <= chklogin.position_level && lv.position_max >= chklogin.position_level
                               select lv).FirstOrDefault();
@@ -685,7 +773,7 @@ namespace ISODocument.Controllers
                 {
                     Session["DC_Name"] = chklogin.emp_fname + " " + chklogin.emp_lname + ". (" + pos_lv.lv_name + ")";
                 }
-                
+
                 var chk_sysuser = (from a in dbDC.TM_User
                                    where a.empcode == chklogin.emp_code
                                    select a).FirstOrDefault();
@@ -827,7 +915,7 @@ namespace ISODocument.Controllers
                 string actor = Session["DC_Auth"].ToString();
                 byte lv = byte.Parse(Session["DC_ULv"].ToString());
                 int org = int.Parse(Session["DC_Org"].ToString());
-                
+
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Suppress))
                 {
                     bool check_doc = dbDC.TD_Document
@@ -879,7 +967,7 @@ namespace ISODocument.Controllers
                         }
 
                         dbDC.TD_Document.Add(doc);
-                        
+
                         if (Request.Form["sel2List"] != null)//Update Date 2015-01-27 by Monchit W.
                         {
                             AddDistributionList(docType, gCode, runno, revno, Request.Form["sel2List"].ToString());
@@ -904,13 +992,128 @@ namespace ISODocument.Controllers
                             SendEmailCenter(docType, gCode, runno, revno, tnc_org.ManagerEMail, operate);
                         }
 
-                        //if (operate == 2)
+                        //if (operate == 2)//Revise
                         //{
                         //    UpdateCheckDate(docType, gCode, runno, (byte)(revno - 1), effdt);
                         //}
 
                         scope.Complete();
-                        
+
+                        TempData["result"] = "Document No. " + docType + "-" + gCode + "-" + runno.ToString("0000") + " rev." + revno.ToString("00") + " action success";
+                    }
+                    else
+                    {
+                        TempData["result"] = "Document No. " + docType + "-" + gCode + "-" + runno.ToString("0000") + " rev." + revno.ToString("00") + " action NOT success";
+                    }
+                }
+                return RedirectToAction("Inprogress", "Home");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public ActionResult CreateVDO(HttpPostedFileBase flAtt, HttpPostedFileBase flSrc)
+        {
+            try
+            {
+                var docType = Request.Form["txtDocType"].ToString();
+                var gCode = Request.Form["selGroupCode"].ToString();
+                var runno = int.Parse(Request.Form["txtRunno"].ToString());
+                var revno = byte.Parse(Request.Form["txtRev"].ToString());
+                byte operate = revno != 0 ? (byte)2 : (byte)1;
+                byte sub_rev = 0;//GetSubRevCurrent(docType, gCode, runno, revno, operate);
+                string actor = Session["DC_Auth"].ToString();
+                byte lv = byte.Parse(Session["DC_ULv"].ToString());
+                int org = int.Parse(Session["DC_Org"].ToString());
+
+                using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Suppress))
+                {
+                    bool check_doc = dbDC.TD_Document
+                        .Any(w => w.doc_type_short == docType && w.group_code == gCode && w.run_no == runno && w.rev_no == revno);
+                    if (!check_doc && !string.IsNullOrEmpty(actor))
+                    {
+                        DateTime dt = DateTime.Now;
+                        TD_Document doc = new TD_Document();
+                        var effdt = Request.Form["dtEff"] != null ? ParseToDate(Request.Form["dtEff"].ToString()) : dt;
+                        doc.doc_type_short = docType;
+                        doc.group_code = gCode;
+                        doc.run_no = runno;
+                        doc.rev_no = revno;
+                        doc.doc_name = Request.Form["txtDocName"].ToString();
+                        doc.eff_date = effdt;
+                        doc.check_date = effdt.AddYears(2);
+                        doc.reference = Request.Form["txtRemark"].ToString();
+                        doc.remark = Request.Form["txaRemark"] != null ? Request.Form["txaRemark"].ToString() : "";
+
+                        // Add data to DB TD_File //
+                        string subPath = "~/UploadFiles/" + dt.Year + "/" + dt.Month + "/";
+                        string AtthName = docType + "-" + gCode + "-" + runno.ToString("0000") + "-r" + revno.ToString("00");
+                        if (!Directory.Exists(Server.MapPath(subPath)))
+                            Directory.CreateDirectory(Server.MapPath(subPath));
+
+                        if (flAtt != null && flAtt.ContentLength > 0)
+                        {
+                            if (flAtt.ContentType == "application/pdf")
+                            {
+                                var extension = Path.GetExtension(flAtt.FileName);
+                                var fileName = AtthName + extension;
+                                var path = Path.Combine(Server.MapPath(subPath), fileName);
+                                flAtt.SaveAs(path);
+                                doc.attach_file = subPath + fileName;
+                            }
+                        }
+
+                        if (flSrc != null && flSrc.ContentLength > 0)
+                        {
+                            var extension = Path.GetExtension(flSrc.FileName).ToLower();
+                            if (extension == ".doc" || extension == ".docx" || extension == ".xls" || extension == ".xlsx")
+                            {
+                                var fileName = AtthName + extension;
+                                var path = Path.Combine(Server.MapPath(subPath), fileName);
+                                flSrc.SaveAs(path);//Save on Server
+                                doc.src_file = subPath + fileName;//Add record to DB
+                            }
+                        }
+
+                        string sourcePath = "~/UploadFiles/VDO/" + actor + "/";
+                        string targetPath = "~/UploadFiles/VDO/" + dt.Year + "/" + dt.Month + "/";
+                        string[] vdoName = GetFileNames(Server.MapPath(sourcePath), "*.mp4");
+
+                        if (vdoName.Length > 0)
+                        {
+                            string vdofileName = vdoName[0];
+                            string vdoNewName = AtthName + ".mp4";
+
+                            if (!Directory.Exists(Server.MapPath(targetPath))) Directory.CreateDirectory(Server.MapPath(targetPath));
+
+                            //Use Path class to manipulate file and directory paths.
+                            string sourceFile = Path.Combine(Server.MapPath(sourcePath), vdofileName);
+                            string destFile = Path.Combine(Server.MapPath(targetPath), vdoNewName);//Change Name bofore move.
+
+                            // To move a file or folder to a new location:
+                            System.IO.File.Move(sourceFile, destFile);
+                            doc.vdo_path = targetPath + vdoNewName;//Add record to DB
+                        }
+
+                        dbDC.TD_Document.Add(doc);
+
+                        if (Request.Form["sel2List"] != null)//Update Date 2015-01-27 by Monchit W.
+                        {
+                            AddDistributionList(docType, gCode, runno, revno, Request.Form["sel2List"].ToString());
+                        }
+                        else
+                        {
+                            scope.Dispose();
+                        }
+
+                        GetNextTransaction(docType, gCode, runno, revno, ++sub_rev, 0, lv, org, operate, 1, actor);
+                        dbDC.SaveChanges();
+
+                        scope.Complete();
+
                         TempData["result"] = "Document No. " + docType + "-" + gCode + "-" + runno.ToString("0000") + " rev." + revno.ToString("00") + " action success";
                     }
                     else
@@ -944,7 +1147,7 @@ namespace ISODocument.Controllers
                 {
                     operate = 2;
                 }
-                
+
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Suppress))
                 {
                     bool check_doc = dbDC.TD_Document
@@ -1033,7 +1236,6 @@ namespace ISODocument.Controllers
             }
             finally
             {
-
             }
         }
 
@@ -1147,6 +1349,106 @@ namespace ISODocument.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult MgrUpdateDoc(HttpPostedFileBase flAtt, HttpPostedFileBase flSrc, int[] hcGroup, int[] hcQty, string[] hcNote)
+        {
+            try
+            {
+                var docType = Request.Form["hdDT"].ToString();
+                var gCode = Request.Form["hdGC"].ToString();
+                var runno = int.Parse(Request.Form["hdRN"].ToString());
+                var revno = byte.Parse(Request.Form["hdRV"].ToString());
+                //byte operate = revno != 0 ? (byte)2 : (byte)1;
+                //byte sub_rev = GetSubRevCurrent(docType, gCode, runno, revno, operate);
+                //string actor = Session["DC_Auth"].ToString();
+                //byte lv = byte.Parse(Session["DC_ULv"].ToString());
+                //int org = int.Parse(Session["DC_Org"].ToString());
+
+                using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Suppress))
+                {
+                    DateTime dt = DateTime.Now;
+                    var effdt = Request.Form["dtEff"] != null ? ParseToDate(Request.Form["dtEff"].ToString()) : dt;
+                    var doc = dbDC.TD_Document.Find(docType, gCode, runno, revno);
+                    doc.doc_name = Request.Form["txtDocName"].ToString();
+                    doc.eff_date = effdt;
+                    doc.reference = Request.Form["txtRemark"].ToString();
+                    doc.remark = Request.Form["txaRemark"] != null ? Request.Form["txaRemark"].ToString() : "";
+
+                    // Add data to DB TD_File //
+                    string subPath = "~/UploadFiles/" + dt.Year + "/" + dt.Month + "/";// +docType + "/";// +gCode + "/";
+                    //string target = "~/UploadFiles/Old/";
+                    if (!Directory.Exists(Server.MapPath(subPath)))
+                        Directory.CreateDirectory(Server.MapPath(subPath));
+
+                    if (flAtt != null && flAtt.ContentLength > 0)
+                    {
+                        var extension = Path.GetExtension(flAtt.FileName);
+                        if (flAtt.ContentType == "application/pdf")
+                        {
+                            var fileName = docType + "-" + gCode + "-" + runno.ToString("0000")
+                                + "-r" + revno.ToString("00") + extension;
+                            var path = Path.Combine(Server.MapPath(subPath), fileName);
+
+                            flAtt.SaveAs(path);
+                            doc.attach_file = subPath + fileName;
+                        }
+                    }
+
+                    if (flSrc != null && flSrc.ContentLength > 0)
+                    {
+                        var extension = Path.GetExtension(flSrc.FileName);
+                        if (extension == ".doc" || extension == ".docx" || extension == ".xls" || extension == ".xlsx")
+                        {
+                            var fileName = docType + "-" + gCode + "-" + runno.ToString("0000")
+                                + "-r" + revno.ToString("00") + extension;
+                            var path = Path.Combine(Server.MapPath(subPath), fileName);
+
+                            flSrc.SaveAs(path);//Save on Server
+                            doc.src_file = subPath + fileName;//Add record to DB
+                        }
+                    }
+
+                    var distribution_list = Request.Form["sel2List"] != null ? Request.Form["sel2List"].ToString() : null;
+
+                    if (distribution_list != null)
+                    {
+                        DelDistributionList(docType, gCode, runno, revno);
+                        AddDistributionList(docType, gCode, runno, revno, distribution_list);
+                    }
+
+                    if (CheckHasHardCopy(docType))
+                    {
+                        if (hcGroup != null && hcQty != null)
+                        {
+                            DelHC(docType, gCode, runno, revno, 0);
+                            AddHC(hcGroup, hcQty, hcNote, docType, gCode, runno, revno, 0);
+                        }
+                        else
+                        {
+                            DelHC(docType, gCode, runno, revno, 0);
+                        }
+                    }
+
+                    //UpdateTransaction(docType, gCode, runno, revno, sub_rev, 9, lv, org, operate, false, 1, actor, save: true);
+                    //GetNextTransaction(docType, gCode, runno, revno, sub_rev, 0, lv, org, operate, 4, actor);
+                    dbDC.SaveChanges();
+
+                    //if (operate == 2)
+                    //{
+                    //    UpdateCheckDate(docType, gCode, runno, (byte)(revno - 1), effdt);
+                    //}
+
+                    scope.Complete();
+                    TempData["result"] = "Document No. " + docType + "-" + gCode + "-" + runno.ToString("0000") + " rev." + revno.ToString("00") + " action success";
+                }
+                return RedirectToAction("Inprogress", "Home");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         private void GetNextTransaction(string doc_type_short, string group_code, int run_no, byte rev_no, byte sub_rev, byte status, byte lv, int org, byte operate, byte action, string actor, string comment = "")
         {
             TNCOrganization tnc_org = new TNCOrganization();
@@ -1200,7 +1502,7 @@ namespace ISODocument.Controllers
 
                     if (get_doc_lv > 2) // Level 3, 4
                     {
-                        if (doc_type_short == "WI" || doc_type_short == "WP" || doc_type_short == "PC" || doc_type_short == "OC" || doc_type_short == "RP")
+                        if (doc_type_short == "WI" || doc_type_short == "WP" || doc_type_short == "PC" || doc_type_short == "OC" || doc_type_short == "RP" || doc_type_short == "VDO")
                         {
                             int get_group = (from a in dbDC.TM_GroupCode
                                              where a.group_code == group_code
@@ -1237,16 +1539,16 @@ namespace ISODocument.Controllers
                         {
                             UpdateCheckDate(doc_type_short, group_code, run_no, rev_no);
                         }
-                        else if (doc_type_short == "AI") // Aspect
+                        else if (doc_type_short == "AI" || doc_type_short == "ROE") // Aspect
                         {
-                            //Update Date 2015-02-10 by Monchit W. //Change from 5 to 136 
+                            //Update Date 2015-02-10 by Monchit W. //Change from 5 to 136
                             CreateTransaction(doc_type_short, group_code, run_no, rev_no, sub_rev, 2, 2, 136, operate, true);//EMR Safety
                             SendEmailCenter(doc_type_short, group_code, run_no, rev_no, GetEmailbyOrg(136, 2), operate);
                         }
                         else//Other
                         {
                             var chk_reviewer = dbDC.TM_DocType.Find(doc_type_short);
-                            
+
                             if (chk_reviewer.dcc == "safety")
                             {
                                 CreateTransaction(doc_type_short, group_code, run_no, rev_no, sub_rev, 3, 1, 136, operate, true);
@@ -1303,12 +1605,12 @@ namespace ISODocument.Controllers
                     if (check_all_approve == 0)
                     {
                         var chk_reviewer = dbDC.TM_DocType.Find(doc_type_short);
-                                           
+
                         if (operate == 4)// Review Doc
                         {
                             UpdateCheckDate(doc_type_short, group_code, run_no, rev_no);
                         }
-                        else if(chk_reviewer.dcc == "qs")
+                        else if (chk_reviewer.dcc == "qs")
                         {
                             CreateTransaction(doc_type_short, group_code, run_no, rev_no, sub_rev, ++status, 1, 18, operate, true);
                             SendEmailCenter(doc_type_short, group_code, run_no, rev_no, GetEmailDCC(group_code), operate);
@@ -1430,8 +1732,8 @@ namespace ISODocument.Controllers
         {
             string email = "";
             var get_user = from a in dbDC.TM_User
-                            where a.utype_id == 6
-                            select a;
+                           where a.utype_id == 6
+                           select a;
 
             foreach (var item in get_user)
             {
@@ -1538,7 +1840,7 @@ namespace ISODocument.Controllers
                 }
                 else//Select Distribution List All
                 {
-                    List<byte> send_to_position = new List<byte>(){ 1, 2, 3, 5, 7, 10, 13, 21, 22, 23, 24, 25 };
+                    List<byte> send_to_position = new List<byte>() { 1, 2, 3, 5, 7, 10, 13, 21, 22, 23, 24, 25 };
                     //int x = 0;
                     var get_mail = from m in dbTNC.tnc_user
                                    where m.email != null && m.email.Trim() != "" && m.emp_status == "A"
@@ -1594,7 +1896,7 @@ namespace ISODocument.Controllers
                 var get_issuer = dbTNC.tnc_user.Where(w => w.emp_code == get_tran.actor && !string.IsNullOrEmpty(w.email)).Select(s => s.email).FirstOrDefault();
                 TNCOrganization tnc_org = new TNCOrganization();
                 tnc_org.GetApprover(get_tran.actor);
-                email = tnc_org.ManagerEMail  + (get_issuer != null ? "," + get_issuer : "");
+                email = tnc_org.ManagerEMail + (get_issuer != null ? "," + get_issuer : "");
             }
             return email;
         }
@@ -1661,10 +1963,9 @@ namespace ISODocument.Controllers
 
             return !string.IsNullOrEmpty(email) ? email.Substring(1) : email;
         }
-        
+
         public bool AddHC(int[] hcGroup, int[] hcQty, string[] hcNote, string hdDocType, string hdGroupCode, int hdRunNo, byte hdRevNo, int cprun)
         {
-
             try
             {
                 if (hcGroup.Length > 0)
@@ -1725,7 +2026,7 @@ namespace ISODocument.Controllers
 
                     foreach (var item in group)
                     {
-                        var check = dbDC.TD_DistributionList.Any(w => w.doc_type_short == docType && w.group_code == gCode 
+                        var check = dbDC.TD_DistributionList.Any(w => w.doc_type_short == docType && w.group_code == gCode
                                                             && w.run_no == runno && w.rev_no == revno && w.group_id == item);
                         if (!check)
                         {
@@ -1759,10 +2060,10 @@ namespace ISODocument.Controllers
                           where a.doc_type_short == docType && a.group_code == gCode && a.run_no == runno && a.rev_no == revno
                           select a.group_id;
             foreach (var item in get_all)
-	        {
+            {
                 TD_DistributionList dist = dbDC.TD_DistributionList.Find(docType, gCode, runno, revno, item);
                 dbDC.TD_DistributionList.Remove(dist);
-	        }
+            }
             dbDC.SaveChanges();
         }
 
@@ -1865,7 +2166,7 @@ namespace ISODocument.Controllers
         public ActionResult GetDistributionList(string doctype, string groupcode, int runno, byte revno, bool lockx = false)
         {
             var get_selected = (from a in dbDC.TD_DistributionList
-                                where a.doc_type_short == doctype && a.group_code == groupcode 
+                                where a.doc_type_short == doctype && a.group_code == groupcode
                                 && a.run_no == runno && a.rev_no == revno
                                 select a.group_id).ToList();
             //var get_other = dbTNC.tnc_group_master.Where(w => get_selected.Contains(w.id))
@@ -1931,7 +2232,7 @@ namespace ISODocument.Controllers
 
         public bool CreateTransaction(string doc_type_short, string group_code, int run_no, byte rev_no, byte sub_rev, byte status, byte lv, int org, byte operate, bool active = false, byte action = 0, string actor = null, string comment = null)
         {
-            bool exist = dbDC.TD_Transaction.Any(w => w.doc_type_short == doc_type_short && w.group_code == group_code 
+            bool exist = dbDC.TD_Transaction.Any(w => w.doc_type_short == doc_type_short && w.group_code == group_code
                 && w.run_no == run_no && w.rev_no == rev_no && w.sub_rev == sub_rev && w.status_id == status && w.lv_id == lv
                 && w.org_id == org && w.operation_id == operate);
 
@@ -1987,10 +2288,10 @@ namespace ISODocument.Controllers
             }
         }
 
-        public bool SetActiveTransaction(string doc_type_short, string group_code, int run_no, byte rev_no, byte operate=0, byte status = 0, byte lv = 0, bool active = false)
+        public bool SetActiveTransaction(string doc_type_short, string group_code, int run_no, byte rev_no, byte operate = 0, byte status = 0, byte lv = 0, bool active = false)
         {
             var get_tran = from a in dbDC.TD_Transaction
-                           where a.doc_type_short == doc_type_short && a.group_code == group_code && a.run_no == run_no 
+                           where a.doc_type_short == doc_type_short && a.group_code == group_code && a.run_no == run_no
                            && a.rev_no == rev_no && a.active != active
                            select a;
 
@@ -2024,7 +2325,6 @@ namespace ISODocument.Controllers
             {
                 return false;
             }
-
         }
 
         [HttpPost]
@@ -2035,7 +2335,7 @@ namespace ISODocument.Controllers
                 var query = from a in dbDC.V_Transaction
                             where a.active == true && a.status_id != 99 //99 is DCC Confirm
                             select a;
-                
+
                 byte lv = byte.Parse(Session["DC_ULv"].ToString());
                 int org = int.Parse(Session["DC_Org"].ToString());
 
@@ -2045,13 +2345,17 @@ namespace ISODocument.Controllers
                 }
                 else if (user == 1)// My Document
                 {
-                    var own = Session["DC_Auth"].ToString();
+                    //var own = Session["DC_Auth"].ToString();
                     if (lv <= 2)
                     {
-                        var owner = (from a in dbDC.TD_Transaction
-                                    where a.status_id == 0 && a.org_id == org && a.lv_id <= 2
-                                    select a).ToList().Select(a => a.doc_type_short + a.group_code + a.run_no.ToString() + a.rev_no.ToString());
-                        query = query.ToList().Where(a => owner.Contains(a.doc_type_short + a.group_code + a.run_no.ToString() + a.rev_no.ToString())).AsQueryable();
+                        var get_gcode = (from a in dbDC.TM_GroupCode
+                                         where a.group_id == org
+                                         select a.group_code).ToList();//Add .ToList() faster than no add.
+                        query = query.Where(w => get_gcode.Contains(w.group_code));
+                        //var owner = (from a in dbDC.TD_Transaction
+                        //             where a.status_id == 0 && a.org_id == org && a.lv_id <= 2
+                        //             select a).ToList().Select(a => a.doc_type_short + a.group_code + a.run_no.ToString() + a.rev_no.ToString());
+                        //query = query.ToList().Where(a => owner.Contains(a.doc_type_short + a.group_code + a.run_no.ToString() + a.rev_no.ToString())).AsQueryable();
                     }
                     //else if (lv == 3)
                     //{
@@ -2270,19 +2574,19 @@ namespace ISODocument.Controllers
                 int org = int.Parse(Session["DC_Org"].ToString());
                 byte lv = byte.Parse(Session["DC_ULv"].ToString());
 
-                var query = dbDC.V_Max_Transaction.Where(w => w.status_id == 100 && w.eff_date <= dt && w.check_date >= dt).ToList()
-                    .Select(s => new
-                    {
-                        s.doc_type_short,
-                        s.group_code,
-                        s.run_no,
-                        s.doc_no,
-                        s.rev_no,
-                        s.doc_name,
-                        s.eff_date,
-                        s.org_id,
-                        s.check_date
-                    });
+                var query = dbDC.V_Max_Transaction.Where(w => w.status_id == 100 && w.eff_date <= dt && w.check_date >= dt)
+                            .Select(s => new
+                            {
+                                s.doc_type_short,
+                                s.group_code,
+                                s.run_no,
+                                s.doc_no,
+                                s.rev_no,
+                                s.doc_name,
+                                s.eff_date,
+                                s.org_id,
+                                s.check_date
+                            });
 
                 if (mode == 0)//Page Load
                 {
@@ -2319,14 +2623,6 @@ namespace ISODocument.Controllers
                     {
                         query = query.Where(w => w.rev_no == rev_no);
                     }
-                    //if (date_from != null)
-                    //{
-                    //    query = query.Where(w => w.check_date >= date_from.Value);
-                    //}
-                    //if (date_to != null)
-                    //{
-                    //    query = query.Where(w => w.check_date <= date_to.Value);
-                    //}
                 }
 
                 //Get data from database
@@ -2337,7 +2633,7 @@ namespace ISODocument.Controllers
                 //              select a.doc_type_short;
 
                 // Paging
-                var output = query
+                var output = query.ToList()
                     .Select(s => new
                     {
                         s.doc_type_short,
@@ -2441,7 +2737,7 @@ namespace ISODocument.Controllers
                                                 : dbDC.TD_DistributionList.Where(w => w.group_id == group_id).ToList();
 
                 var query = from a in sub_query // || w.group_id == 0
-                            join b in dbDC.V_Max_Transaction.Where(w => w.status_id == 100 && (w.doc_type_short != "EM" && w.doc_type_short != "LM" && w.doc_type_short != "QM" &&w.doc_type_short != "EP" &&w.doc_type_short != "LP" &&w.doc_type_short != "QP")).ToList()
+                            join b in dbDC.V_Max_Transaction.Where(w => w.status_id == 100 && (w.doc_type_short == "WI" || w.doc_type_short == "WP" || w.doc_type_short == "TM" || w.doc_type_short == "RP" || w.doc_type_short == "MSDS" || w.doc_type_short == "OC" || w.doc_type_short == "PC")).ToList()
                             on new { a.doc_type_short, a.group_code, a.run_no, a.rev_no }
                             equals new { b.doc_type_short, b.group_code, b.run_no, b.rev_no }
                             select new
@@ -2563,9 +2859,9 @@ namespace ISODocument.Controllers
         {
             int org = int.Parse(Session["DC_Org"].ToString());
             var query = (from a in dbDC.TD_DistributionList
-                        where a.doc_type_short == doctype && a.group_code == groupcode
-                        && a.run_no == runno && a.rev_no == revno && (a.group_id == org || a.group_id == 0)
-                        select a).Any();
+                         where a.doc_type_short == doctype && a.group_code == groupcode
+                         && a.run_no == runno && a.rev_no == revno && (a.group_id == org || a.group_id == 0)
+                         select a).Any();
             return query;
         }
 
@@ -2575,7 +2871,7 @@ namespace ISODocument.Controllers
             try
             {
                 var dt = DateTime.Now;
-                var query = dbDC.V_Max_Transaction.Where(w => w.status_id == 100 && w.eff_date <= dt).ToList()
+                var query = dbDC.V_Max_Transaction.Where(w => w.status_id == 100 && w.eff_date <= dt)
                     .Select(s => new
                     {
                         s.doc_type_short,
@@ -2750,7 +3046,7 @@ namespace ISODocument.Controllers
             //1. Check Lastest Revision
             //2. Check Organize of Issuer
             var get_max = dbDC.V_Max_Transaction.Where(w => w.status_id == 100 && w.doc_type_short == doctype && w.group_code == groupcode && w.run_no == runno && w.org_id == org).OrderByDescending(o => o.rev_no).FirstOrDefault();
-            
+
             //3. Check New revision in-progress
             var get_new = dbDC.TD_Transaction.Where(w => w.doc_type_short == doctype && w.group_code == groupcode && w.run_no == runno && w.rev_no == (revno + 1) && w.active == true);
 
@@ -2822,14 +3118,14 @@ namespace ISODocument.Controllers
 
             //1. Check Lastest Revision
             //2. Check Organize of Issuer
-            var get_max = dbDC.V_Max_Transaction.Where(w => w.status_id == 100 && w.doc_type_short == doctype 
-                && w.group_code == groupcode && w.run_no == runno && (w.org_id == org || groupindept.Contains(w.org_id))).OrderByDescending(o => o.rev_no).FirstOrDefault();
+            var get_max = dbDC.V_Max_Transaction.Where(w => w.status_id == 100 && w.doc_type_short == doctype
+                && w.group_code == groupcode && w.run_no == runno && (w.org_id == org || groupindept.Contains(w.org_id))).OrderByDescending(o => o.rev_no).Select(s => s.rev_no);//.FirstOrDefault()
 
             //4. Check in-progress
-            var get_new = dbDC.TD_Transaction.Where(w => w.doc_type_short == doctype && w.group_code == groupcode 
+            var get_new = dbDC.TD_Transaction.Where(w => w.doc_type_short == doctype && w.group_code == groupcode
                 && w.run_no == runno && w.active == true && w.status_id != 99);//99=DCC Confirm
 
-            if (get_max != null && get_max.rev_no == revno && !get_new.Any())
+            if (get_max.Any() && get_max.First() == revno && !get_new.Any())
             {
                 return true;
             }
@@ -2840,7 +3136,7 @@ namespace ISODocument.Controllers
         }
 
         [HttpPost]
-        public ActionResult ApproveDoc()
+        public ActionResult ApproveDoc(HttpPostedFileBase pathVDO)
         {
             var actor = Session["DC_Auth"].ToString();
             if (!string.IsNullOrEmpty(actor))
@@ -2857,7 +3153,12 @@ namespace ISODocument.Controllers
                 byte oper = byte.Parse(Request.Form["hdOP"].ToString());
                 int org = int.Parse(Request.Form["hdOR"].ToString());
                 string comment = Request.Form["txaComment"];
-                
+
+                if (pathVDO != null && pathVDO.ContentLength > 0)
+                {
+                    UpdateVDOPath(docType, gCode, runno, revno, pathVDO.FileName);
+                }
+
                 if ((oper == 3 || oper == 4) && action == 3)
                 {
                     UpdateTransaction(docType, gCode, runno, revno, subrev, status, level, org, oper, false, action, actor, comment, true);
@@ -2868,7 +3169,7 @@ namespace ISODocument.Controllers
                     UpdateTransaction(docType, gCode, runno, revno, subrev, status, level, org, oper, false, action, actor, comment, true);
                     GetNextTransaction(docType, gCode, runno, revno, subrev, status, level, org, oper, action, actor);
                 }
-                
+
                 if (action == 3)//Reject send to Issuer
                 {
                     SendEmailCenter(docType, gCode, runno, revno, GetEmailIssuer(docType, gCode, runno, revno), oper, 1, comment);//1=Reject
@@ -2881,7 +3182,22 @@ namespace ISODocument.Controllers
             }
             else
             {
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        private void UpdateVDOPath(string docType, string gCode, int runno, byte revno, string p)
+        {
+            using (var localdb = new DocumentControlEntities())
+            {
+                var query = localdb.TD_Document.Find(docType, gCode, runno, revno);
+                if (query != null)
+                {
+                    //string dir = Path.GetDirectoryName(p).Replace(@"\", "/");
+                    //query.vdo_path = "file:" + dir;
+                    query.vdo_path = Path.GetDirectoryName(p);
+                    localdb.SaveChanges();
+                }
             }
         }
 
@@ -2948,7 +3264,7 @@ namespace ISODocument.Controllers
             byte paper = byte.Parse(Request.Form["selPaper"].ToString());
             string comment = Request.Form["txaReason"];
 
-            TempData["result"] = "Document No. " + docType + "-" + gCode + "-" + runno.ToString("0000") + " rev." + revno.ToString("00") + " request copy success"; 
+            TempData["result"] = "Document No. " + docType + "-" + gCode + "-" + runno.ToString("0000") + " rev." + revno.ToString("00") + " request copy success";
 
             return RedirectToAction("Controlled", "Home");
         }
@@ -3011,7 +3327,7 @@ namespace ISODocument.Controllers
             return RedirectToAction("Inprogress", "Home");
         }
 
-        public void SendEmailCenter(string doc_type_short, string group_code, int run_no, byte rev_no, 
+        public void SendEmailCenter(string doc_type_short, string group_code, int run_no, byte rev_no,
                                     string receiver, byte operate, int type = 0, string content = "")
         {
             if (!string.IsNullOrEmpty(receiver))
@@ -3033,10 +3349,13 @@ namespace ISODocument.Controllers
                     mailto = receiver;
                 }
 
-                var get_doc = (from a in dbDC.V_Transaction
-                               where a.doc_type_short == doc_type_short && a.group_code == group_code
-                               && a.run_no == run_no && a.rev_no == rev_no
-                               select a).FirstOrDefault();
+                //var get_doc = (from a in dbDC.V_Transaction
+                //               where a.doc_type_short == doc_type_short && a.group_code == group_code
+                //               && a.run_no == run_no && a.rev_no == rev_no
+                //               select a).FirstOrDefault();
+
+                var get_doc = dbDC.TD_Document.Find(doc_type_short, group_code, run_no, rev_no);
+                var doc_no = doc_type_short + "-" + group_code + "-" + run_no.ToString("0000") + "-" + rev_no.ToString("00");
 
                 var get_operate = (from o in dbDC.TM_Operation
                                    where o.operation_id == operate
@@ -3050,24 +3369,24 @@ namespace ISODocument.Controllers
                     //string body = "Mail :" + mailto + "<br />";//For Test
                     string int_link = "http://webExternal/DocControl";
                     string ext_link = "http://webexternal.nok.co.th/DocControl";
-                    string Param = "/Home/ShowDocDetail?dt=" + get_doc.doc_type_short + "&gc=" + get_doc.group_code + 
+                    string Param = "/Home/ShowDocDetail?dt=" + get_doc.doc_type_short + "&gc=" + get_doc.group_code +
                                     "&rn=" + get_doc.run_no + "&rv=" + get_doc.rev_no;
                     if (type == 0)//Default Approve
                     {
-                        subject = get_operate + " Doc. wait for Approve (" + get_doc.doc_no + ")";
+                        subject = get_operate + " Doc. wait for Approve (" + doc_no + ")";
                         body += "Dear. All Concern,<br /><br />" +
-                            "<b>Document No. : </b>" + get_doc.doc_no + "<br />" +
+                            "<b>Document No. : </b>" + doc_no + "<br />" +
                             "<b>Document Name : </b>" + get_doc.doc_name + "<br />" +
                             "<b>Effective Date : </b>" + get_doc.eff_date.Date.ToString("dd-MM-yyyy") + "<br />" +
-                            "<b>Link : </b><a href='" + int_link + "/Home/Inprogress'>Internal</a> | <a href='" 
+                            "<b>Link : </b><a href='" + int_link + "/Home/Inprogress'>Internal</a> | <a href='"
                             + ext_link + "/Home/Inprogress'>External</a><br />" +
                             "<br /><b>*This message is automatic sending from Document Control, please do not reply*</b>";
                     }
                     else if (type == 1)//Email Reject for issuer edit
                     {
-                        subject = "Reject (" + get_doc.doc_no + ")";
-                        body = "Dear. All Concern,<br /><br />" + 
-                            "<b>Document No. : </b>" + get_doc.doc_no + "<br />" +
+                        subject = "Reject (" + doc_no + ")";
+                        body += "Dear. All Concern,<br /><br />" +
+                            "<b>Document No. : </b>" + doc_no + "<br />" +
                             "<b>Document Name : </b>" + get_doc.doc_name + "<br />" +
                             "<b>Effective Date : </b>" + get_doc.eff_date.Date.ToString("dd-MM-yyyy") + "<br />" +
                             "<b>Reason : </b>" + content + "<br />" +
@@ -3076,20 +3395,24 @@ namespace ISODocument.Controllers
                     }
                     else if (type == 2)//Controlled
                     {
-                        subject = "Controlled (" + get_doc.doc_no + ")";
-                        body = "Dear. All Concern,<br /><br />" + 
-                            "<b>Document No. : </b>" + get_doc.doc_no + "<br />" +
+                        subject = "Controlled (" + doc_no + ")";
+                        body += "Dear. All Concern,<br /><br />" +
+                            "<b>Document No. : </b>" + doc_no + "<br />" +
                             "<b>Document Name : </b>" + get_doc.doc_name + "<br />" +
-                            "<b>Effective Date : </b>" + get_doc.eff_date.Date.ToString("dd-MM-yyyy") + "<br />" +
-                            "<b>You can see document at link ---> </b><a href='" + int_link + get_doc.attach_file.Substring(1) + "'>View</a><br />" +
-                            "<b>Link : </b><a href='" + int_link + Param + "'>Internal</a> | <a href='" + ext_link + Param + "'>External</a><br />" +
+                            "<b>Effective Date : </b>" + get_doc.eff_date.Date.ToString("dd-MM-yyyy") + "<br />";
+                        if (get_doc.attach_file != null && get_doc.attach_file != "")
+                        {
+                            body += "<b>You can see document at link ---> </b><a href='" + int_link + get_doc.attach_file.Substring(1) + "'>View</a><br />";
+                        }
+
+                        body += "<b>Link : </b><a href='" + int_link + Param + "'>Internal</a> | <a href='" + ext_link + Param + "'>External</a><br />" +
                             "<br /><b>*This message is automatic sending from Document Control, please do not reply*</b>";
                     }
                     else if (type == 3)//Complete
                     {
-                        subject = "Complete (" + get_doc.doc_no + ")";
-                        body = "Dear. All Concern,<br /><br />" + 
-                            "<b>Document No. : </b>" + get_doc.doc_no + "<br />" +
+                        subject = "Complete (" + doc_no + ")";
+                        body += "Dear. All Concern,<br /><br />" +
+                            "<b>Document No. : </b>" + doc_no + "<br />" +
                             "<b>Document Name : </b>" + get_doc.doc_name + "<br />" +
                             "<b>Effective Date : </b>" + get_doc.eff_date.Date.ToString("dd-MM-yyyy") + "<br />" +
                             "<b>Link : </b><a href='" + int_link + Param + "'>Internal</a> | <a href='" + ext_link + Param + "'>External</a><br />" +
@@ -3242,10 +3565,6 @@ namespace ISODocument.Controllers
                 byte action = byte.Parse(Request.Form["selDecision"].ToString());
 
                 int req_id = int.Parse(Request.Form["hdREQ"].ToString());
-                //string docType = Request.Form["hdDT"];
-                //string gCode = Request.Form["hdGC"];
-                //int runno = int.Parse(Request.Form["hdRN"].ToString());
-                //byte revno = byte.Parse(Request.Form["hdRV"].ToString());
                 byte level = byte.Parse(Request.Form["hdLV"].ToString());
                 byte status = byte.Parse(Request.Form["hdST"].ToString());
                 int org = int.Parse(Request.Form["hdOR"].ToString());
@@ -3260,7 +3579,7 @@ namespace ISODocument.Controllers
 
         public ActionResult InprogressCopy()
         {
-            ViewBag.Menu = 12;
+            //ViewBag.Menu = 12;
             ViewBag.ULv = byte.Parse(Session["DC_ULv"].ToString());
             var paper = from a in dbDC.TM_Paper
                         select a;
@@ -3279,6 +3598,8 @@ namespace ISODocument.Controllers
 
                 byte lv = byte.Parse(Session["DC_ULv"].ToString());
                 int org = int.Parse(Session["DC_Org"].ToString());
+
+                bool show_print = Session["DC_UType"].ToString() != "0" ? true : false;
 
                 if (user == 0)// Default - Wait process
                 {
@@ -3345,7 +3666,8 @@ namespace ISODocument.Controllers
                         s.qty,
                         s.reason,
                         //s.doc_name,
-                        s.statusname
+                        s.statusname,
+                        show_print
                     }).OrderBy(jtSorting).Skip(jtStartIndex).Take(jtPageSize);
 
                 //Return result to jTable
@@ -3372,12 +3694,12 @@ namespace ISODocument.Controllers
                 tcp.action_id = action;
                 tcp.actor = actor;
                 tcp.act_dt = dtnow;
-                
+
                 dbDC.TD_TranCopy.Add(tcp);
             }
             else//Update //has row and active is true -> update
             {
-                if (dbDC.TD_TranCopy.Any(w => w.req_id == req_id && w.status_id == status 
+                if (dbDC.TD_TranCopy.Any(w => w.req_id == req_id && w.status_id == status
                     && w.lv_id == lv && w.org_id == org && w.active == true))
                 {
                     exist.active = active;
@@ -3394,40 +3716,42 @@ namespace ISODocument.Controllers
             TNCOrganization tnc_org = new TNCOrganization();
             tnc_org.GetApprover(actor);
 
-            //using (var scope = new TransactionScope())
-            //{
-                if (action == 1) // Issue
+            if (action == 1) // Issue
+            {
+                // Issue TranCopy
+                InsertUpdateTranCopy(req_id, status, lv, org, false, action, actor);
+                InsertUpdateTranCopy(req_id, ++status, (byte)(tnc_org.OrgLevel + 1), tnc_org.OrgId, true);
+                SendEmailCopy(req_id, tnc_org.ManagerEMail);
+            }
+            else if (action == 2) // Approve
+            {
+                InsertUpdateTranCopy(req_id, status, lv, org, false, action, actor);
+                if (status == 1)//Issuer
                 {
-                    // Issue TranCopy
-                    InsertUpdateTranCopy(req_id, status, lv, org, false, action, actor);
-                    InsertUpdateTranCopy(req_id, ++status, (byte)(tnc_org.OrgLevel + 1), tnc_org.OrgId, true);
-                    SendEmailCopy(req_id, tnc_org.ManagerEMail);
+                    //InsertUpdateTranCopy(req_id, 3, 2, 18, true);//3=DCC, 18=QS Group
+                    InsertUpdateTranCopy(req_id, 99, 1, 18, true);//99=DCC Confirm, 18=QS Group
                 }
-                else if (action == 2) // Approve
+                //else if (status == 3)//DCC Manager
+                //{
+                //    InsertUpdateTranCopy(req_id, 99, 1, 18, true);//99=DCC Confirm, 18=QS Group
+                //}
+                else if (status == 99)//DCC Staff
                 {
-                    InsertUpdateTranCopy(req_id, status, lv, org, false, action, actor);
-                    if (status == 1)//Issuer
-                    {
-                        //InsertUpdateTranCopy(req_id, 3, 2, 18, true);//3=DCC, 18=QS Group
-                        InsertUpdateTranCopy(req_id, 99, 1, 18, true);//99=DCC Confirm, 18=QS Group
-                    }
-                    //else if (status == 3)//DCC Manager
-                    //{
-                    //    InsertUpdateTranCopy(req_id, 99, 1, 18, true);//99=DCC Confirm, 18=QS Group
-                    //}
-                    else if (status == 99)//DCC Staff
-                    {
-                        var get_issue_tran = (from a in dbDC.TD_TranCopy
-                                              where a.req_id == req_id && a.status_id == 0
-                                              select a).FirstOrDefault();
-                        InsertUpdateTranCopy(req_id, 105, get_issue_tran.lv_id, get_issue_tran.org_id, false, 1);
-                    }
+                    var get_issue_tran = (from a in dbDC.TD_TranCopy
+                                          where a.req_id == req_id && a.status_id == 0
+                                          select a).FirstOrDefault();
+                    InsertUpdateTranCopy(req_id, 105, get_issue_tran.lv_id, get_issue_tran.org_id, false, 1);
                 }
-                else if (action == 3) // Reject
-                {
-                    InsertUpdateTranCopy(req_id, status, lv, org, false, action, actor);
-                    InsertUpdateTranCopy(req_id, 104, lv, org, false, 1);//104=Rejected
-                }
+                //else if (status == 106)//Issuer receive //Add 2017-01-10 by Monchit
+                //{
+                //    InsertUpdateTranCopy(req_id, 105, get_issue_tran.lv_id, get_issue_tran.org_id, false, 1);
+                //}
+            }
+            else if (action == 3) // Reject
+            {
+                InsertUpdateTranCopy(req_id, status, lv, org, false, action, actor);
+                InsertUpdateTranCopy(req_id, 104, lv, org, false, 1);//104=Rejected
+            }
             //    scope.Complete();
             //}
         }
@@ -3450,6 +3774,14 @@ namespace ISODocument.Controllers
             {
                 return Json("Update Distribution List not success");
             }
+        }
+
+        private static string[] GetFileNames(string path, string filter)
+        {
+            string[] files = Directory.GetFiles(path, filter);
+            for (int i = 0; i < files.Length; i++)
+                files[i] = Path.GetFileName(files[i]);
+            return files;
         }
 
         protected override void Dispose(bool disposing)

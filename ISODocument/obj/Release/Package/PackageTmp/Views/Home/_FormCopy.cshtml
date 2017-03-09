@@ -1,0 +1,32 @@
+﻿<script type="text/javascript">
+    $(document).ready(function () {
+        $.validate({
+            form: 'formCopy',
+            validateOnBlur: false,
+            errorMessagePosition: 'top'
+        });
+
+        $("#txtQty").keypress(function (e) {
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            }
+        });
+    });
+</script>
+<form id="formCopy" name="formCopy" action="@Url.Action("CopyDoc","Home")" method="post" >
+    <table class="table">
+        <tr>
+            <td>Copy Q'ty : </td>
+            <td><input type="text" id="txtQty" name="txtQty" class="input-small" maxlength="2" data-validation="number" data-validation-allowing="range[1;99]" /></td>
+        </tr>
+        <tr>
+            <td style="vertical-align:text-top">Reason : </td>
+            <td><textarea rows="4" style="width:250px;" id="txaReason" name="txaReason" data-validation="required"></textarea></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="text-align:center;"><button type="reset" class="btn btn-danger" style="width:100px;">Clear</button> 
+            &nbsp;<button type="submit" id="btnSubmit" class="btn btn-primary" style="width:100px;">Submit</button></td>
+        </tr>
+    </table>
+</form>

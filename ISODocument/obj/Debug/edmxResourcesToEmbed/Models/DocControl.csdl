@@ -20,7 +20,6 @@
     <EntitySet Name="TM_UserType" EntityType="DocumentControlModel.TM_UserType" />
     <EntitySet Name="V_DistributionDoc" EntityType="DocumentControlModel.V_DistributionDoc" />
     <EntitySet Name="V_Group" EntityType="DocumentControlModel.V_Group" />
-    <EntitySet Name="V_Max_Transaction" EntityType="DocumentControlModel.V_Max_Transaction" />
     <EntitySet Name="V_Sum_CopyDoc" EntityType="DocumentControlModel.V_Sum_CopyDoc" />
     <EntitySet Name="V_Transaction" EntityType="DocumentControlModel.V_Transaction" />
     <AssociationSet Name="FK_TD_Copy_TD_Document" Association="DocumentControlModel.FK_TD_Copy_TD_Document">
@@ -92,6 +91,7 @@
     <EntitySet Name="V_User_Info" EntityType="DocumentControlModel.V_User_Info" />
     <EntitySet Name="V_ReqCopy" EntityType="DocumentControlModel.V_ReqCopy" />
     <EntitySet Name="V_Report_Copy" EntityType="DocumentControlModel.V_Report_Copy" />
+    <EntitySet Name="V_Max_Transaction" EntityType="DocumentControlModel.V_Max_Transaction" />
   </EntityContainer>
   <EntityType Name="TD_Copy">
     <Key>
@@ -142,7 +142,7 @@
     <Property Type="Byte" Name="rev_no" Nullable="false" />
     <Property Type="String" Name="doc_name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Type="DateTime" Name="eff_date" Nullable="false" Precision="0" />
-    <Property Type="String" Name="attach_file" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="attach_file" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Type="String" Name="reference" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Type="DateTime" Name="expect_cancel_date" Precision="0" />
     <Property Type="DateTime" Name="check_date" Precision="0" />
@@ -154,6 +154,7 @@
     <NavigationProperty Name="TD_Transaction" Relationship="DocumentControlModel.FK_TD_Transaction_TD_Document" FromRole="TD_Document" ToRole="TD_Transaction" />
     <NavigationProperty Name="TD_ReqCopy" Relationship="DocumentControlModel.FK_TD_ReqCopy_TD_Document" FromRole="TD_Document" ToRole="TD_ReqCopy" />
     <Property Type="String" Name="src_file" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="vdo_path" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="TD_Questionair">
     <Key>
@@ -396,40 +397,6 @@
     <Property Type="Int32" Name="id" Nullable="false" />
     <Property Type="String" Name="group_name" MaxLength="255" FixedLength="false" Unicode="true" />
   </EntityType>
-  <EntityType Name="V_Max_Transaction">
-    <Key>
-      <PropertyRef Name="doc_type_short" />
-      <PropertyRef Name="group_code" />
-      <PropertyRef Name="run_no" />
-      <PropertyRef Name="rev_no" />
-      <PropertyRef Name="status_id" />
-      <PropertyRef Name="doc_name" />
-      <PropertyRef Name="eff_date" />
-      <PropertyRef Name="attach_file" />
-      <PropertyRef Name="operation_id" />
-      <PropertyRef Name="lv_id" />
-      <PropertyRef Name="org_id" />
-      <PropertyRef Name="active" />
-    </Key>
-    <Property Type="String" Name="doc_no" MaxLength="109" FixedLength="false" Unicode="true" />
-    <Property Type="String" Name="doc_type_short" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Type="String" Name="group_code" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Type="Int32" Name="run_no" Nullable="false" />
-    <Property Type="Byte" Name="rev_no" Nullable="false" />
-    <Property Type="Byte" Name="status_id" Nullable="false" />
-    <Property Type="String" Name="doc_name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Type="DateTime" Name="eff_date" Nullable="false" Precision="0" />
-    <Property Type="String" Name="attach_file" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Type="String" Name="remark" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Type="Byte" Name="operation_id" Nullable="false" />
-    <Property Type="Byte" Name="lv_id" Nullable="false" />
-    <Property Type="Int32" Name="org_id" Nullable="false" />
-    <Property Type="DateTime" Name="act_dt" Precision="3" />
-    <Property Type="String" Name="reference" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Type="DateTime" Name="expect_cancel_date" Precision="0" />
-    <Property Type="DateTime" Name="check_date" Precision="0" />
-    <Property Type="Boolean" Name="active" Nullable="false" />
-  </EntityType>
   <EntityType Name="V_Sum_CopyDoc">
     <Key>
       <PropertyRef Name="rev_no" />
@@ -499,6 +466,7 @@
     <Property Type="Byte" Name="review_year" Nullable="false" />
     <Property Type="Boolean" Name="copy_flag" Nullable="false" />
     <Property Type="DateTime" Name="expect_cancel_date" Precision="0" />
+    <Property Type="String" Name="group_name" MaxLength="255" FixedLength="false" Unicode="true" />
   </EntityType>
   <Association Name="FK_TD_Copy_TD_Document">
     <End Type="DocumentControlModel.TD_Document" Role="TD_Document" Multiplicity="1" />
@@ -876,5 +844,39 @@
     <Property Type="String" Name="action_name" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Type="String" Name="doc_name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Type="String" Name="group_name" MaxLength="255" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="V_Max_Transaction">
+    <Key>
+      <PropertyRef Name="doc_type_short" />
+      <PropertyRef Name="group_code" />
+      <PropertyRef Name="run_no" />
+      <PropertyRef Name="rev_no" />
+      <PropertyRef Name="status_id" />
+      <PropertyRef Name="doc_name" />
+      <PropertyRef Name="eff_date" />
+      <PropertyRef Name="attach_file" />
+      <PropertyRef Name="operation_id" />
+      <PropertyRef Name="lv_id" />
+      <PropertyRef Name="org_id" />
+      <PropertyRef Name="active" />
+    </Key>
+    <Property Type="String" Name="doc_no" MaxLength="109" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="doc_type_short" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="group_code" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="run_no" Nullable="false" />
+    <Property Type="Byte" Name="rev_no" Nullable="false" />
+    <Property Type="Byte" Name="status_id" Nullable="false" />
+    <Property Type="String" Name="doc_name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="eff_date" Nullable="false" Precision="0" />
+    <Property Type="String" Name="attach_file" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="remark" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="Byte" Name="operation_id" Nullable="false" />
+    <Property Type="Byte" Name="lv_id" Nullable="false" />
+    <Property Type="Int32" Name="org_id" Nullable="false" />
+    <Property Type="DateTime" Name="act_dt" Precision="3" />
+    <Property Type="String" Name="reference" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="expect_cancel_date" Precision="0" />
+    <Property Type="DateTime" Name="check_date" Precision="0" />
+    <Property Type="Boolean" Name="active" Nullable="false" />
   </EntityType>
 </Schema>

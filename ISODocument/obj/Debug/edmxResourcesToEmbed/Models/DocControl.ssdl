@@ -162,7 +162,8 @@
       [V_Transaction].[doc_lv] AS [doc_lv], 
       [V_Transaction].[review_year] AS [review_year], 
       [V_Transaction].[copy_flag] AS [copy_flag], 
-      [V_Transaction].[expect_cancel_date] AS [expect_cancel_date]
+      [V_Transaction].[expect_cancel_date] AS [expect_cancel_date], 
+      [V_Transaction].[group_name] AS [group_name]
       FROM [dbo].[V_Transaction] AS [V_Transaction]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="V_User_Info" EntityType="DocumentControlModel.Store.V_User_Info" store:Type="Views" store:Schema="dbo" store:Name="V_User_Info">
@@ -303,12 +304,13 @@
     <Property Name="rev_no" Type="tinyint" Nullable="false" />
     <Property Name="doc_name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="eff_date" Type="date" Nullable="false" />
-    <Property Name="attach_file" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="attach_file" Type="nvarchar(max)" />
     <Property Name="reference" Type="nvarchar(max)" />
     <Property Name="expect_cancel_date" Type="date" />
     <Property Name="check_date" Type="date" />
     <Property Name="remark" Type="nvarchar(max)" />
     <Property Name="src_file" Type="nvarchar(max)" />
+    <Property Name="vdo_path" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="TD_Questionair">
     <Key>
@@ -737,7 +739,6 @@
       <PropertyRef Name="active" />
       <PropertyRef Name="doc_name" />
       <PropertyRef Name="eff_date" />
-      <PropertyRef Name="attach_file" />
       <PropertyRef Name="statusname" />
       <PropertyRef Name="operation_name" />
       <PropertyRef Name="lv_name" />
@@ -746,6 +747,7 @@
       <PropertyRef Name="doc_lv" />
       <PropertyRef Name="review_year" />
       <PropertyRef Name="copy_flag" />
+      <PropertyRef Name="attach_file" />
     </Key>
     <Property Name="doc_no" Type="nvarchar" MaxLength="109" />
     <Property Name="doc_type_short" Type="nvarchar" Nullable="false" MaxLength="50" />
@@ -775,6 +777,7 @@
     <Property Name="review_year" Type="tinyint" Nullable="false" />
     <Property Name="copy_flag" Type="bit" Nullable="false" />
     <Property Name="expect_cancel_date" Type="date" />
+    <Property Name="group_name" Type="nvarchar" MaxLength="255" />
   </EntityType>
   <!--Errors Found During Generation:
       warning 6002: The table/view 'DocumentControl.dbo.V_User_Info' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.

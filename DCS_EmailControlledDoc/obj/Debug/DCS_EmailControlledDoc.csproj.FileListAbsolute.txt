@@ -10,3 +10,15 @@ C:\Users\monchit.TNC\Documents\Visual Studio 2012\Projects\ISODocument\DCS_Email
 C:\Users\monchit.TNC\Documents\Visual Studio 2012\Projects\ISODocument\DCS_EmailControlledDoc\obj\Debug\DCS_EmailControlledDoc.csprojResolveAssemblyReference.cache
 C:\Users\monchit.TNC\Documents\Visual Studio 2012\Projects\ISODocument\DCS_EmailControlledDoc\obj\Debug\DCS_EmailControlledDoc.exe
 C:\Users\monchit.TNC\Documents\Visual Studio 2012\Projects\ISODocument\DCS_EmailControlledDoc\obj\Debug\DCS_EmailControlledDoc.pdb
+C:\Users\monchit\Documents\Visual Studio 2012\Projects\ISODocument\DCS_EmailControlledDoc\bin\Debug\DCS_EmailControlledDoc.exe.config
+C:\Users\monchit\Documents\Visual Studio 2012\Projects\ISODocument\DCS_EmailControlledDoc\bin\Debug\DCS_EmailControlledDoc.exe
+C:\Users\monchit\Documents\Visual Studio 2012\Projects\ISODocument\DCS_EmailControlledDoc\bin\Debug\DCS_EmailControlledDoc.pdb
+C:\Users\monchit\Documents\Visual Studio 2012\Projects\ISODocument\DCS_EmailControlledDoc\bin\Debug\EntityFramework.dll
+C:\Users\monchit\Documents\Visual Studio 2012\Projects\ISODocument\DCS_EmailControlledDoc\bin\Debug\WebCommonFunction.dll
+C:\Users\monchit\Documents\Visual Studio 2012\Projects\ISODocument\DCS_EmailControlledDoc\bin\Debug\EPPlus.dll
+C:\Users\monchit\Documents\Visual Studio 2012\Projects\ISODocument\DCS_EmailControlledDoc\bin\Debug\EntityFramework.xml
+C:\Users\monchit\Documents\Visual Studio 2012\Projects\ISODocument\DCS_EmailControlledDoc\bin\Debug\WebCommonFunction.pdb
+C:\Users\monchit\Documents\Visual Studio 2012\Projects\ISODocument\DCS_EmailControlledDoc\bin\Debug\EPPlus.xml
+C:\Users\monchit\Documents\Visual Studio 2012\Projects\ISODocument\DCS_EmailControlledDoc\obj\Debug\DCS_EmailControlledDoc.csprojResolveAssemblyReference.cache
+C:\Users\monchit\Documents\Visual Studio 2012\Projects\ISODocument\DCS_EmailControlledDoc\obj\Debug\DCS_EmailControlledDoc.exe
+C:\Users\monchit\Documents\Visual Studio 2012\Projects\ISODocument\DCS_EmailControlledDoc\obj\Debug\DCS_EmailControlledDoc.pdb

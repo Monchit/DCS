@@ -1,0 +1,159 @@
+﻿@{
+    ViewBag.Title = "New VDO";
+}
+<script type="text/javascript">
+    $.strPad = function (i, l, s) {
+        var o = i.toString();
+        if (!s) { s = '0'; }
+        while (o.length < l) { o = s + o; }
+        return o;
+    };
+    $(document).ready(function () {
+
+        //Datepicker Setting
+        $(".datepicker").datepicker({
+            dateFormat: 'dd-mm-yy',
+            minDate: new Date()//set minDate is today
+        });
+
+        $.get("@Url.Action("CheckDocNo", "Home")", { docType: "VDO", gCode: $("#selGroupCode").val() },
+                function (data) {
+                    if (data != "") {
+                        $("#txtRunno").val($.strPad(data, 4));
+                    } else {
+                        alert("Error : Get Document No.");
+                    }
+                }
+            );
+
+        $("#selGroupCode").change(function () {
+            $.get("@Url.Action("CheckDocNo", "Home")", { docType: "VDO", gCode: $("#selGroupCode").val() },
+                function (data) {
+                    if (data != "") {
+                        $("#txtRunno").val($.strPad(data, 4));
+                    } else {
+                        alert("Error : Get Document No.");
+                    }
+                }
+            );
+        });
+
+        $('#sel2List').select2({
+            multiple: true,
+            placeholder: "Select Distribution Group",
+            ajax: {
+                url: '@Url.Action("Selecte2AllGroup", "Home")',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        searchTerm: term
+                    };
+                },
+                results: function (data, page) {
+                    return { results: data };
+                }
+            },
+            formatResult: function (item) { return item.text; },
+            formatSelection: function (item) { return item.text; }
+        });
+
+        $.get('@Url.Action("GetMyGroup", "Home")', function (data) {
+            $("#sel2List").select2("data", data);
+        });
+
+        $("#txtRunno").keypress(function (e) {
+            //if the letter is not digit then display error and don't type anything
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            }
+        });
+
+        $("#YesNo").change(function () {
+            var yn = $(this).val();
+            $("#txtRemark").val(yn);
+            if (yn == "No") {
+                $("#txtRemark").prop('readonly', true);
+            } else {
+                $("#txtRemark").prop('readonly', false);
+            }
+        });
+
+        $("#btnSubmit").click(function () {
+            if (!$.validate({ form: 'formDoc' })) {
+                return false;
+            }
+
+            if (confirm("Are you sure you want to submit this document ?")) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
+<h2>@ViewBag.Title</h2>
+<form id="formDoc" name="formDoc" class="form-horizontal" action="@Url.Action("CreateVDO", "Home")" method="post" enctype="multipart/form-data">
+    <div class="control-group">
+        <label class="control-label" for="txtDocType">Document No.</label>
+        <div class="controls">
+            <input type="text" class="input-mini" id="txtDocType" name="txtDocType" value="VDO" readonly="true" data-validate="required" />-
+                <select class="input-small" id="selGroupCode" name="selGroupCode" data-validate="required">
+                    @foreach (var item in ViewBag.GCode)
+                    {
+                        <option value="@item.group_code">@item.group_code</option>
+                    }
+                </select>-
+                <input type="text" class="input-mini" id="txtRunno" name="txtRunno" data-validate="number" placeholder="0000" readonly="true" />
+            &nbsp;revision
+            <input type="text" class="input-mini" id="txtRev" name="txtRev" value="00" readonly="true" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="txtRemark">Reference from Document No. & Rev. No.</label>
+        <div class="controls">
+            <select id="YesNo" name="YesNo" class="span1" data-validate="required">
+                <option value="">--</option>
+                <option value="Yes - ">Yes</option>
+                <option value="No">No</option>
+            </select>
+            <input type="text" class="span10" id="txtRemark" name="txtRemark" data-validate="required" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="txtDocName">Document Name</label>
+        <div class="controls">
+            <input type="text" class="span11" id="txtDocName" name="txtDocName" data-validate="required" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="dtEff">Effective Date</label>
+        <div class="controls">
+            <input type="text" class="datepicker span2" id="dtEff" name="dtEff" readonly="true" placeholder="dd-mm-yyyy" data-validate="required" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="flSrc"><span class="label label-info">Word</span> or <span class="label label-success">Excel</span></label>
+        <div class="controls">
+            <input type="file" id="flSrc" name="flSrc" data-validate="WX" />
+            <span class="label label-warning">File size < 20MB</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="flAtt">Attach File <span class="label label-important">PDF Only</span></label>
+        <div class="controls">
+            <input type="file" id="flAtt" name="flAtt" accept="application/pdf" />
+            <span class="label label-warning">File size < 20MB</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="sel2List">Distribution List by E-mail</label>
+        <div class="controls">
+            <input type="text" id="sel2List" name="sel2List" class="span11" />
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <button class="btn btn-primary" type="submit" id="btnSubmit"><i class="icon-ok icon-white"></i> Submit</button>
+        </div>
+    </div>
+</form>

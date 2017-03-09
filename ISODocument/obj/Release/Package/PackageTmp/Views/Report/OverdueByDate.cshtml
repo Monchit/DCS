@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "Overdue By Date";
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#btnExport').click(function (e) {
+            if (!$.validate({ form: 'formFilter' })) {
+                return false;
+            }
+        });
+
+        $("#date_from").datepicker({
+            dateFormat: 'yy-mm-dd',
+            onClose: function (selectedDate) {
+                $("#date_to").datepicker("option", "minDate", selectedDate);
+            }
+        });
+        $("#date_to").datepicker({
+            dateFormat: 'yy-mm-dd',
+            onClose: function (selectedDate) {
+                $("#date_from").datepicker("option", "maxDate", selectedDate);
+            }
+        });
+    });
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+<form name="formFilter" id="formFilter" class="form-inline" action="@Url.Action("ExportOverdueByDate","Report")" method="post">
+    <label for="date_from">From : </label>
+    <input type="text" id="date_from" name="date_from" class="input-small" data-validate="required">
+    <label for="date_to"> To : </label>
+    <input type="text" id="date_to" name="date_to" class="input-small" data-validate="required">
+    <button type="submit" id="btnExport" name="btnExport" class="btn btn-success"><i class="icon-list-alt icon-white"></i> Export</button>
+</form>

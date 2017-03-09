@@ -1,0 +1,117 @@
+﻿@{
+    ViewBag.Title = "Document Action Request";
+}
+<link href="~/Scripts/jtable/themes/metro/blue/jtable.min.css" rel="stylesheet" />
+<style type="text/css">
+    /*fix jTable*/
+    span.jtable-goto-page select, span.jtable-page-size-change select {
+        height: 25px;
+        width: 60px;
+        padding: 2px 2px;
+        margin-bottom:auto;
+    }
+    div.jtable-main-container table.jtable thead th {
+        text-align: center;
+    }
+    div.jtable-main-container > table.jtable > tbody > tr.jtable-data-row > td {
+        text-align: center;
+    }
+    div.accordion-heading {
+        font-weight:600;
+    }
+    .td_title {
+        text-align:right !important;
+        font-weight:600;
+    }
+    .ui-dialog-title {
+        color:white;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.strPad = function (i, l, s) {
+            var o = i.toString();
+            if (!s) { s = '0'; }
+            while (o.length < l) { o = s + o; }
+            return o;
+        };
+
+        $('#jTableDoc').jtable({
+            title: 'Controlled Document',
+            paging: true, //Enable paging
+            pageSize: 10, //Set page size (default: 10)
+            sorting: true, //Enable sorting
+            selecting: true, //Enable selecting
+            defaultSorting: 'doc_no', //Set default sorting
+            actions: {
+                listAction: '@Url.Action("ControlledList","Home")'
+            },
+            fields: {
+                doc_type_short: { title: 'Document Type', list: false },
+                group_code: { title: 'Group Code', list: false },
+                run_no: { title: 'Run No.', list: false },
+                rev_no: { title: 'Revision', list: false },
+                doc_no: {
+                    title: 'Document No.', width: '20%',
+                    visibility: 'fixed', //This column always will be shown
+                    display: function (data) {
+                        return $('<a href="#" class="ShowDocNo" data-dt="' + data.record.doc_type_short + '" data-gc="' + data.record.group_code + '" data-rn="' + data.record.run_no + '" data-rv="' + data.record.rev_no + '">' + data.record.doc_no + '</a>');
+                    }
+                },
+                //rev_no: {
+                //    title: 'Revision',
+                //    display: function (data) {
+                //        return $.strPad(data.record.rev_no, 2);
+                //    }
+                //},
+                doc_name: { title: 'Document Name', width: '40%' },
+                eff_date: { title: 'Effective Date', width: '20%', type: 'date', displayFormat: 'dd-mm-yy' },
+                copy: {
+                    title: 'Copy', width: '6%', visibility: 'fixed', //This column always will be shown
+                    display: function (data) {
+                        return $('<a href="#" class="req_copy" data-dt="' + data.record.doc_type_short + '" data-gc="' + data.record.group_code + '" data-rn="' + data.record.run_no + '" data-rv="' + data.record.rev_no + '"><i class="icon-plus"></i></a>');
+                    }
+                }
+            }
+        });
+
+        //Load list from server
+        //$('#jTableDoc').jtable('load');
+
+        //Re-load records when user click 'load records' button.
+        $('#btSearch').click(function (e) {
+            e.preventDefault();
+            $('#jTableDoc').jtable('load', {
+                doc_no: $('#s_docno').val(),
+                rev_no: $('#s_rev').val(),
+                doc_name: $('#s_docname').val()
+            });
+        });
+    });
+</script>
+
+<form>
+    <table class="table table-condensed" style="width:auto;">
+        <thead>
+            <tr>
+                <th>Document No.</th>
+                <th>Revision</th>
+                <th>Document Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" id="s_docno" name="s_docno" class="input-medium" placeholder="Document No." /></td>
+                <td><input type="text" id="s_rev" name="s_rev" class="input-mini" placeholder="Revision" maxlength="2" /></td>
+                <td><input type="text" id="s_docname" name="s_docname" class="input-large" placeholder="Document Name" /></td>
+                <td><button type="submit" id="btSearch" class="btn btn-primary"><i class="icon-filter icon-white"></i> Search</button>
+                    <button type="reset" id="btReset" class="btn btn-warning"><i class="icon-refresh icon-white"></i> Clear</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+
+<div id="jTableDoc"></div>

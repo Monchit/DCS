@@ -42,5 +42,6 @@ namespace ISODocument.Models
         public byte review_year { get; set; }
         public bool copy_flag { get; set; }
         public Nullable<System.DateTime> expect_cancel_date { get; set; }
+        public string group_name { get; set; }
     }
 }

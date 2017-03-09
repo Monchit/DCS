@@ -47,17 +47,32 @@
                 rev_no: { title: 'Revision', list: false },
                 req_id: { title: 'Req. ID', list: false },
                 doc_no: {
-                    title: 'Document No.', width: '23%',
+                    title: 'Document No.', width: '20%',
                     visibility: 'fixed', //This column always will be shown
                     display: function (data) {
                         return $('<a href="#" class="ShowDocNo" data-dt="' + data.record.doc_type_short + '" data-gc="' + data.record.group_code + '" data-rn="' + data.record.run_no + '" data-rv="' + data.record.rev_no + '" data-req="' + data.record.req_id + '">' + data.record.doc_no + '</a>');
                     }
                 },
                 type: { title: 'Type', width: '10%' },
-                paper_name: { title: 'Paper Size', width: '12%' },
-                qty: { title: 'Qty', width: '5%' },
-                reason: { title: 'Reason', width: '35%' },
-                statusname: { title: 'Status', width: '15%' }
+                paper_name: { title: 'Paper Size', width: '10%' },
+                qty: { title: 'Qty', width: '6%' },
+                reason: { title: 'Reason', width: '32%' },
+                statusname: { title: 'Status', width: '15%' },
+                show_print: { list: false },
+                print: {
+                    title: 'Print', width: '7%',
+                    display: function (data) {
+                        if (data.record.show_print == true)
+                            return $('<a href="../Report/PrintReqCopyList?dt=' + data.record.doc_type_short
+                            + '&gc=' + data.record.group_code
+                            + '&rn=' + data.record.run_no
+                            + '&rv=' + data.record.rev_no
+                            + '&req=' + data.record.req_id
+                            + '" target="_blank" ><i class="icon-print"></i></a>');
+                        else
+                            return "";
+                    }
+                }
             }
         });
         //Load list from server

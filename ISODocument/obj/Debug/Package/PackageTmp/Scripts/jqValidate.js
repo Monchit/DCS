@@ -89,7 +89,7 @@
                     }
                 }
 
-                // Check date
+                // Check date //data-validate="date"
                 if (tmpStatus && validator.indexOf("date") != -1) {
                     var defaultFormat = (options != null && options.dateFormat != null) ? options.dateFormat : 'dd-mm-yyyy';
                     var dateFormat = $(this).attr("data-validate-format") == '' ? defaultFormat : $(this).attr("data-validate-format");
@@ -104,10 +104,37 @@
                     }
                 }
 
-                // Check File
+                // Check File //data-validate="file"
                 if (tmpStatus && validator.indexOf("file") != -1) {
                     //var extension = $(this).attr("data-validate-extension").split(',');
-                    if (value == '' || value.substr(value.lastIndexOf('.') + 1).toUpperCase() != "PDF"){
+                    var ext = value.substr(value.lastIndexOf('.') + 1).toUpperCase();
+                    if (value == '' || (ext != "PDF")){
+                        $(this).addClass("error");
+                        isValid = false;
+                        tmpStatus = false;
+                    } else {
+                        $(this).removeClass("error");
+                        $(this).addClass("valid");
+                    }
+                }
+
+                // Check File //data-validate="WX"
+                if (tmpStatus && validator.indexOf("WX") != -1) {
+                    var ext = value.substr(value.lastIndexOf('.') + 1).toUpperCase();
+                    if (value == '' || (ext != "XLS" && ext != "DOC" && ext != "XLSX" && ext != "DOCX")) {
+                        $(this).addClass("error");
+                        isValid = false;
+                        tmpStatus = false;
+                    } else {
+                        $(this).removeClass("error");
+                        $(this).addClass("valid");
+                    }
+                }
+
+                // Check File //data-validate="media"
+                if (tmpStatus && validator.indexOf("media") != -1) {
+                    //var extension = $(this).attr("data-validate-extension").split(',');
+                    if (value == '' || value.substr(value.lastIndexOf('.') + 1).toUpperCase() != "MP4") {
                         $(this).addClass("error");
                         isValid = false;
                         tmpStatus = false;

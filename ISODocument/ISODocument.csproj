@@ -467,6 +467,8 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>TNCAdmin.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <Content Include="Images\24PDF.png" />
+    <Content Include="Images\24WE.png" />
     <Content Include="Images\Document-icon.png" />
     <Content Include="Images\Untitled-1.jpg" />
     <Content Include="Images\Untitled-2.jpg" />
@@ -523,6 +525,7 @@
     </Content>
     <Content Include="App_Browsers\qt.browser" />
     <None Include="Properties\PublishProfiles\webexternal.pubxml" />
+    <None Include="Properties\PublishProfiles\webtest.pubxml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="NuGet.exe" />
     <Content Include="Rotativa\libeay32.dll" />
@@ -899,6 +902,13 @@
     <Content Include="Views\Report\ReportOverdue.cshtml" />
     <Content Include="Views\Report\ReportComplete2Year.cshtml" />
     <Content Include="Views\Report\OverdueByDate.cshtml" />
+    <Content Include="Views\Report\ReqCopyList.cshtml" />
+    <Content Include="Views\Master\ChangeRoute.cshtml" />
+    <Content Include="Views\Home\DocForm1.cshtml" />
+    <Content Include="Views\Home\NewVDO.cshtml" />
+    <Content Include="Views\Master\EditDoc.cshtml" />
+    <Content Include="Views\Home\NewVDO1.cshtml" />
+    <Content Include="Views\Home\MgrEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -17,7 +17,7 @@ namespace ISODocument.Controllers
         [Check_Authorize_SysAdmin]
         public ActionResult Users()
         {
-            ViewBag.Menu = 9;
+            //ViewBag.Menu = 9;
             return View();
         }
 
@@ -25,7 +25,7 @@ namespace ISODocument.Controllers
         [Check_Authorize_SysAdmin]
         public ActionResult UserType()
         {
-            ViewBag.Menu = 9;
+            //ViewBag.Menu = 9;
             return View();
         }
 
@@ -33,7 +33,7 @@ namespace ISODocument.Controllers
         [Check_Authorize_Admin]
         public ActionResult Status()
         {
-            ViewBag.Menu = 9;
+            //ViewBag.Menu = 9;
             return View();
         }
 
@@ -41,7 +41,7 @@ namespace ISODocument.Controllers
         [Check_Authorize_Admin]
         public ActionResult GroupCode()
         {
-            ViewBag.Menu = 9;
+            //ViewBag.Menu = 9;
             return View();
         }
 
@@ -49,7 +49,7 @@ namespace ISODocument.Controllers
         [Check_Authorize_Admin]
         public ActionResult DocType()
         {
-            ViewBag.Menu = 9;
+            //ViewBag.Menu = 9;
             return View();
         }
 
@@ -57,7 +57,7 @@ namespace ISODocument.Controllers
         [Check_Authorize_Admin]
         public ActionResult Reviewer()
         {
-            ViewBag.Menu = 9;
+            //ViewBag.Menu = 9;
             var get_group = from a in dbTNC.tnc_group_master
                             orderby a.group_name
                             select a;
@@ -69,7 +69,7 @@ namespace ISODocument.Controllers
         [Check_Authorize_Admin]
         public ActionResult Action()
         {
-            ViewBag.Menu = 9;
+            //ViewBag.Menu = 9;
             return View();
         }
 
@@ -77,7 +77,7 @@ namespace ISODocument.Controllers
         [Check_Authorize_Admin]
         public ActionResult Operation()
         {
-            ViewBag.Menu = 9;
+            //ViewBag.Menu = 9;
             return View();
         }
 
@@ -85,7 +85,7 @@ namespace ISODocument.Controllers
         [Check_Authorize_Admin]
         public ActionResult Level()
         {
-            ViewBag.Menu = 9;
+            //ViewBag.Menu = 9;
             return View();
         }
 
@@ -93,7 +93,23 @@ namespace ISODocument.Controllers
         [Check_Authorize_Admin]
         public ActionResult Paper()
         {
-            ViewBag.Menu = 9;
+            //ViewBag.Menu = 9;
+            return View();
+        }
+
+        [Check_Authen]
+        [Check_Authorize_Admin]
+        public ActionResult ChangeRoute()
+        {
+            return View();
+        }
+
+        [Check_Authen]
+        [Check_Authorize_Admin]
+        public ActionResult EditDoc()
+        {
+            ViewBag.DocType = dbDC.TM_DocType;
+            ViewBag.GroupCode = dbDC.TM_GroupCode;
             return View();
         }
 

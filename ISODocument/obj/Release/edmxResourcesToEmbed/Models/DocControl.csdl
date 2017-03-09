@@ -1,0 +1,881 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DocumentControlModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="DocumentControlEntities" p1:LazyLoadingEnabled="true">
+    <EntitySet Name="TD_Copy" EntityType="DocumentControlModel.TD_Copy" />
+    <EntitySet Name="TD_DistributionList" EntityType="DocumentControlModel.TD_DistributionList" />
+    <EntitySet Name="TD_Document" EntityType="DocumentControlModel.TD_Document" />
+    <EntitySet Name="TD_Questionair" EntityType="DocumentControlModel.TD_Questionair" />
+    <EntitySet Name="TD_ReqCopy" EntityType="DocumentControlModel.TD_ReqCopy" />
+    <EntitySet Name="TD_Transaction" EntityType="DocumentControlModel.TD_Transaction" />
+    <EntitySet Name="TM_Action" EntityType="DocumentControlModel.TM_Action" />
+    <EntitySet Name="TM_DocType" EntityType="DocumentControlModel.TM_DocType" />
+    <EntitySet Name="TM_Group" EntityType="DocumentControlModel.TM_Group" />
+    <EntitySet Name="TM_GroupCode" EntityType="DocumentControlModel.TM_GroupCode" />
+    <EntitySet Name="TM_Level" EntityType="DocumentControlModel.TM_Level" />
+    <EntitySet Name="TM_Operation" EntityType="DocumentControlModel.TM_Operation" />
+    <EntitySet Name="TM_Paper" EntityType="DocumentControlModel.TM_Paper" />
+    <EntitySet Name="TM_Reviewer_Prod" EntityType="DocumentControlModel.TM_Reviewer_Prod" />
+    <EntitySet Name="TM_Status" EntityType="DocumentControlModel.TM_Status" />
+    <EntitySet Name="TM_User" EntityType="DocumentControlModel.TM_User" />
+    <EntitySet Name="TM_UserType" EntityType="DocumentControlModel.TM_UserType" />
+    <EntitySet Name="V_DistributionDoc" EntityType="DocumentControlModel.V_DistributionDoc" />
+    <EntitySet Name="V_Group" EntityType="DocumentControlModel.V_Group" />
+    <EntitySet Name="V_Max_Transaction" EntityType="DocumentControlModel.V_Max_Transaction" />
+    <EntitySet Name="V_Sum_CopyDoc" EntityType="DocumentControlModel.V_Sum_CopyDoc" />
+    <EntitySet Name="V_Transaction" EntityType="DocumentControlModel.V_Transaction" />
+    <AssociationSet Name="FK_TD_Copy_TD_Document" Association="DocumentControlModel.FK_TD_Copy_TD_Document">
+      <End Role="TD_Document" EntitySet="TD_Document" />
+      <End Role="TD_Copy" EntitySet="TD_Copy" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TD_DistributionList_TD_Document" Association="DocumentControlModel.FK_TD_DistributionList_TD_Document">
+      <End Role="TD_Document" EntitySet="TD_Document" />
+      <End Role="TD_DistributionList" EntitySet="TD_DistributionList" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TD_Document_TM_DocType" Association="DocumentControlModel.FK_TD_Document_TM_DocType">
+      <End Role="TM_DocType" EntitySet="TM_DocType" />
+      <End Role="TD_Document" EntitySet="TD_Document" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TD_Document_TM_GroupCode" Association="DocumentControlModel.FK_TD_Document_TM_GroupCode">
+      <End Role="TM_GroupCode" EntitySet="TM_GroupCode" />
+      <End Role="TD_Document" EntitySet="TD_Document" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TD_Transaction_TD_Document" Association="DocumentControlModel.FK_TD_Transaction_TD_Document">
+      <End Role="TD_Document" EntitySet="TD_Document" />
+      <End Role="TD_Transaction" EntitySet="TD_Transaction" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TD_ReqCopy_TM_Paper" Association="DocumentControlModel.FK_TD_ReqCopy_TM_Paper">
+      <End Role="TM_Paper" EntitySet="TM_Paper" />
+      <End Role="TD_ReqCopy" EntitySet="TD_ReqCopy" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TD_Transaction_TM_Action" Association="DocumentControlModel.FK_TD_Transaction_TM_Action">
+      <End Role="TM_Action" EntitySet="TM_Action" />
+      <End Role="TD_Transaction" EntitySet="TD_Transaction" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TD_Transaction_TM_Level" Association="DocumentControlModel.FK_TD_Transaction_TM_Level">
+      <End Role="TM_Level" EntitySet="TM_Level" />
+      <End Role="TD_Transaction" EntitySet="TD_Transaction" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TD_Transaction_TM_Operation" Association="DocumentControlModel.FK_TD_Transaction_TM_Operation">
+      <End Role="TM_Operation" EntitySet="TM_Operation" />
+      <End Role="TD_Transaction" EntitySet="TD_Transaction" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TD_Transaction_TM_Status" Association="DocumentControlModel.FK_TD_Transaction_TM_Status">
+      <End Role="TM_Status" EntitySet="TM_Status" />
+      <End Role="TD_Transaction" EntitySet="TD_Transaction" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TM_User_TM_UserType" Association="DocumentControlModel.FK_TM_User_TM_UserType">
+      <End Role="TM_UserType" EntitySet="TM_UserType" />
+      <End Role="TM_User" EntitySet="TM_User" />
+    </AssociationSet>
+    <EntitySet Name="TD_TranCopy" EntityType="DocumentControlModel.TD_TranCopy" />
+    <AssociationSet Name="FK_TD_TranCopy_TD_ReqCopy" Association="DocumentControlModel.FK_TD_TranCopy_TD_ReqCopy">
+      <End Role="TD_ReqCopy" EntitySet="TD_ReqCopy" />
+      <End Role="TD_TranCopy" EntitySet="TD_TranCopy" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TD_TranCopy_TM_Level" Association="DocumentControlModel.FK_TD_TranCopy_TM_Level">
+      <End Role="TM_Level" EntitySet="TM_Level" />
+      <End Role="TD_TranCopy" EntitySet="TD_TranCopy" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TD_TranCopy_TM_Status" Association="DocumentControlModel.FK_TD_TranCopy_TM_Status">
+      <End Role="TM_Status" EntitySet="TM_Status" />
+      <End Role="TD_TranCopy" EntitySet="TD_TranCopy" />
+    </AssociationSet>
+    <EntitySet Name="V_TranCopy" EntityType="DocumentControlModel.V_TranCopy" />
+    <AssociationSet Name="FK_TD_TranCopy_TM_Action" Association="DocumentControlModel.FK_TD_TranCopy_TM_Action">
+      <End Role="TM_Action" EntitySet="TM_Action" />
+      <End Role="TD_TranCopy" EntitySet="TD_TranCopy" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TD_ReqCopy_TD_Document" Association="DocumentControlModel.FK_TD_ReqCopy_TD_Document">
+      <End Role="TD_Document" EntitySet="TD_Document" />
+      <End Role="TD_ReqCopy" EntitySet="TD_ReqCopy" />
+    </AssociationSet>
+    <EntitySet Name="V_User_Info" EntityType="DocumentControlModel.V_User_Info" />
+    <EntitySet Name="V_ReqCopy" EntityType="DocumentControlModel.V_ReqCopy" />
+    <EntitySet Name="V_Report_Copy" EntityType="DocumentControlModel.V_Report_Copy" />
+  </EntityContainer>
+  <EntityType Name="TD_Copy">
+    <Key>
+      <PropertyRef Name="doc_type_short" />
+      <PropertyRef Name="group_code" />
+      <PropertyRef Name="run_no" />
+      <PropertyRef Name="rev_no" />
+      <PropertyRef Name="group_id" />
+      <PropertyRef Name="copy_runno" />
+    </Key>
+    <Property Type="String" Name="doc_type_short" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="group_code" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="run_no" Nullable="false" />
+    <Property Type="Byte" Name="rev_no" Nullable="false" />
+    <Property Type="Int32" Name="group_id" Nullable="false" />
+    <Property Type="Int32" Name="copy_runno" Nullable="false" />
+    <Property Type="Int32" Name="qty" Nullable="false" />
+    <Property Type="String" Name="note" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="receive_by" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="receive_dt" Precision="3" />
+    <NavigationProperty Name="TD_Document" Relationship="DocumentControlModel.FK_TD_Copy_TD_Document" FromRole="TD_Copy" ToRole="TD_Document" />
+  </EntityType>
+  <EntityType Name="TD_DistributionList">
+    <Key>
+      <PropertyRef Name="doc_type_short" />
+      <PropertyRef Name="group_code" />
+      <PropertyRef Name="run_no" />
+      <PropertyRef Name="rev_no" />
+      <PropertyRef Name="group_id" />
+    </Key>
+    <Property Type="String" Name="doc_type_short" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="group_code" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="run_no" Nullable="false" />
+    <Property Type="Byte" Name="rev_no" Nullable="false" />
+    <Property Type="Int32" Name="group_id" Nullable="false" />
+    <NavigationProperty Name="TD_Document" Relationship="DocumentControlModel.FK_TD_DistributionList_TD_Document" FromRole="TD_DistributionList" ToRole="TD_Document" />
+  </EntityType>
+  <EntityType Name="TD_Document">
+    <Key>
+      <PropertyRef Name="doc_type_short" />
+      <PropertyRef Name="group_code" />
+      <PropertyRef Name="run_no" />
+      <PropertyRef Name="rev_no" />
+    </Key>
+    <Property Type="String" Name="doc_type_short" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="group_code" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="run_no" Nullable="false" />
+    <Property Type="Byte" Name="rev_no" Nullable="false" />
+    <Property Type="String" Name="doc_name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="eff_date" Nullable="false" Precision="0" />
+    <Property Type="String" Name="attach_file" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="reference" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="expect_cancel_date" Precision="0" />
+    <Property Type="DateTime" Name="check_date" Precision="0" />
+    <Property Type="String" Name="remark" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="TD_Copy" Relationship="DocumentControlModel.FK_TD_Copy_TD_Document" FromRole="TD_Document" ToRole="TD_Copy" />
+    <NavigationProperty Name="TD_DistributionList" Relationship="DocumentControlModel.FK_TD_DistributionList_TD_Document" FromRole="TD_Document" ToRole="TD_DistributionList" />
+    <NavigationProperty Name="TM_DocType" Relationship="DocumentControlModel.FK_TD_Document_TM_DocType" FromRole="TD_Document" ToRole="TM_DocType" />
+    <NavigationProperty Name="TM_GroupCode" Relationship="DocumentControlModel.FK_TD_Document_TM_GroupCode" FromRole="TD_Document" ToRole="TM_GroupCode" />
+    <NavigationProperty Name="TD_Transaction" Relationship="DocumentControlModel.FK_TD_Transaction_TD_Document" FromRole="TD_Document" ToRole="TD_Transaction" />
+    <NavigationProperty Name="TD_ReqCopy" Relationship="DocumentControlModel.FK_TD_ReqCopy_TD_Document" FromRole="TD_Document" ToRole="TD_ReqCopy" />
+    <Property Type="String" Name="src_file" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="vdo_path" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TD_Questionair">
+    <Key>
+      <PropertyRef Name="emp_code" />
+    </Key>
+    <Property Type="String" Name="emp_code" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="act_dt" Nullable="false" Precision="3" />
+    <Property Type="Byte" Name="u1" Nullable="false" />
+    <Property Type="Byte" Name="u2" Nullable="false" />
+    <Property Type="Byte" Name="u3" Nullable="false" />
+    <Property Type="Byte" Name="u4" Nullable="false" />
+    <Property Type="Byte" Name="u5" Nullable="false" />
+    <Property Type="Byte" Name="u6" Nullable="false" />
+    <Property Type="Byte" Name="o1" Nullable="false" />
+    <Property Type="Byte" Name="o2" Nullable="false" />
+    <Property Type="Byte" Name="o3" Nullable="false" />
+    <Property Type="Byte" Name="o4" Nullable="false" />
+    <Property Type="Byte" Name="o5" Nullable="false" />
+    <Property Type="Byte" Name="o6" Nullable="false" />
+    <Property Type="Byte" Name="o7" Nullable="false" />
+    <Property Type="Byte" Name="o8" Nullable="false" />
+    <Property Type="Byte" Name="o9" Nullable="false" />
+    <Property Type="Byte" Name="o10" Nullable="false" />
+    <Property Type="Byte" Name="o11" Nullable="false" />
+    <Property Type="Byte" Name="o12" Nullable="false" />
+    <Property Type="Byte" Name="o13" Nullable="false" />
+    <Property Type="Byte" Name="o14" Nullable="false" />
+    <Property Type="Byte" Name="o15" Nullable="false" />
+    <Property Type="Byte" Name="o16" Nullable="false" />
+    <Property Type="Byte" Name="o17" Nullable="false" />
+    <Property Type="Byte" Name="o18" Nullable="false" />
+    <Property Type="Byte" Name="n1" Nullable="false" />
+    <Property Type="Byte" Name="n2" Nullable="false" />
+    <Property Type="Byte" Name="n3" Nullable="false" />
+    <Property Type="Byte" Name="n4" Nullable="false" />
+    <Property Type="Byte" Name="n5" Nullable="false" />
+    <Property Type="Byte" Name="n6" Nullable="false" />
+    <Property Type="Byte" Name="n7" Nullable="false" />
+    <Property Type="Byte" Name="n8" Nullable="false" />
+    <Property Type="Byte" Name="n9" Nullable="false" />
+    <Property Type="Byte" Name="n10" Nullable="false" />
+    <Property Type="Byte" Name="n11" Nullable="false" />
+    <Property Type="Byte" Name="n12" Nullable="false" />
+    <Property Type="Byte" Name="n13" Nullable="false" />
+    <Property Type="Byte" Name="n14" Nullable="false" />
+    <Property Type="Byte" Name="n15" Nullable="false" />
+    <Property Type="Byte" Name="n16" Nullable="false" />
+    <Property Type="Byte" Name="n17" Nullable="false" />
+    <Property Type="Byte" Name="n18" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TD_ReqCopy">
+    <Key>
+      <PropertyRef Name="req_id" />
+    </Key>
+    <Property Type="Int32" Name="req_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="doc_type_short" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="group_code" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="run_no" Nullable="false" />
+    <Property Type="Byte" Name="rev_no" Nullable="false" />
+    <Property Type="Int32" Name="qty" Nullable="false" />
+    <Property Type="String" Name="type" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Byte" Name="paper_id" Nullable="false" />
+    <Property Type="String" Name="reason" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="TM_Paper" Relationship="DocumentControlModel.FK_TD_ReqCopy_TM_Paper" FromRole="TD_ReqCopy" ToRole="TM_Paper" />
+    <NavigationProperty Name="TD_TranCopy" Relationship="DocumentControlModel.FK_TD_TranCopy_TD_ReqCopy" FromRole="TD_ReqCopy" ToRole="TD_TranCopy" />
+    <NavigationProperty Name="TD_Document" Relationship="DocumentControlModel.FK_TD_ReqCopy_TD_Document" FromRole="TD_ReqCopy" ToRole="TD_Document" />
+  </EntityType>
+  <EntityType Name="TD_Transaction">
+    <Key>
+      <PropertyRef Name="doc_type_short" />
+      <PropertyRef Name="group_code" />
+      <PropertyRef Name="run_no" />
+      <PropertyRef Name="rev_no" />
+      <PropertyRef Name="sub_rev" />
+      <PropertyRef Name="status_id" />
+      <PropertyRef Name="lv_id" />
+      <PropertyRef Name="org_id" />
+      <PropertyRef Name="operation_id" />
+    </Key>
+    <Property Type="String" Name="doc_type_short" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="group_code" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="run_no" Nullable="false" />
+    <Property Type="Byte" Name="rev_no" Nullable="false" />
+    <Property Type="Byte" Name="sub_rev" Nullable="false" />
+    <Property Type="Byte" Name="status_id" Nullable="false" />
+    <Property Type="Byte" Name="lv_id" Nullable="false" />
+    <Property Type="Int32" Name="org_id" Nullable="false" />
+    <Property Type="Byte" Name="operation_id" Nullable="false" />
+    <Property Type="Byte" Name="action_id" />
+    <Property Type="String" Name="actor" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="act_dt" Precision="3" />
+    <Property Type="String" Name="comment" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="Boolean" Name="active" Nullable="false" />
+    <NavigationProperty Name="TD_Document" Relationship="DocumentControlModel.FK_TD_Transaction_TD_Document" FromRole="TD_Transaction" ToRole="TD_Document" />
+    <NavigationProperty Name="TM_Action" Relationship="DocumentControlModel.FK_TD_Transaction_TM_Action" FromRole="TD_Transaction" ToRole="TM_Action" />
+    <NavigationProperty Name="TM_Level" Relationship="DocumentControlModel.FK_TD_Transaction_TM_Level" FromRole="TD_Transaction" ToRole="TM_Level" />
+    <NavigationProperty Name="TM_Operation" Relationship="DocumentControlModel.FK_TD_Transaction_TM_Operation" FromRole="TD_Transaction" ToRole="TM_Operation" />
+    <NavigationProperty Name="TM_Status" Relationship="DocumentControlModel.FK_TD_Transaction_TM_Status" FromRole="TD_Transaction" ToRole="TM_Status" />
+  </EntityType>
+  <EntityType Name="TM_Action">
+    <Key>
+      <PropertyRef Name="action_id" />
+    </Key>
+    <Property Type="Byte" Name="action_id" Nullable="false" />
+    <Property Type="String" Name="action_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="update_by" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="update_dt" Nullable="false" Precision="3" />
+    <NavigationProperty Name="TD_Transaction" Relationship="DocumentControlModel.FK_TD_Transaction_TM_Action" FromRole="TM_Action" ToRole="TD_Transaction" />
+    <NavigationProperty Name="TD_TranCopy" Relationship="DocumentControlModel.FK_TD_TranCopy_TM_Action" FromRole="TM_Action" ToRole="TD_TranCopy" />
+  </EntityType>
+  <EntityType Name="TM_DocType">
+    <Key>
+      <PropertyRef Name="doc_type_short" />
+    </Key>
+    <Property Type="String" Name="doc_type_short" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="doc_type_full" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Type="Byte" Name="doc_lv" Nullable="false" />
+    <Property Type="Boolean" Name="copy_flag" Nullable="false" />
+    <Property Type="Byte" Name="review_year" Nullable="false" />
+    <Property Type="String" Name="update_by" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="update_dt" Nullable="false" Precision="3" />
+    <NavigationProperty Name="TD_Document" Relationship="DocumentControlModel.FK_TD_Document_TM_DocType" FromRole="TM_DocType" ToRole="TD_Document" />
+    <Property Type="String" Name="dcc" MaxLength="10" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TM_Group">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Type="Int32" Name="id" Nullable="false" />
+    <Property Type="String" Name="group_name" MaxLength="255" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TM_GroupCode">
+    <Key>
+      <PropertyRef Name="group_code" />
+    </Key>
+    <Property Type="String" Name="group_code" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="group_id" Nullable="false" />
+    <Property Type="String" Name="update_by" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="update_dt" Nullable="false" Precision="3" />
+    <Property Type="String" Name="responsible" MaxLength="10" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="TD_Document" Relationship="DocumentControlModel.FK_TD_Document_TM_GroupCode" FromRole="TM_GroupCode" ToRole="TD_Document" />
+  </EntityType>
+  <EntityType Name="TM_Level">
+    <Key>
+      <PropertyRef Name="lv_id" />
+    </Key>
+    <Property Type="Byte" Name="lv_id" Nullable="false" />
+    <Property Type="String" Name="lv_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Byte" Name="position_min" Nullable="false" />
+    <Property Type="Byte" Name="position_max" Nullable="false" />
+    <Property Type="String" Name="update_by" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="update_dt" Nullable="false" Precision="3" />
+    <NavigationProperty Name="TD_Transaction" Relationship="DocumentControlModel.FK_TD_Transaction_TM_Level" FromRole="TM_Level" ToRole="TD_Transaction" />
+    <NavigationProperty Name="TD_TranCopy" Relationship="DocumentControlModel.FK_TD_TranCopy_TM_Level" FromRole="TM_Level" ToRole="TD_TranCopy" />
+  </EntityType>
+  <EntityType Name="TM_Operation">
+    <Key>
+      <PropertyRef Name="operation_id" />
+    </Key>
+    <Property Type="Byte" Name="operation_id" Nullable="false" />
+    <Property Type="String" Name="operation_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="update_by" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="update_dt" Nullable="false" Precision="3" />
+    <NavigationProperty Name="TD_Transaction" Relationship="DocumentControlModel.FK_TD_Transaction_TM_Operation" FromRole="TM_Operation" ToRole="TD_Transaction" />
+  </EntityType>
+  <EntityType Name="TM_Paper">
+    <Key>
+      <PropertyRef Name="paper_id" />
+    </Key>
+    <Property Type="Byte" Name="paper_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="paper_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="update_dt" Nullable="false" Precision="3" />
+    <Property Type="String" Name="update_by" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="TD_ReqCopy" Relationship="DocumentControlModel.FK_TD_ReqCopy_TM_Paper" FromRole="TM_Paper" ToRole="TD_ReqCopy" />
+  </EntityType>
+  <EntityType Name="TM_Reviewer_Prod">
+    <Key>
+      <PropertyRef Name="group_id" />
+    </Key>
+    <Property Type="Int32" Name="group_id" Nullable="false" />
+    <Property Type="Int32" Name="qc_group" Nullable="false" />
+    <Property Type="Int32" Name="en_group" Nullable="false" />
+    <Property Type="String" Name="update_by" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="update_dt" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="TM_Status">
+    <Key>
+      <PropertyRef Name="status_id" />
+    </Key>
+    <Property Type="Byte" Name="status_id" Nullable="false" />
+    <Property Type="String" Name="status_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="update_by" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="update_dt" Nullable="false" Precision="3" />
+    <NavigationProperty Name="TD_Transaction" Relationship="DocumentControlModel.FK_TD_Transaction_TM_Status" FromRole="TM_Status" ToRole="TD_Transaction" />
+    <NavigationProperty Name="TD_TranCopy" Relationship="DocumentControlModel.FK_TD_TranCopy_TM_Status" FromRole="TM_Status" ToRole="TD_TranCopy" />
+  </EntityType>
+  <EntityType Name="TM_User">
+    <Key>
+      <PropertyRef Name="empcode" />
+    </Key>
+    <Property Type="String" Name="empcode" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Type="Byte" Name="utype_id" Nullable="false" />
+    <Property Type="DateTime" Name="update_dt" Nullable="false" Precision="3" />
+    <Property Type="String" Name="update_by" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="TM_UserType" Relationship="DocumentControlModel.FK_TM_User_TM_UserType" FromRole="TM_User" ToRole="TM_UserType" />
+  </EntityType>
+  <EntityType Name="TM_UserType">
+    <Key>
+      <PropertyRef Name="utype_id" />
+    </Key>
+    <Property Type="Byte" Name="utype_id" Nullable="false" />
+    <Property Type="String" Name="utype_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="update_dt" Nullable="false" Precision="3" />
+    <Property Type="String" Name="update_by" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="TM_User" Relationship="DocumentControlModel.FK_TM_User_TM_UserType" FromRole="TM_UserType" ToRole="TM_User" />
+  </EntityType>
+  <EntityType Name="V_DistributionDoc">
+    <Key>
+      <PropertyRef Name="group_id" />
+      <PropertyRef Name="doc_type_short" />
+      <PropertyRef Name="group_code" />
+      <PropertyRef Name="run_no" />
+      <PropertyRef Name="rev_no" />
+      <PropertyRef Name="doc_name" />
+      <PropertyRef Name="eff_date" />
+    </Key>
+    <Property Type="String" Name="doc_no" MaxLength="109" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="group_id" Nullable="false" />
+    <Property Type="String" Name="doc_type_short" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="group_code" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="run_no" Nullable="false" />
+    <Property Type="Byte" Name="rev_no" Nullable="false" />
+    <Property Type="String" Name="doc_name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="eff_date" Nullable="false" Precision="0" />
+  </EntityType>
+  <EntityType Name="V_Group">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Type="Int32" Name="id" Nullable="false" />
+    <Property Type="String" Name="group_name" MaxLength="255" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="V_Max_Transaction">
+    <Key>
+      <PropertyRef Name="doc_type_short" />
+      <PropertyRef Name="group_code" />
+      <PropertyRef Name="run_no" />
+      <PropertyRef Name="rev_no" />
+      <PropertyRef Name="status_id" />
+      <PropertyRef Name="doc_name" />
+      <PropertyRef Name="eff_date" />
+      <PropertyRef Name="attach_file" />
+      <PropertyRef Name="operation_id" />
+      <PropertyRef Name="lv_id" />
+      <PropertyRef Name="org_id" />
+      <PropertyRef Name="active" />
+    </Key>
+    <Property Type="String" Name="doc_no" MaxLength="109" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="doc_type_short" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="group_code" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="run_no" Nullable="false" />
+    <Property Type="Byte" Name="rev_no" Nullable="false" />
+    <Property Type="Byte" Name="status_id" Nullable="false" />
+    <Property Type="String" Name="doc_name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="eff_date" Nullable="false" Precision="0" />
+    <Property Type="String" Name="attach_file" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="remark" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="Byte" Name="operation_id" Nullable="false" />
+    <Property Type="Byte" Name="lv_id" Nullable="false" />
+    <Property Type="Int32" Name="org_id" Nullable="false" />
+    <Property Type="DateTime" Name="act_dt" Precision="3" />
+    <Property Type="String" Name="reference" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="expect_cancel_date" Precision="0" />
+    <Property Type="DateTime" Name="check_date" Precision="0" />
+    <Property Type="Boolean" Name="active" Nullable="false" />
+  </EntityType>
+  <EntityType Name="V_Sum_CopyDoc">
+    <Key>
+      <PropertyRef Name="rev_no" />
+      <PropertyRef Name="doc_type_short" />
+      <PropertyRef Name="group_code" />
+      <PropertyRef Name="run_no" />
+      <PropertyRef Name="group_id" />
+    </Key>
+    <Property Type="String" Name="doc_no" MaxLength="106" FixedLength="false" Unicode="true" />
+    <Property Type="Byte" Name="rev_no" Nullable="false" />
+    <Property Type="String" Name="doc_type_short" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="group_code" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="run_no" Nullable="false" />
+    <Property Type="Int32" Name="group_id" Nullable="false" />
+    <Property Type="Int32" Name="round" />
+    <Property Type="Int32" Name="qty" />
+  </EntityType>
+  <EntityType Name="V_Transaction">
+    <Key>
+      <PropertyRef Name="doc_type_short" />
+      <PropertyRef Name="group_code" />
+      <PropertyRef Name="run_no" />
+      <PropertyRef Name="rev_no" />
+      <PropertyRef Name="sub_rev" />
+      <PropertyRef Name="status_id" />
+      <PropertyRef Name="lv_id" />
+      <PropertyRef Name="org_id" />
+      <PropertyRef Name="operation_id" />
+      <PropertyRef Name="active" />
+      <PropertyRef Name="doc_name" />
+      <PropertyRef Name="eff_date" />
+      <PropertyRef Name="attach_file" />
+      <PropertyRef Name="statusname" />
+      <PropertyRef Name="operation_name" />
+      <PropertyRef Name="lv_name" />
+      <PropertyRef Name="status_name" />
+      <PropertyRef Name="doc_type_full" />
+      <PropertyRef Name="doc_lv" />
+      <PropertyRef Name="review_year" />
+      <PropertyRef Name="copy_flag" />
+    </Key>
+    <Property Type="String" Name="doc_no" MaxLength="109" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="doc_type_short" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="group_code" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="run_no" Nullable="false" />
+    <Property Type="Byte" Name="rev_no" Nullable="false" />
+    <Property Type="Byte" Name="sub_rev" Nullable="false" />
+    <Property Type="Byte" Name="status_id" Nullable="false" />
+    <Property Type="Byte" Name="lv_id" Nullable="false" />
+    <Property Type="Int32" Name="org_id" Nullable="false" />
+    <Property Type="Byte" Name="operation_id" Nullable="false" />
+    <Property Type="Byte" Name="action_id" />
+    <Property Type="String" Name="actor" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="act_dt" Precision="3" />
+    <Property Type="String" Name="comment" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="Boolean" Name="active" Nullable="false" />
+    <Property Type="String" Name="doc_name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="eff_date" Nullable="false" Precision="0" />
+    <Property Type="String" Name="attach_file" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="remark" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="statusname" Nullable="false" MaxLength="103" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="operation_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="lv_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="status_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="doc_type_full" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Type="Byte" Name="doc_lv" Nullable="false" />
+    <Property Type="Byte" Name="review_year" Nullable="false" />
+    <Property Type="Boolean" Name="copy_flag" Nullable="false" />
+    <Property Type="DateTime" Name="expect_cancel_date" Precision="0" />
+  </EntityType>
+  <Association Name="FK_TD_Copy_TD_Document">
+    <End Type="DocumentControlModel.TD_Document" Role="TD_Document" Multiplicity="1" />
+    <End Type="DocumentControlModel.TD_Copy" Role="TD_Copy" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TD_Document">
+        <PropertyRef Name="doc_type_short" />
+        <PropertyRef Name="group_code" />
+        <PropertyRef Name="run_no" />
+        <PropertyRef Name="rev_no" />
+      </Principal>
+      <Dependent Role="TD_Copy">
+        <PropertyRef Name="doc_type_short" />
+        <PropertyRef Name="group_code" />
+        <PropertyRef Name="run_no" />
+        <PropertyRef Name="rev_no" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TD_DistributionList_TD_Document">
+    <End Type="DocumentControlModel.TD_Document" Role="TD_Document" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="DocumentControlModel.TD_DistributionList" Role="TD_DistributionList" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TD_Document">
+        <PropertyRef Name="doc_type_short" />
+        <PropertyRef Name="group_code" />
+        <PropertyRef Name="run_no" />
+        <PropertyRef Name="rev_no" />
+      </Principal>
+      <Dependent Role="TD_DistributionList">
+        <PropertyRef Name="doc_type_short" />
+        <PropertyRef Name="group_code" />
+        <PropertyRef Name="run_no" />
+        <PropertyRef Name="rev_no" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TD_Document_TM_DocType">
+    <End Type="DocumentControlModel.TM_DocType" Role="TM_DocType" Multiplicity="1" />
+    <End Type="DocumentControlModel.TD_Document" Role="TD_Document" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TM_DocType">
+        <PropertyRef Name="doc_type_short" />
+      </Principal>
+      <Dependent Role="TD_Document">
+        <PropertyRef Name="doc_type_short" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TD_Document_TM_GroupCode">
+    <End Type="DocumentControlModel.TM_GroupCode" Role="TM_GroupCode" Multiplicity="1" />
+    <End Type="DocumentControlModel.TD_Document" Role="TD_Document" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TM_GroupCode">
+        <PropertyRef Name="group_code" />
+      </Principal>
+      <Dependent Role="TD_Document">
+        <PropertyRef Name="group_code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TD_Transaction_TD_Document">
+    <End Type="DocumentControlModel.TD_Document" Role="TD_Document" Multiplicity="1" />
+    <End Type="DocumentControlModel.TD_Transaction" Role="TD_Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TD_Document">
+        <PropertyRef Name="doc_type_short" />
+        <PropertyRef Name="group_code" />
+        <PropertyRef Name="run_no" />
+        <PropertyRef Name="rev_no" />
+      </Principal>
+      <Dependent Role="TD_Transaction">
+        <PropertyRef Name="doc_type_short" />
+        <PropertyRef Name="group_code" />
+        <PropertyRef Name="run_no" />
+        <PropertyRef Name="rev_no" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TD_ReqCopy_TM_Paper">
+    <End Type="DocumentControlModel.TM_Paper" Role="TM_Paper" Multiplicity="1" />
+    <End Type="DocumentControlModel.TD_ReqCopy" Role="TD_ReqCopy" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TM_Paper">
+        <PropertyRef Name="paper_id" />
+      </Principal>
+      <Dependent Role="TD_ReqCopy">
+        <PropertyRef Name="paper_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TD_Transaction_TM_Action">
+    <End Type="DocumentControlModel.TM_Action" Role="TM_Action" Multiplicity="0..1" />
+    <End Type="DocumentControlModel.TD_Transaction" Role="TD_Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TM_Action">
+        <PropertyRef Name="action_id" />
+      </Principal>
+      <Dependent Role="TD_Transaction">
+        <PropertyRef Name="action_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TD_Transaction_TM_Level">
+    <End Type="DocumentControlModel.TM_Level" Role="TM_Level" Multiplicity="1" />
+    <End Type="DocumentControlModel.TD_Transaction" Role="TD_Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TM_Level">
+        <PropertyRef Name="lv_id" />
+      </Principal>
+      <Dependent Role="TD_Transaction">
+        <PropertyRef Name="lv_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TD_Transaction_TM_Operation">
+    <End Type="DocumentControlModel.TM_Operation" Role="TM_Operation" Multiplicity="1" />
+    <End Type="DocumentControlModel.TD_Transaction" Role="TD_Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TM_Operation">
+        <PropertyRef Name="operation_id" />
+      </Principal>
+      <Dependent Role="TD_Transaction">
+        <PropertyRef Name="operation_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TD_Transaction_TM_Status">
+    <End Type="DocumentControlModel.TM_Status" Role="TM_Status" Multiplicity="1" />
+    <End Type="DocumentControlModel.TD_Transaction" Role="TD_Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TM_Status">
+        <PropertyRef Name="status_id" />
+      </Principal>
+      <Dependent Role="TD_Transaction">
+        <PropertyRef Name="status_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TM_User_TM_UserType">
+    <End Type="DocumentControlModel.TM_UserType" Role="TM_UserType" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="DocumentControlModel.TM_User" Role="TM_User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TM_UserType">
+        <PropertyRef Name="utype_id" />
+      </Principal>
+      <Dependent Role="TM_User">
+        <PropertyRef Name="utype_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="TD_TranCopy">
+    <Key>
+      <PropertyRef Name="req_id" />
+      <PropertyRef Name="status_id" />
+      <PropertyRef Name="lv_id" />
+      <PropertyRef Name="org_id" />
+    </Key>
+    <Property Type="Int32" Name="req_id" Nullable="false" />
+    <Property Type="Byte" Name="status_id" Nullable="false" />
+    <Property Type="Byte" Name="lv_id" Nullable="false" />
+    <Property Type="Int32" Name="org_id" Nullable="false" />
+    <Property Type="Byte" Name="action_id" />
+    <Property Type="String" Name="actor" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="act_dt" Nullable="false" Precision="3" />
+    <Property Type="Boolean" Name="active" Nullable="false" />
+    <NavigationProperty Name="TD_ReqCopy" Relationship="DocumentControlModel.FK_TD_TranCopy_TD_ReqCopy" FromRole="TD_TranCopy" ToRole="TD_ReqCopy" />
+    <NavigationProperty Name="TM_Level" Relationship="DocumentControlModel.FK_TD_TranCopy_TM_Level" FromRole="TD_TranCopy" ToRole="TM_Level" />
+    <NavigationProperty Name="TM_Status" Relationship="DocumentControlModel.FK_TD_TranCopy_TM_Status" FromRole="TD_TranCopy" ToRole="TM_Status" />
+    <NavigationProperty Name="TM_Action" Relationship="DocumentControlModel.FK_TD_TranCopy_TM_Action" FromRole="TD_TranCopy" ToRole="TM_Action" />
+  </EntityType>
+  <Association Name="FK_TD_TranCopy_TD_ReqCopy">
+    <End Type="DocumentControlModel.TD_ReqCopy" Role="TD_ReqCopy" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="DocumentControlModel.TD_TranCopy" Role="TD_TranCopy" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TD_ReqCopy">
+        <PropertyRef Name="req_id" />
+      </Principal>
+      <Dependent Role="TD_TranCopy">
+        <PropertyRef Name="req_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TD_TranCopy_TM_Level">
+    <End Type="DocumentControlModel.TM_Level" Role="TM_Level" Multiplicity="1" />
+    <End Type="DocumentControlModel.TD_TranCopy" Role="TD_TranCopy" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TM_Level">
+        <PropertyRef Name="lv_id" />
+      </Principal>
+      <Dependent Role="TD_TranCopy">
+        <PropertyRef Name="lv_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TD_TranCopy_TM_Status">
+    <End Type="DocumentControlModel.TM_Status" Role="TM_Status" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="DocumentControlModel.TD_TranCopy" Role="TD_TranCopy" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TM_Status">
+        <PropertyRef Name="status_id" />
+      </Principal>
+      <Dependent Role="TD_TranCopy">
+        <PropertyRef Name="status_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="V_TranCopy">
+    <Key>
+      <PropertyRef Name="doc_type_short" />
+      <PropertyRef Name="group_code" />
+      <PropertyRef Name="run_no" />
+      <PropertyRef Name="rev_no" />
+      <PropertyRef Name="qty" />
+      <PropertyRef Name="type" />
+      <PropertyRef Name="paper_id" />
+      <PropertyRef Name="paper_name" />
+      <PropertyRef Name="active" />
+      <PropertyRef Name="act_dt" />
+      <PropertyRef Name="org_id" />
+      <PropertyRef Name="lv_id" />
+      <PropertyRef Name="status_id" />
+      <PropertyRef Name="req_id" />
+      <PropertyRef Name="statusname" />
+      <PropertyRef Name="lv_name" />
+      <PropertyRef Name="status_name" />
+    </Key>
+    <Property Type="String" Name="doc_no" MaxLength="109" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="doc_type_short" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="group_code" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="run_no" Nullable="false" />
+    <Property Type="Byte" Name="rev_no" Nullable="false" />
+    <Property Type="Int32" Name="qty" Nullable="false" />
+    <Property Type="String" Name="type" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="reason" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="Byte" Name="paper_id" Nullable="false" />
+    <Property Type="String" Name="paper_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Boolean" Name="active" Nullable="false" />
+    <Property Type="DateTime" Name="act_dt" Nullable="false" Precision="3" />
+    <Property Type="String" Name="actor" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Type="Byte" Name="action_id" />
+    <Property Type="Int32" Name="org_id" Nullable="false" />
+    <Property Type="Byte" Name="lv_id" Nullable="false" />
+    <Property Type="Byte" Name="status_id" Nullable="false" />
+    <Property Type="Int32" Name="req_id" Nullable="false" />
+    <Property Type="String" Name="statusname" Nullable="false" MaxLength="103" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="lv_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="status_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="action_name" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <Association Name="FK_TD_TranCopy_TM_Action">
+    <End Type="DocumentControlModel.TM_Action" Role="TM_Action" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="DocumentControlModel.TD_TranCopy" Role="TD_TranCopy" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TM_Action">
+        <PropertyRef Name="action_id" />
+      </Principal>
+      <Dependent Role="TD_TranCopy">
+        <PropertyRef Name="action_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TD_ReqCopy_TD_Document">
+    <End Type="DocumentControlModel.TD_Document" Role="TD_Document" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="DocumentControlModel.TD_ReqCopy" Role="TD_ReqCopy" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TD_Document">
+        <PropertyRef Name="doc_type_short" />
+        <PropertyRef Name="group_code" />
+        <PropertyRef Name="run_no" />
+        <PropertyRef Name="rev_no" />
+      </Principal>
+      <Dependent Role="TD_ReqCopy">
+        <PropertyRef Name="doc_type_short" />
+        <PropertyRef Name="group_code" />
+        <PropertyRef Name="run_no" />
+        <PropertyRef Name="rev_no" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="V_User_Info">
+    <Key>
+      <PropertyRef Name="emp_code" />
+      <PropertyRef Name="LeafOrgLevel" />
+    </Key>
+    <Property Type="String" Name="emp_code" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="username" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="password" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="emp_fname" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="emp_lname" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Type="Byte" Name="emp_position" />
+    <Property Type="String" Name="position_name" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="email" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="plant_id" />
+    <Property Type="String" Name="plant_name" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="dept_id" />
+    <Property Type="String" Name="dept_name" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="group_id" />
+    <Property Type="String" Name="group_name" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="sub_group_id" />
+    <Property Type="String" Name="sub_group" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="emp_status" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Type="String" Name="LeafOrganize" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="LeafOrgGroupId" />
+    <Property Type="String" Name="LeafOrgGroup" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Type="Byte" Name="position_level" />
+    <Property Type="Int32" Name="LeafOrgLevel" Nullable="false" />
+  </EntityType>
+  <EntityType Name="V_ReqCopy">
+    <Key>
+      <PropertyRef Name="req_id" />
+      <PropertyRef Name="doc_type_short" />
+      <PropertyRef Name="group_code" />
+      <PropertyRef Name="run_no" />
+      <PropertyRef Name="rev_no" />
+      <PropertyRef Name="qty" />
+      <PropertyRef Name="type" />
+      <PropertyRef Name="paper_id" />
+      <PropertyRef Name="paper_name" />
+      <PropertyRef Name="doc_name" />
+    </Key>
+    <Property Type="String" Name="doc_no" MaxLength="109" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="req_id" Nullable="false" />
+    <Property Type="String" Name="doc_type_short" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="group_code" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="run_no" Nullable="false" />
+    <Property Type="Byte" Name="rev_no" Nullable="false" />
+    <Property Type="Int32" Name="qty" Nullable="false" />
+    <Property Type="String" Name="type" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Byte" Name="paper_id" Nullable="false" />
+    <Property Type="String" Name="reason" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="paper_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="doc_name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="V_Report_Copy">
+    <Key>
+      <PropertyRef Name="qty" />
+      <PropertyRef Name="type" />
+      <PropertyRef Name="paper_name" />
+      <PropertyRef Name="act_dt" />
+      <PropertyRef Name="org_id" />
+      <PropertyRef Name="lv_id" />
+      <PropertyRef Name="status_id" />
+      <PropertyRef Name="req_id" />
+      <PropertyRef Name="statusname" />
+      <PropertyRef Name="lv_name" />
+      <PropertyRef Name="status_name" />
+      <PropertyRef Name="doc_name" />
+    </Key>
+    <Property Type="String" Name="doc_no" MaxLength="109" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="qty" Nullable="false" />
+    <Property Type="String" Name="type" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="reason" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="paper_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="act_dt" Nullable="false" Precision="3" />
+    <Property Type="Int32" Name="org_id" Nullable="false" />
+    <Property Type="Byte" Name="lv_id" Nullable="false" />
+    <Property Type="Byte" Name="status_id" Nullable="false" />
+    <Property Type="Int32" Name="req_id" Nullable="false" />
+    <Property Type="String" Name="statusname" Nullable="false" MaxLength="103" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="lv_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="status_name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="action_name" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="doc_name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="group_name" MaxLength="255" FixedLength="false" Unicode="true" />
+  </EntityType>
+</Schema>

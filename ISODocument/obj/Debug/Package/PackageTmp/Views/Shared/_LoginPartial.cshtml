@@ -11,9 +11,13 @@
             });
         </script>
         <form id="formLogin" name="formLogin" class="navbar-form pull-right" action="@Url.Action("Login", "Home")" method="post">
+            <div class="input-prepend" style="margin-top: 10px;"><span class="add-on"><i class="icon-user"></i></span>
             <input id="Username" name="Username" class="input-small" type="text" placeholder="Username" data-validate="required">
+            </div>
+            <div class="input-prepend input-append" style="margin-top: 10px;"><span class="add-on"><i class="icon-lock"></i></span>
             <input id="Password" name="Password" class="input-small" type="password" placeholder="Password" data-validate="required">
-            <button type="submit" class="btn btn-success">Login</button>
+                <button type="submit" class="btn btn-success">Login</button>
+            </div>      
         </form>
     </text>
 } else {

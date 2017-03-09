@@ -1,0 +1,101 @@
+﻿@{
+    Layout = null;
+}
+@model ISODocument.Models.TD_Document
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Print Copy List</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var obj = new Object();
+            obj.doctype = '@Model.doc_type_short';
+            obj.groupcode = '@Model.group_code';
+            obj.runno = '@Model.run_no';
+            obj.revno = '@Model.rev_no';
+            obj.req = '@ViewBag.ReqId';
+
+            $.get("@Url.Action("GetReqCopyList","Report")", obj, function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    $("#tablehc tbody").append("<tr>" +
+                        "<td>" + data[i].group_name + "</td>" +
+                        "<td>" + data[i].qty + "</td>" +
+                        "<td>" + data[i].note + "</td>" +
+                        "<td></td><td></td>" +
+                        "</tr>");
+                }
+            });
+        });
+    </script>
+    <style>
+        .table tbody + tbody {
+          border-top: 2px solid black;
+        }
+        .table th,
+        .table td {
+            border-top: 1px solid black;
+            border-left: 1px solid black;
+        }
+        .table {
+            border: 1px solid black;
+        }
+        .thead {
+            font-weight: bold;
+        }
+        .tbcenter th,
+        .tbcenter td {
+            text-align:center !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="row-fluid">
+        <div class="span1"></div>
+        <div class="span10" style="font-size:1.5em; font-weight:700; text-align:center;">RECEIVE DOCUMENT SIGN OFF SHEET</div>
+        <div class="span1 text-right">[COPY]</div>
+    </div>
+    <br />
+    <table class="table table-bordered">
+        <tr>
+            <td class="thead" style="width:135px;">DOCUMENT NO.</td>
+            <td>@Html.DisplayFor(model => model.doc_type_short)-@Html.DisplayFor(model => model.group_code)-@Model.run_no.ToString("0000")</td>
+            <td class="thead" style="width:60px;">REV.</td>
+            <td>@Model.rev_no.ToString("00")</td>
+            <td class="thead" style="width:90px;">EFF.DATE</td>
+            <td>@Model.eff_date.ToString("dd/MM/yyyy")</td>
+        </tr>
+        <tr>
+            <td class="thead">DOCUMENT NAME</td>
+            <td colspan="5">@Html.DisplayFor(model => model.doc_name)</td>
+        </tr>
+    </table>
+    <br />
+    <table class="table tbcenter table-bordered" id="tablehc">
+        <thead>
+            <tr>
+                <th>Section</th>
+                <th>Total Q'ty</th>
+                <th>Paper Size</th>
+                <th>Received</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5" style="vertical-align:bottom; height:150px;">
+                    <h4>For Document Control Center</h4>
+                    <h5>COMPLETION BY Document Control Center :____________________________DATE :____________________</h5>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    <small>FM-QS-0050-00, EFF.DATE 22-OCT-15,P.1/1</small>
+</body>
+</html>

@@ -33,6 +33,13 @@ namespace ISODocument.Controllers
             // { FileName = "CopyList.pdf" };
         }
 
+        public ActionResult PrintReqCopyList(string dt, string gc, int rn, byte rv, int req)
+        {
+            return new ActionAsPdf("ReqCopyList", new { doc_type_short = dt, group_code = gc, run_no = rn, rev_no = rv, req = req });
+            //{ CustomSwitches = "--print-media-type --footer-font-size 8 --footer-left \"FM-QS-0050-00, EFF.DATE 22-OCT-15,P.1/1\"" };
+            // { FileName = "CopyList.pdf" };
+        }
+
         public ActionResult CopyList(string doc_type_short, string group_code, int run_no, byte rev_no)
         {
             var document = (from a in dbDC.TD_Document
@@ -40,14 +47,49 @@ namespace ISODocument.Controllers
                             && a.run_no == run_no && a.rev_no == rev_no
                             select a).FirstOrDefault();
 
-            var copy = from a in dbDC.TD_Copy
-                       where a.doc_type_short == doc_type_short && a.group_code == group_code
-                       && a.run_no == run_no && a.rev_no == rev_no && a.copy_runno == 0
-                       select a;
+            //var copy = from a in dbDC.TD_Copy
+            //           where a.doc_type_short == doc_type_short && a.group_code == group_code
+            //           && a.run_no == run_no && a.rev_no == rev_no && a.copy_runno == 0
+            //           select a;
 
-            ViewBag.CopyList = copy;
+            //ViewBag.CopyList = copy;
 
             return View(document);
+        }
+
+        public ActionResult ReqCopyList(string doc_type_short, string group_code, int run_no, byte rev_no, int req)
+        {
+            var document = (from a in dbDC.TD_Document
+                            where a.doc_type_short == doc_type_short && a.group_code == group_code
+                            && a.run_no == run_no && a.rev_no == rev_no
+                            select a).FirstOrDefault();
+
+            ViewBag.ReqId = req;
+
+            //var copy = from a in dbDC.TD_ReqCopy
+            //           where a.req_id == req
+            //           select a;
+
+            //ViewBag.ReqCopyList = copy;
+
+            return View(document);
+        }
+
+        [OutputCache(Duration = 0, VaryByParam = "*", NoStore = true)]
+        public ActionResult GetReqCopyList(string doctype, string groupcode, int runno, byte revno, int req)
+        {
+            var get_selected = from a in dbDC.TD_TranCopy.Where(a => a.req_id == req && a.status_id == 0)
+                               join g in dbDC.V_Group on a.org_id equals g.id
+                               select new
+                               {
+                                   g.group_name,
+                                   a.org_id,
+                                   a.TD_ReqCopy.qty,
+                                   note = a.TD_ReqCopy.TM_Paper.paper_name
+                                   //note = a.TD_ReqCopy.reason != null ? a.TD_ReqCopy.reason : ""
+                               };
+
+            return Json(get_selected, JsonRequestBehavior.AllowGet);
         }
 
         //-------------------------------------------//
@@ -63,22 +105,10 @@ namespace ISODocument.Controllers
             try
             {
                 var dateto = date_to.AddDays(1);
-                var query = from a in dbDC.V_Transaction.Where(w => w.status_id >= 100 //&& w.eff_date >= w.act_dt
-                                && (w.act_dt >= date_from && w.act_dt <= dateto)).ToList()
-                            join b in dbTNC.tnc_group_master.ToList() on a.org_id equals b.id
-                            select new
-                            {
-                                a.doc_lv,
-                                a.doc_type_full,
-                                a.operation_name,
-                                a.status_name,
-                                a.doc_no,
-                                a.rev_no,
-                                a.doc_name,
-                                b.group_name,
-                                a.act_dt,
-                                a.eff_date
-                            };
+
+                var query = from a in dbDC.V_Transaction
+                            where a.status_id >= 100 && (a.act_dt >= date_from && a.act_dt <= dateto)
+                            select a;
 
                 //Get data from database
                 int TotalRecord = query.Count();
@@ -113,23 +143,54 @@ namespace ISODocument.Controllers
             TNCUtility util = new TNCUtility();
 
             var dateto = date_to.AddDays(1);
-            var query = (from a in dbDC.V_Transaction.Where(w => w.status_id >= 100
-                                && (w.act_dt >= date_from && w.act_dt <= dateto)).ToList()
-                        join b in dbTNC.tnc_group_master.ToList() on a.org_id equals b.id
-                        orderby a.doc_lv descending
-                        select new
+
+            var query = (from a in dbDC.V_Transaction
+                         where a.status_id >= 100 && (a.act_dt >= date_from && a.act_dt <= dateto)
+                         orderby a.doc_lv descending
+                         select new
                         {
-                            Level = a.doc_lv,
-                            DocType = a.doc_type_full,
-                            Operation = a.operation_name,
-                            Status = a.status_name,
-                            DocNo = a.doc_no.Substring(0, a.doc_no.Length - 3),
-                            Rev = a.rev_no,
-                            DocName = a.doc_name,
-                            Group = b.group_name,
-                            EffDate = a.eff_date.ToString("dd-MM-yyyy"),
-                            CompleteDate = a.act_dt.Value.ToString("dd-MM-yyyy")
+                            a.doc_lv,
+                            a.doc_type_full,
+                            a.operation_name,
+                            a.status_name,
+                            a.doc_no,
+                            a.rev_no,
+                            a.doc_name,
+                            a.group_name,
+                            a.eff_date,
+                            a.act_dt
+                        }).AsEnumerable() // <<== This forces the following Select to operate in memory
+                        .Select(t => new
+                        {
+                            Level = t.doc_lv,
+                            DocType = t.doc_type_full,
+                            Operation = t.operation_name,
+                            Status = t.status_name,
+                            DocNo = t.doc_no.Substring(0, t.doc_no.Length - 3),
+                            Rev = t.rev_no,
+                            DocName = t.doc_name,
+                            Group = t.group_name,
+                            EffDate = t.eff_date.ToString("dd-MM-yyyy"),
+                            CompleteDate = t.act_dt.Value.ToString("dd-MM-yyyy")
                         }).ToList();
+
+            //var query = (from a in dbDC.V_Transaction.Where(w => w.status_id >= 100
+            //                    && (w.act_dt >= date_from && w.act_dt <= dateto)).ToList()
+            //            join b in dbTNC.tnc_group_master.ToList() on a.org_id equals b.id
+            //            orderby a.doc_lv descending
+            //            select new
+            //            {
+            //                Level = a.doc_lv,
+            //                DocType = a.doc_type_full,
+            //                Operation = a.operation_name,
+            //                Status = a.status_name,
+            //                DocNo = a.doc_no.Substring(0, a.doc_no.Length - 3),
+            //                Rev = a.rev_no,
+            //                DocName = a.doc_name,
+            //                Group = b.group_name,
+            //                EffDate = a.eff_date.ToString("dd-MM-yyyy"),
+            //                CompleteDate = a.act_dt.Value.ToString("dd-MM-yyyy")
+            //            }).ToList();
 
             util.CreateExcel(query, "Monthly_" + date_from.ToString("dd-MM-yyyy") + "_" + date_to.ToString("dd-MM-yyyy"));
         }

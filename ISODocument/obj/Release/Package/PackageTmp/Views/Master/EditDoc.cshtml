@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "Edit Document";
+}
+
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th>Document Type</th>
+            <th>Group Code</th>
+            <th>Run no.</th>
+            <th>Revision</th>
+            <th>Document Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><select id="s_doctype" name="s_doctype">
+                    <option value="">---</option>
+                @foreach (var item in ViewBag.DocType)
+                {
+                    <option value="@item.doc_type_short">@item.doc_type_full</option>
+                }
+                </select></td>
+            <td><select id="s_gcode" name="s_gcode">
+                    <option value="">---</option>
+                @foreach (var item in ViewBag.GroupCode)
+                {
+                    <option value="@item.group_code">@item.group_code</option>
+                }
+                </select></td>
+            <td><input type="text" id="s_runno" name="s_runno" /></td>
+            <td><input type="text" id="s_revno" name="s_revno" /></td>
+            <td><input type="text" id="s_docname" name="s_docname" /></td>
+            <td><button type="button" id="btSearch" name="btSearch" class="btn btn-inverse">Search</button></td>
+        </tr>
+    </tbody>
+</table>
+ 

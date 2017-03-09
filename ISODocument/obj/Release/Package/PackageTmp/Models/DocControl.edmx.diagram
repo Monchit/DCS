@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="925aa05c6d114c1ebea7465dab8452b2" Name="Diagram1" ZoomLevel="86">
+        <EntityTypeShape EntityType="DocumentControlModel.TD_Copy" Width="1.5" PointX="2.75" PointY="13.625" />
+        <EntityTypeShape EntityType="DocumentControlModel.TD_DistributionList" Width="1.5" PointX="9.625" PointY="17.125" />
+        <EntityTypeShape EntityType="DocumentControlModel.TD_Document" Width="1.5" PointX="2.6997363635803278" PointY="17.241035722774004" />
+        <EntityTypeShape EntityType="DocumentControlModel.TD_Questionair" Width="1.5" PointX="13.625" PointY="16.25" />
+        <EntityTypeShape EntityType="DocumentControlModel.TD_ReqCopy" Width="1.5" PointX="5.5" PointY="20" />
+        <EntityTypeShape EntityType="DocumentControlModel.TD_Transaction" Width="1.5" PointX="2.75" PointY="22" />
+        <EntityTypeShape EntityType="DocumentControlModel.TM_Action" Width="1.5" PointX="4.625" PointY="14.375" />
+        <EntityTypeShape EntityType="DocumentControlModel.TM_DocType" Width="1.5" PointX="5.25" PointY="26" />
+        <EntityTypeShape EntityType="DocumentControlModel.TM_Group" Width="1.5" PointX="9.625" PointY="20" />
+        <EntityTypeShape EntityType="DocumentControlModel.TM_GroupCode" Width="1.5" PointX="4.875" PointY="17.25" />
+        <EntityTypeShape EntityType="DocumentControlModel.TM_Level" Width="1.5" PointX="9.625" PointY="27.375" />
+        <EntityTypeShape EntityType="DocumentControlModel.TM_Operation" Width="1.5" PointX="5.25" PointY="23.625" />
+        <EntityTypeShape EntityType="DocumentControlModel.TM_Paper" Width="1.5" PointX="5" PointY="12" />
+        <EntityTypeShape EntityType="DocumentControlModel.TM_Reviewer_Prod" Width="1.5" PointX="11.75" PointY="12" />
+        <EntityTypeShape EntityType="DocumentControlModel.TM_Status" Width="1.5" PointX="3.375" PointY="27.5" />
+        <EntityTypeShape EntityType="DocumentControlModel.TM_User" Width="1.5" PointX="7" PointY="12" />
+        <EntityTypeShape EntityType="DocumentControlModel.TM_UserType" Width="1.5" PointX="7.5" PointY="14.5" />
+        <EntityTypeShape EntityType="DocumentControlModel.V_DistributionDoc" Width="1.5" PointX="7.5" PointY="16.75" />
+        <EntityTypeShape EntityType="DocumentControlModel.V_Group" Width="1.5" PointX="2.75" PointY="12" />
+        <EntityTypeShape EntityType="DocumentControlModel.V_Max_Transaction" Width="1.5" PointX="9.625" PointY="12.375" />
+        <EntityTypeShape EntityType="DocumentControlModel.V_Sum_CopyDoc" Width="1.5" PointX="11.75" PointY="14.25" />
+        <EntityTypeShape EntityType="DocumentControlModel.V_Transaction" Width="1.5" PointX="7.5" PointY="20" />
+        <AssociationConnector Association="DocumentControlModel.FK_TD_Copy_TD_Document" />
+        <AssociationConnector Association="DocumentControlModel.FK_TD_DistributionList_TD_Document" />
+        <AssociationConnector Association="DocumentControlModel.FK_TD_Document_TM_DocType" />
+        <AssociationConnector Association="DocumentControlModel.FK_TD_Document_TM_GroupCode" />
+        <AssociationConnector Association="DocumentControlModel.FK_TD_Transaction_TD_Document" />
+        <AssociationConnector Association="DocumentControlModel.FK_TD_ReqCopy_TM_Paper" />
+        <AssociationConnector Association="DocumentControlModel.FK_TD_Transaction_TM_Action" />
+        <AssociationConnector Association="DocumentControlModel.FK_TD_Transaction_TM_Level" />
+        <AssociationConnector Association="DocumentControlModel.FK_TD_Transaction_TM_Operation" />
+        <AssociationConnector Association="DocumentControlModel.FK_TD_Transaction_TM_Status" />
+        <AssociationConnector Association="DocumentControlModel.FK_TM_User_TM_UserType" />
+        <EntityTypeShape EntityType="DocumentControlModel.TD_TranCopy" Width="1.5" PointX="7.5" PointY="26.75" />
+        <AssociationConnector Association="DocumentControlModel.FK_TD_TranCopy_TD_ReqCopy" />
+        <AssociationConnector Association="DocumentControlModel.FK_TD_TranCopy_TM_Level" />
+        <AssociationConnector Association="DocumentControlModel.FK_TD_TranCopy_TM_Status" />
+        <EntityTypeShape EntityType="DocumentControlModel.V_TranCopy" Width="1.5" PointX="9.625" PointY="21.625" />
+        <AssociationConnector Association="DocumentControlModel.FK_TD_TranCopy_TM_Action" />
+        <AssociationConnector Association="DocumentControlModel.FK_TD_ReqCopy_TD_Document" />
+        <EntityTypeShape EntityType="DocumentControlModel.V_User_Info" Width="1.5" PointX="11.75" PointY="20.5" />
+        <EntityTypeShape EntityType="DocumentControlModel.V_ReqCopy" Width="1.5" PointX="11.75" PointY="17" />
+        <EntityTypeShape EntityType="DocumentControlModel.V_Report_Copy" Width="1.5" PointX="13.625" PointY="12" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>@ViewBag.Title - My ASP.NET MVC Application</title>
+  <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+ 
+  @Styles.Render("~/Content/bootstrap")
+  @Styles.Render("~/Content/jTable")
+  @Styles.Render("~/Content/select2")
+  <style type="text/css">
+    @@media (min-width: 980px) {
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+ 
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    }
+  </style>
+  @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+  <div class="container">
+        
+  </div>
+  <!--/.fluid-container-->
+ 
+  @Scripts.Render("~/bundles/jquery")
+  @Scripts.Render("~/bundles/bootstrap")
+  @Scripts.Render("~/bundles/select2")
+  @Scripts.Render("~/bundles/jTable")
+  @Scripts.Render("~/bundles/moment")
+  @RenderSection("scripts", required: false)
+</body>
+</html>

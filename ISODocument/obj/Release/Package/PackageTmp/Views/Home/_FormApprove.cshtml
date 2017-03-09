@@ -1,0 +1,33 @@
+﻿<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).on("click", "#btnReject", function (e) {
+            e.preventDefault();
+            var formAction = "@Url.Action("RejectDoc")";
+            $("#formApprove").attr('action', formAction).submit();
+        });
+
+        $(document).on("click", "#btnApprove", function (e) {
+            e.preventDefault();
+            var formAction = "@Url.Action("ApproveDoc")";
+            $("#formApprove").attr('action', formAction).submit();
+        });
+    });
+</script>
+<form id="formApprove">
+    <table>
+        <tr>
+            <td colspan="2">Comment : </td>
+        </tr>
+        <tr>
+            <td colspan="2"><textarea rows="4" id="txaComment" class="input-xlarge" placeholder="Comment"></textarea></td>
+        </tr>
+        <tr>
+            <td>
+                <button type="button" class="btn btn-danger" id="btnReject"><i class="icon-remove icon-white"></i> Reject</button>
+            </td>
+            <td style="text-align:right;">
+                <button type="button" class="btn btn-success" id="btnApprove"><i class="icon-ok icon-white"></i> Approve</button>
+            </td>
+        </tr>
+    </table>
+</form>

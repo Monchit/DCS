@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Document Type Management";
+}
+<link href="~/Scripts/jtable/themes/metro/pink/jtable.min.css" rel="stylesheet" />
+<style type="text/css">
+    /*fix jTable*/
+    span.jtable-goto-page select, span.jtable-page-size-change select {
+        height: 25px;
+        width: 60px;
+        padding: 2px 2px;
+        margin-bottom:auto;
+    }
+    div.jtable-main-container table.jtable thead th {
+        text-align: center;
+    }
+    div.jtable-main-container > table.jtable > tbody > tr.jtable-data-row > td {
+        text-align: center;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#jTableDocType').jtable({
+            title: 'Document Type Master',
+            paging: true, //Enable paging
+            pageSize: 10, //Set page size (default: 10)
+            sorting: true, //Enable sorting
+            selecting: true, //Enable selecting
+            defaultSorting: 'doc_lv ASC', //Set default sorting
+            actions: {
+                listAction: '@Url.Action("DocTypeList","Master")',
+                deleteAction: '@Url.Action("DeleteDocType","Master")',
+                updateAction: '@Url.Action("UpdateDocType","Master")',
+                createAction: '@Url.Action("CreateDocType","Master")'
+            },
+            fields: {
+                doc_type_short: { title: 'Short Name', key: true, create: true, edit: false, width: '20%' },
+                doc_type_full: { title: 'Full Name', create: true, edit: true, width: '40%' },
+                doc_lv: { title: 'Level', width: '8%', options: ['1', '2', '3', '4'] },
+                dcc: { title: 'DCC', create: true, edit: true, width: '8%', options: ['qs', 'safety'] },
+                copy_flag: { title: 'Hard Copy', width: '10%', create: true, edit: true, type: 'checkbox', values: { 'false': 'No', 'true': 'Yes' }, defaultValue: 'false' },
+                review_year: { title: 'Review (Years)', width: '14%', create: true, edit: true, options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'] }
+            }
+        });
+        //Load student list from server
+        $('#jTableDocType').jtable('load');
+
+    });
+</script>
+
+<div id="jTableDocType"></div>

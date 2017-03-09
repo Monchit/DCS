@@ -1,0 +1,274 @@
+﻿@{
+    ViewBag.Title = "Controlled Document";
+}
+<link href="~/Scripts/jtable/themes/metro/green/jtable.min.css" rel="stylesheet" />
+<style type="text/css">
+    /*fix jTable*/
+    span.jtable-goto-page select, span.jtable-page-size-change select {
+        height: 25px;
+        width: 60px;
+        padding: 2px 2px;
+        margin-bottom:auto;
+    }
+    div.jtable-main-container table.jtable thead th {
+        text-align: center;
+    }
+    div.jtable-main-container > table.jtable > tbody > tr.jtable-data-row > td {
+        text-align: center;
+    }
+    div.accordion-heading {
+        font-weight:600;
+    }
+    .td_title {
+        text-align:right !important;
+        font-weight:600;
+    }
+    .ui-dialog-title {
+        color:white;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.strPad = function (i, l, s) {
+            var o = i.toString();
+            if (!s) { s = '0'; }
+            while (o.length < l) { o = s + o; }
+            return o;
+        };
+
+        $('#jTableControlled').jtable({
+            title: 'Controlled Document',
+            paging: true, //Enable paging
+            pageSize: 10, //Set page size (default: 10)
+            sorting: true, //Enable sorting
+            selecting: false, //Enable selecting
+            defaultSorting: 'doc_no', //Set default sorting
+            actions: {
+                listAction: '@Url.Action("ControlledList","Home")'
+            },
+            fields: {
+                doc_type_short: { title: 'Document Type', list: false },
+                group_code: { title: 'Group Code', list: false },
+                run_no: { title: 'Run No.', list: false },
+                rev_no: { title: 'Revision', list: false },
+                doc_no: {
+                    title: 'Document No.', width: '15%',
+                    visibility: 'fixed', //This column always will be shown
+                    display: function (data) {
+                        return $('<a href="#" class="ShowDocNo" data-dt="' + data.record.doc_type_short + '" data-gc="' + data.record.group_code + '" data-rn="' + data.record.run_no + '" data-rv="' + data.record.rev_no + '">' + data.record.doc_no + '</a>');
+                    }
+                },
+                doc_name: { title: 'Document Name', width: '54%' },
+                eff_date: { title: 'Effective Date', width: '10%', type: 'date', displayFormat: 'dd-mm-yy' },
+                revise: { list: false },
+                //showcopy: {
+                //    title: 'Copy', width: '7%', visibility: 'fixed', //This column always will be shown
+                //    display: function (data) {
+                //        if (data.record.revise == true)
+                //            return $('<a href="#" class="req_copy" data-dt="' + data.record.doc_type_short + '" data-gc="' + data.record.group_code + '" data-rn="' + data.record.run_no + '" data-rv="' + data.record.rev_no + '"><i class="icon-file"></i></a>');
+                //        else
+                //            return "";
+                //    }
+                //},
+                showrevise: {
+                    title: 'Revise', width: '7%', visibility: 'fixed', //This column always will be shown
+                    display: function (data) {
+                        if (data.record.revise == true)
+                            return $('<a href="#" class="req_revise" data-dt="' + data.record.doc_type_short + '" data-gc="' + data.record.group_code + '" data-rn="' + data.record.run_no + '" data-rv="' + data.record.rev_no + '"><i class="icon-pencil"></i></a>');
+                        else
+                            return "";
+                    }
+                },
+                showcancel: {
+                    title: 'Cancel', width: '7%', visibility: 'fixed', //This column always will be shown
+                    display: function (data) {
+                        if (data.record.revise == true)
+                            return $('<a href="#" class="req_cancel" data-dt="' + data.record.doc_type_short + '" data-gc="' + data.record.group_code + '" data-rn="' + data.record.run_no + '" data-rv="' + data.record.rev_no + '"><i class="icon-remove"></i></a>');
+                        else
+                            return "";
+                    }
+                },
+                showreview: {
+                    title: 'Review', width: '7%', visibility: 'fixed',
+                    display: function (data) {
+                        if (data.record.revise == true)
+                            return $('<a href="#" class="req_review" data-dt="' + data.record.doc_type_short + '" data-gc="' + data.record.group_code + '" data-rn="' + data.record.run_no + '" data-rv="' + data.record.rev_no + '"><i class="icon-eye-open"></i></a>');
+                        else
+                            return "";
+                    }
+                }
+            }
+        });
+
+        //Load list from server
+        $('#jTableControlled').jtable('load');
+
+        //Re-load records when user click 'load records' button.
+        $('#btSearch').click(function (e) {
+            e.preventDefault();
+            $('#jTableControlled').jtable('load', {
+                doc_no: $('#s_docno').val(),
+                doc_name: $('#s_docname').val(),
+                //date_from: $('#date_from').val(),
+                //date_to: $('#date_to').val(),
+                rev_no: $('#s_rev').val(),
+                mode: 1
+            });
+        });
+
+        $("#date_from").datepicker({
+            dateFormat: 'yy-mm-dd',
+            minDate: new Date(),
+            onClose: function (selectedDate) {
+                $("#date_to").datepicker("option", "minDate", selectedDate);
+            }
+        });
+        $("#date_to").datepicker({
+            dateFormat: 'yy-mm-dd',
+            onClose: function (selectedDate) {
+                $("#date_from").datepicker("option", "maxDate", selectedDate);
+            }
+        });
+
+        $('#btMy').click(function (e) {
+            e.preventDefault();
+            $('#jTableControlled').jtable('load', { mode: 0 });
+        });
+
+        $('#divDocDetail').dialog({
+            autoOpen: false,
+            width: 900,//'auto',
+            height: 'auto',
+            modal: true
+        });
+
+        $(document).on("click", ".ShowDocNo", function (event) {
+            var obj = new Object();
+            obj.doctype = $(this).attr('data-dt');
+            obj.groupcode = $(this).attr('data-gc');
+            obj.runno = $(this).attr('data-rn');
+            obj.revno = $(this).attr('data-rv');
+            obj.check = true;//Check show file?
+            obj.appv = 2;//Check Approve?
+            var remote = "@Url.Action("_ShowDocDetail")";
+            $.get(remote, obj, function (data) {
+                $("#divDocDetail").html(data);
+                $("#divDocDetail").dialog("open");
+                return false;
+            });
+        });
+
+        //$('#divDialogCopy').dialog({
+        //    autoOpen: false,
+        //    width: 500,//'auto',
+        //    height: 'auto',
+        //    modal: true
+        //});
+
+        $('#divDialogCancel').dialog({
+            autoOpen: false,
+            width: 500,//'auto',
+            height: 'auto',
+            modal: true
+        });
+
+        $('#divDialogReview').dialog({
+            autoOpen: false,
+            width: 500,//'auto',
+            height: 'auto',
+            //resizable: false,
+            //title: 'hi there',
+            modal: true
+        });
+
+        @*$(document).on("click", ".req_copy", function (event) {
+            var obj = new Object();
+            obj.doctype = $(this).attr('data-dt');
+            obj.groupcode = $(this).attr('data-gc');
+            obj.runno = $(this).attr('data-rn');
+            obj.revno = $(this).attr('data-rv');
+            var remote = "@Url.Action("_FormCopy1","Home")";
+            $.get(remote, obj, function (data) {
+                $("#divDialogCopy").html(data);
+                $("#divDialogCopy").dialog("open");
+            });
+        });*@
+
+        $(document).on("click", ".req_cancel", function (event) {
+            var obj = new Object();
+            obj.doctype = $(this).attr('data-dt');
+            obj.groupcode = $(this).attr('data-gc');
+            obj.runno = $(this).attr('data-rn');
+            obj.revno = $(this).attr('data-rv');
+            var remote = "@Url.Action("_FormCancel","Home")";
+            $.get(remote, obj, function (data) {
+                $("#divDialogCancel").html(data);
+                $("#divDialogCancel").dialog("open");
+            });
+        });
+
+        $(document).on("click", ".req_review", function (event) {
+            var obj = new Object();
+            obj.doctype = $(this).attr('data-dt');
+            obj.groupcode = $(this).attr('data-gc');
+            obj.runno = $(this).attr('data-rn');
+            obj.revno = $(this).attr('data-rv');
+            var remote = "@Url.Action("_FormReview","Home")";
+            $.get(remote, obj, function (data) {
+                $("#divDialogReview").html(data);
+                $("#divDialogReview").dialog("open");
+            });
+        });
+
+        $(document).on("click", ".req_revise", function (event) {
+            var obj = new Object();
+            obj.doctype = $(this).attr('data-dt');
+            obj.groupcode = $(this).attr('data-gc');
+            obj.runno = $(this).attr('data-rn');
+            obj.revno = $(this).attr('data-rv');
+            window.location.href = "@Url.Action("DocRevise","Home")?docType=" + $(this).attr('data-dt')
+                                                    + "&groupcode=" + $(this).attr('data-gc')
+                                                    + "&runno=" + $(this).attr('data-rn')
+                                                    + "&revno=" + $(this).attr('data-rv');
+        });
+    });
+</script>
+
+<form>
+    <table class="table table-condensed" style="width:auto;">
+        <thead>
+            <tr>
+                <th>Document No.</th>
+                <th>Revision</th>
+                <th>Document Name</th>
+                @*<th>Date From</th>
+                <th>Date To</th>*@
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" id="s_docno" name="s_docno" class="input-medium" placeholder="Document No." /></td>
+                <td><input type="text" id="s_rev" name="s_rev" class="input-mini" placeholder="Revision" maxlength="2" /></td>
+                <td><input type="text" id="s_docname" name="s_docname" class="input-large" placeholder="Document Name" /></td>
+                @*<td><input type="text" id="date_from" name="date_from" class="input-small"></td>
+                <td><input type="text" id="date_to" name="date_to" class="input-small"></td>*@
+                <td><button type="submit" id="btSearch" class="btn btn-primary"><i class="icon-search icon-white"></i> Search</button></td>
+                <td><button type="reset" id="btReset" class="btn btn-warning"><i class="icon-trash icon-white"></i> Clear</button></td>
+                <td>@if(ViewBag.ULv <= 2){
+                    <button type="button" id="btMy" class="btn btn-info"><i class="icon-user icon-white"></i> My Document</button>
+                    }</td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+<div id="jTableControlled"></div>
+
+<div id="divDocDetail" title="Detail"></div>
+
+<div id="divDialogCancel" title="Request Cancel"></div>
+
+<div id="divDialogReview" title="Confirm use Document"></div>

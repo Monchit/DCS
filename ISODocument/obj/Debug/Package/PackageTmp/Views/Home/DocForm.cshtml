@@ -23,23 +23,6 @@
             //showButtonPanel: true,
             minDate: new Date()//set minDate is today
         });
-        
-        @*$("#txtRunno").change(function () {
-            $(this).val($.strPad($(this).val(), 4));
-        });
-        
-        $("#txtRunno").change(function () {
-            $.get("@Url.Action("CheckDocNo","Home")", { docType: $("#selDocType").val(), gCode: $("#selGroupCode").val(), runno: $("#txtRunno").val(), revno: $("#txtRev").val() }, function (data) {
-                //if (data == true) {
-                //    alert("This document no. already exist.");
-                //    $("#txtRunno").focus();
-                //}
-                if (data != "") {
-                    alert(data);
-                    $("#txtRunno").focus();
-                }
-            });
-        });*@
 
         $("#selDocType, #selGroupCode").change(function () {
             $.get("@Url.Action("CheckDocNo","Home")", { docType: $("#selDocType").val(), gCode: $("#selGroupCode").val() },
@@ -49,12 +32,23 @@
                     } else {
                         alert("Error : Get Document No.");
                     }
-                });
+                }
+            );
         });
 
         $("#selDocType").change(function () {
-            $("#txtDocType").val($(this).val());
-            $.get("@Url.Action("ShowCopy","Home")", { docType: $(this).val() }, function (data) {
+            var doc_type = $(this).val();
+            //console.log(doc_type + "-555");
+            $("#txtDocType").val(doc_type);
+
+            if (doc_type == "VDO") {
+                $("#flAtt").removeAttr("data-validate");
+                $("#flAtt").removeClass("error");
+            } else {
+                $("#flAtt").attr("data-validate", "file");
+            }
+            
+            $.get("@Url.Action("ShowCopy","Home")", { docType: doc_type }, function (data) {
                 if (data == "show") {
                     $("#hc-contain").show();
                 } else {
@@ -210,13 +204,15 @@
     <div class="control-group">
         <label class="control-label" for="flAtt">Attach File <span class="label label-important">PDF Only</span></label>
         <div class="controls">
-            <input type="file" id="flAtt" name="flAtt" data-validate="file" accept="application/pdf" />
+            <input type="file" id="flAtt" name="flAtt" data-validate="file" accept="application/pdf" /> 
+            <span class="label label-warning">File size < 20MB</span>
         </div>
     </div>
     <div class="control-group">
         <label class="control-label" for="flSrc">Source File <span class="label label-info">Word</span><span class="label label-success">Excel</span></label>
         <div class="controls">
-            <input type="file" id="flSrc" name="flSrc" />
+            <input type="file" id="flSrc" name="flSrc" /> 
+            <span class="label label-warning">File size < 20MB</span>
         </div>
     </div>
     <div class="control-group">

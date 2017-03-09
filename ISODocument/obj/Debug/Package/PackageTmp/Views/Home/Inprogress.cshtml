@@ -119,7 +119,94 @@
             obj.check = false;
             obj.operation = $(this).attr('data-op');
             obj.appv = 1;
-            var remote = "@Url.Action("_ShowDocDetail")";
+            var remote = "@Url.Action("_ShowDocDetail","Home")";
+            $.get(remote, obj, function (data) {
+                $("#divDocDetail").html(data);
+                $("#divDocDetail").dialog("open");
+                return false;
+            });
+        });
+
+        $('#jTableInProgCopy').jtable({
+            title: 'In-Progress Request Copy',
+            paging: true, //Enable paging
+            pageSize: 10, //Set page size (default: 10)
+            sorting: true, //Enable sorting
+            //selecting: true, //Enable selecting
+            defaultSorting: 'doc_no', //Set default sorting
+            actions: {
+                listAction: '@Url.Action("InProgressCopyList","Home")'
+            },
+            fields: {
+                doc_type_short: { title: 'Document Type', list: false },
+                group_code: { title: 'Group Code', list: false },
+                run_no: { title: 'Run No.', list: false },
+                rev_no: { title: 'Revision', list: false },
+                req_id: { title: 'Req. ID', list: false },
+                doc_no: {
+                    title: 'Document No.', width: '20%',
+                    visibility: 'fixed', //This column always will be shown
+                    display: function (data) {
+                        return $('<a href="#" class="ShowDocNo1" data-dt="' + data.record.doc_type_short + '" data-gc="' + data.record.group_code + '" data-rn="' + data.record.run_no + '" data-rv="' + data.record.rev_no + '" data-req="' + data.record.req_id + '">' + data.record.doc_no + '</a>');
+                    }
+                },
+                type: { title: 'Type', width: '10%' },
+                paper_name: { title: 'Paper Size', width: '10%' },
+                qty: { title: 'Qty', width: '6%' },
+                reason: { title: 'Reason', width: '32%' },
+                statusname: { title: 'Status', width: '15%' },
+                show_print: { list: false },
+                print: {
+                    title: 'Print', width: '7%',
+                    display: function (data) {
+                        if (data.record.show_print == true)
+                            return $('<a href="../Report/PrintReqCopyList?dt=' + data.record.doc_type_short
+                            + '&gc=' + data.record.group_code
+                            + '&rn=' + data.record.run_no
+                            + '&rv=' + data.record.rev_no
+                            + '&req=' + data.record.req_id
+                            + '" target="_blank" ><i class="icon-print"></i></a>');
+                        else
+                            return "";
+                    }
+                }
+            }
+        });
+        //Load list from server
+        $('#jTableInProgCopy').jtable('load');
+
+        //Re-load records when user click 'load records' button.
+        $('#btSearch1').click(function (e) {
+            e.preventDefault();
+            $('#jTableInProgCopy').jtable('load', {
+                doc_no: $('#s_docno1').val(),
+                rev_no: $('#s_rev1').val(),
+                type: $('#s_type1').val(),
+                paper: $('#s_paper1').val(),
+                //doc_name: $('#s_docname').val(),
+                statusname: $('#s_status1').val(),
+                user: 2
+            });
+        });
+
+        $('#btMy1').click(function (e) {
+            e.preventDefault();
+            $('#jTableInProgCopy').jtable('load', { user: 1 });
+        });
+
+        $('#btWait1').click(function (e) {
+            e.preventDefault();
+            $('#jTableInProgCopy').jtable('load');
+        });
+
+        $(document).on("click", ".ShowDocNo1", function (event) {
+            var obj = new Object();
+            obj.doctype = $(this).attr('data-dt');
+            obj.groupcode = $(this).attr('data-gc');
+            obj.runno = $(this).attr('data-rn');
+            obj.revno = $(this).attr('data-rv');
+            obj.reqid = $(this).attr('data-req');
+            var remote = "@Url.Action("_ShowDocDetailOnly")";
             $.get(remote, obj, function (data) {
                 $("#divDocDetail").html(data);
                 $("#divDocDetail").dialog("open");
@@ -159,5 +246,51 @@
 </form>
 
 <div id="jTableInProgress"></div>
+
+<hr />
+<form>
+    <table class="table table-condensed" style="width:auto;">
+        <thead>
+            <tr>
+                <th>Document No.</th>
+                <th>Revision</th>
+                @*<th>Document Name</th>*@
+                <th>Type</th>
+                <th>Paper Size</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" id="s_docno1" name="s_docno1" class="input-medium" placeholder="Document No." /></td>
+                <td><input type="text" id="s_rev1" name="s_rev1" class="input-mini" placeholder="Revision" maxlength="2" /></td>
+                @*<td><input type="text" id="s_docname" name="s_docname" class="input-large" placeholder="Document Name" /></td>*@
+                <td><select id="s_type1" name="s_type1" class="input-medium">
+                    <option value="">-</option>
+                    <option value="Control">Control</option>
+                    <option value="Uncontrol">Uncontrol</option>
+                </select></td>
+                <td><select id="s_paper1" name="s_paper1" class="input-medium">
+                    <option value="0">-</option>
+                    @foreach (var item in ViewBag.Paper)
+                    {
+                    <option value="@item.paper_id">@item.paper_name</option>
+                    }
+                </select></td>
+                <td><input type="text" id="s_status1" name="s_status1" class="input-medium" placeholder="Status" /></td>
+                <td><button type="submit" id="btSearch1" class="btn btn-primary"><i class="icon-search icon-white"></i> Search</button>
+                    <button type="reset" id="btReset1" class="btn btn-warning"><i class="icon-trash icon-white"></i> Clear</button>
+                    <button type="button" id="btWait1" class="btn btn-inverse"><i class="icon-repeat icon-white"></i> Waiting</button>
+                    @if(ViewBag.ULv <= 2){
+                    <button type="button" id="btMy1" class="btn btn-info"><i class="icon-user icon-white"></i> My Document</button>
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+
+<div id="jTableInProgCopy"></div>
 
 <div id="divDocDetail" title="Detail"></div>

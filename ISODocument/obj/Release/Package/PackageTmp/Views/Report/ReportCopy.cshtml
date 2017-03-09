@@ -1,0 +1,105 @@
+﻿@{
+    ViewBag.Title = "Copy Report";
+}
+<link href="~/Scripts/jtable/themes/metro/lightgray/jtable.min.css" rel="stylesheet" />
+<style type="text/css">
+    /*fix jTable*/
+    span.jtable-goto-page select, span.jtable-page-size-change select {
+        height: 25px;
+        width: 60px;
+        padding: 2px 2px;
+        margin-bottom:auto;
+    }
+    div.jtable-main-container table.jtable thead th {
+        text-align: center;
+    }
+    div.jtable-main-container > table.jtable > tbody > tr.jtable-data-row > td {
+        text-align: center;
+    }
+    div.accordion-heading {
+        font-weight:600;
+    }
+    .td_title {
+        text-align:right !important;
+        font-weight:600;
+    }
+    .ui-dialog-title {
+        color:white;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.strPad = function (i, l, s) {
+            var o = i.toString();
+            if (!s) { s = '0'; }
+            while (o.length < l) { o = s + o; }
+            return o;
+        };
+        $('#jTableCopy').jtable({
+            //title: 'Document',
+            paging: true, //Enable paging
+            pageSize: 10, //Set page size (default: 10)
+            sorting: true, //Enable sorting
+            selecting: true, //Enable selecting
+            defaultSorting: 'doc_no', //Set default sorting
+            actions: {
+                listAction: '@Url.Action("CopyReportList","Report")'
+            },
+            fields: {
+                doc_no: { title: 'Doc. No.', width: '14%', visibility: 'fixed' },
+                doc_name: { title: 'Doc. Name', width: '25%' },
+                qty: { title: 'Qty', width: '5%' },
+                type: { title: 'Type', width: '6%' },
+                paper_name: { title: 'Paper', width: '5%' },
+                group_name: { title: 'Group', width: '10%' },
+                act_dt: { title: 'Complete Date', width: '10%', type: 'date', displayFormat: 'dd-mm-yy' },
+                reason: { title: 'Reason', width: '25%' }
+            }
+        });
+
+        //Re-load records when user click 'load records' button.
+        $('#btnSubmit').click(function (e) {
+            if (!$.validate({ form: 'formFilter' })) {
+                return false;
+            } else {
+                e.preventDefault();
+                $('#jTableCopy').jtable('load', {
+                    date_from: $('#date_from').val(),
+                    date_to: $('#date_to').val()
+                });
+            }
+        });
+
+        $('#btnExport').click(function (e) {
+            if (!$.validate({ form: 'formFilter' })) {
+                return false;
+            }
+        });
+
+        $("#date_from").datepicker({
+            dateFormat: 'yy-mm-dd',
+            onClose: function (selectedDate) {
+                $("#date_to").datepicker("option", "minDate", selectedDate);
+            }
+        });
+        $("#date_to").datepicker({
+            dateFormat: 'yy-mm-dd',
+            onClose: function (selectedDate) {
+                $("#date_from").datepicker("option", "maxDate", selectedDate);
+            }
+        });
+    });
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+<form name="formFilter" id="formFilter" class="form-inline" action="@Url.Action("ExportCopy")" method="post">
+    <label for="date_from">From : </label>
+    <input type="text" id="date_from" name="date_from" class="input-small" data-validate="required">
+    <label for="date_to"> To : </label>
+    <input type="text" id="date_to" name="date_to" class="input-small" data-validate="required">
+    <button type="button" id="btnSubmit" name="btnSubmit" class="btn btn-primary"><i class="icon-filter icon-white"></i> Filter</button>
+    <button type="submit" id="btnExport" name="btnExport" class="btn btn-success"><i class="icon-list-alt icon-white"></i> Export</button>
+</form>
+<div id="jTableCopy"></div>

@@ -34,6 +34,7 @@ namespace ISODocument.Models
         public Nullable<System.DateTime> check_date { get; set; }
         public string remark { get; set; }
         public string src_file { get; set; }
+        public string vdo_path { get; set; }
     
         public virtual ICollection<TD_Copy> TD_Copy { get; set; }
         public virtual ICollection<TD_DistributionList> TD_DistributionList { get; set; }

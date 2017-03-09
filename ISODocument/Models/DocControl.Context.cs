@@ -44,7 +44,6 @@ namespace ISODocument.Models
         public DbSet<TM_UserType> TM_UserType { get; set; }
         public DbSet<V_DistributionDoc> V_DistributionDoc { get; set; }
         public DbSet<V_Group> V_Group { get; set; }
-        public DbSet<V_Max_Transaction> V_Max_Transaction { get; set; }
         public DbSet<V_Sum_CopyDoc> V_Sum_CopyDoc { get; set; }
         public DbSet<V_Transaction> V_Transaction { get; set; }
         public DbSet<TD_TranCopy> TD_TranCopy { get; set; }
@@ -52,5 +51,6 @@ namespace ISODocument.Models
         public DbSet<V_User_Info> V_User_Info { get; set; }
         public DbSet<V_ReqCopy> V_ReqCopy { get; set; }
         public DbSet<V_Report_Copy> V_Report_Copy { get; set; }
+        public DbSet<V_Max_Transaction> V_Max_Transaction { get; set; }
     }
 }

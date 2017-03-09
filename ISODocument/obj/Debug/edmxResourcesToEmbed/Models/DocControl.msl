@@ -31,6 +31,7 @@
     <EntitySetMapping Name="TD_Document">
       <EntityTypeMapping TypeName="DocumentControlModel.TD_Document">
         <MappingFragment StoreEntitySet="TD_Document">
+          <ScalarProperty Name="vdo_path" ColumnName="vdo_path" />
           <ScalarProperty Name="src_file" ColumnName="src_file" />
           <ScalarProperty Name="remark" ColumnName="remark" />
           <ScalarProperty Name="check_date" ColumnName="check_date" />
@@ -269,30 +270,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="V_Max_Transaction">
-      <EntityTypeMapping TypeName="DocumentControlModel.V_Max_Transaction">
-        <MappingFragment StoreEntitySet="V_Max_Transaction">
-          <ScalarProperty Name="active" ColumnName="active" />
-          <ScalarProperty Name="check_date" ColumnName="check_date" />
-          <ScalarProperty Name="expect_cancel_date" ColumnName="expect_cancel_date" />
-          <ScalarProperty Name="reference" ColumnName="reference" />
-          <ScalarProperty Name="act_dt" ColumnName="act_dt" />
-          <ScalarProperty Name="org_id" ColumnName="org_id" />
-          <ScalarProperty Name="lv_id" ColumnName="lv_id" />
-          <ScalarProperty Name="operation_id" ColumnName="operation_id" />
-          <ScalarProperty Name="remark" ColumnName="remark" />
-          <ScalarProperty Name="attach_file" ColumnName="attach_file" />
-          <ScalarProperty Name="eff_date" ColumnName="eff_date" />
-          <ScalarProperty Name="doc_name" ColumnName="doc_name" />
-          <ScalarProperty Name="status_id" ColumnName="status_id" />
-          <ScalarProperty Name="rev_no" ColumnName="rev_no" />
-          <ScalarProperty Name="run_no" ColumnName="run_no" />
-          <ScalarProperty Name="group_code" ColumnName="group_code" />
-          <ScalarProperty Name="doc_type_short" ColumnName="doc_type_short" />
-          <ScalarProperty Name="doc_no" ColumnName="doc_no" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="V_Sum_CopyDoc">
       <EntityTypeMapping TypeName="DocumentControlModel.V_Sum_CopyDoc">
         <MappingFragment StoreEntitySet="V_Sum_CopyDoc">
@@ -310,6 +287,7 @@
     <EntitySetMapping Name="V_Transaction">
       <EntityTypeMapping TypeName="DocumentControlModel.V_Transaction">
         <MappingFragment StoreEntitySet="V_Transaction">
+          <ScalarProperty Name="group_name" ColumnName="group_name" />
           <ScalarProperty Name="expect_cancel_date" ColumnName="expect_cancel_date" />
           <ScalarProperty Name="copy_flag" ColumnName="copy_flag" />
           <ScalarProperty Name="review_year" ColumnName="review_year" />
@@ -447,6 +425,30 @@
           <ScalarProperty Name="reason" ColumnName="reason" />
           <ScalarProperty Name="type" ColumnName="type" />
           <ScalarProperty Name="qty" ColumnName="qty" />
+          <ScalarProperty Name="doc_no" ColumnName="doc_no" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="V_Max_Transaction">
+      <EntityTypeMapping TypeName="DocumentControlModel.V_Max_Transaction">
+        <MappingFragment StoreEntitySet="V_Max_Transaction">
+          <ScalarProperty Name="active" ColumnName="active" />
+          <ScalarProperty Name="check_date" ColumnName="check_date" />
+          <ScalarProperty Name="expect_cancel_date" ColumnName="expect_cancel_date" />
+          <ScalarProperty Name="reference" ColumnName="reference" />
+          <ScalarProperty Name="act_dt" ColumnName="act_dt" />
+          <ScalarProperty Name="org_id" ColumnName="org_id" />
+          <ScalarProperty Name="lv_id" ColumnName="lv_id" />
+          <ScalarProperty Name="operation_id" ColumnName="operation_id" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="attach_file" ColumnName="attach_file" />
+          <ScalarProperty Name="eff_date" ColumnName="eff_date" />
+          <ScalarProperty Name="doc_name" ColumnName="doc_name" />
+          <ScalarProperty Name="status_id" ColumnName="status_id" />
+          <ScalarProperty Name="rev_no" ColumnName="rev_no" />
+          <ScalarProperty Name="run_no" ColumnName="run_no" />
+          <ScalarProperty Name="group_code" ColumnName="group_code" />
+          <ScalarProperty Name="doc_type_short" ColumnName="doc_type_short" />
           <ScalarProperty Name="doc_no" ColumnName="doc_no" />
         </MappingFragment>
       </EntityTypeMapping>

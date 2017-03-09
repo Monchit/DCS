@@ -1,0 +1,542 @@
+﻿@{
+    ViewBag.Title = "Evaluation";
+}
+<script>
+	$(document).ready(function() {
+	    $("#btnSubmit").click(function (e) {
+	        e.preventDefault();
+	        var all_answered = true;
+	        $("input:radio").each(function () {
+	            var name = $(this).attr("name");
+	            if ($("input:radio[name=" + name + "]:checked").length == 0) {
+	                all_answered = false;
+	            }
+	        });
+	        //return all_answered;
+	        //alert(all_answered);
+
+	        if (all_answered) {
+	            document.forms["formQuiz"].submit();
+	        }
+	    })
+	});
+</script>
+<style>
+	.error{ padding-left:20px;color:red}
+</style>
+
+<h2>@ViewBag.Title</h2>
+<form id="formQuiz" name="formQuiz" class="form-horizontal" method="post" action="@Url.Action("AddQuestionnaire", "Home")">
+    <fieldset>
+
+    <!-- Form Name -->
+    <legend>ส่วนที่ 1 ข้อมูลทั่วไป</legend>
+
+    <!-- Multiple Radios (inline) -->
+    <div class="control-group">
+      <label class="control-label" for="sex">เพศ</label>
+      <div class="controls">
+        <label class="radio inline" for="sex-1">
+          <input name="sex" id="sex-1" value="1" type="radio" data-validate="required">
+          ชาย
+        </label>
+        <label class="radio inline" for="sex-2">
+          <input name="sex" id="sex-2" value="2" type="radio">
+          หญิง
+        </label>
+      </div>
+    </div>
+
+    <!-- Multiple Radios (inline) -->
+    <div class="control-group">
+      <label class="control-label" for="age">อายุ</label>
+      <div class="controls">
+        <label class="radio inline" for="age-0">
+          <input name="age" id="age-0" value="1" type="radio" required>
+          ไม่เกิน 30 ปี
+        </label>
+        <label class="radio inline" for="age-1">
+          <input name="age" id="age-1" value="2" type="radio">
+          31 - 40 ปี
+        </label>
+        <label class="radio inline" for="age-2">
+          <input name="age" id="age-2" value="3" type="radio">
+          41 - 50 ปี
+        </label>
+        <label class="radio inline" for="age-3">
+          <input name="age" id="age-3" value="4" type="radio">
+          51 ปีขึ้นไป
+        </label>
+      </div>
+    </div>
+
+    <!-- Multiple Radios (inline) -->
+    <div class="control-group">
+      <label class="control-label" for="study">ระดับการศึกษา</label>
+      <div class="controls">
+        <label class="radio inline" for="study-0">
+          <input name="study" id="study-0" value="1" type="radio">
+          ประถมศึกษา
+        </label>
+        <label class="radio inline" for="study-1">
+          <input name="study" id="study-1" value="2" type="radio">
+          มัธยมศึกษา
+        </label>
+        <label class="radio inline" for="study-2">
+          <input name="study" id="study-2" value="3" type="radio">
+          ปวช. / ปวส.
+        </label>
+        <label class="radio inline" for="study-3">
+          <input name="study" id="study-3" value="4" type="radio">
+          ปริญญาตรี
+        </label>
+        <label class="radio inline" for="study-4">
+          <input name="study" id="study-4" value="5" type="radio">
+          ปริญญาโท หรือสูงกว่า
+        </label>
+      </div>
+    </div>
+
+    <!-- Multiple Radios (inline) -->
+    <div class="control-group">
+      <label class="control-label" for="position">ตำแหน่งงานปัจจุบัน</label>
+      <div class="controls">
+        <label class="radio inline" for="position-1">
+          <input name="position" id="position-1" value="1" type="radio">
+          เจ้าหน้าที่
+        </label>
+        <label class="radio inline" for="position-2">
+          <input name="position" id="position-2" value="2" type="radio">
+          หัวหน้าแผนก
+        </label>
+        <label class="radio inline" for="position-3">
+          <input name="position" id="position-3" value="3" type="radio">
+          ผู้บริหารระดับกลาง
+        </label>
+        <label class="radio inline" for="position-4">
+          <input name="position" id="position-4" value="4" type="radio">
+          ผู้บริหารระดับสูง
+        </label>
+      </div>
+    </div>
+
+    <!-- Multiple Radios (inline) -->
+    <div class="control-group">
+      <label class="control-label" for="experience">ประสบการณ์ทำงาน</label>
+      <div class="controls">
+        <label class="radio inline" for="experience-0">
+          <input name="experience" id="experience-0" value="1" type="radio">
+          น้อยกว่า 1 ปี
+        </label>
+        <label class="radio inline" for="experience-1">
+          <input name="experience" id="experience-1" value="2" type="radio">
+          1 - 5 ปี
+        </label>
+        <label class="radio inline" for="experience-2">
+          <input name="experience" id="experience-2" value="3" type="radio">
+          5 - 10 ปี
+        </label>
+        <label class="radio inline" for="experience-3">
+          <input name="experience" id="experience-3" value="4" type="radio">
+          มากกว่า 10 ปี
+        </label>
+      </div>
+    </div>
+
+    <!-- Multiple Radios (inline) -->
+    <div class="control-group">
+      <label class="control-label" for="section">สังกัด/หน่วยงาน</label>
+      <div class="controls">
+        <label class="radio inline" for="section-0">
+          <input name="section" id="section-0" value="1" type="radio">
+          ฝ่ายผลิต
+        </label>
+        <label class="radio inline" for="section-1">
+          <input name="section" id="section-1" value="2" type="radio">
+          ฝ่ายควบคุมคุณภาพ (QA, QC)
+        </label>
+        <label class="radio inline" for="section-2">
+          <input name="section" id="section-2" value="3" type="radio">
+          ฝ่ายสนับสนุนการผลิต (Engineering, Production Planning)
+        </label>
+        <label class="radio inline" for="section-3">
+          <input name="section" id="section-3" value="4" type="radio">
+          ฝ่ายสนับสนุนทั่วไป (บัญชี, จัดซื้อ, ไอที และอื่นๆ)
+        </label>
+      </div>
+    </div>
+    </fieldset>
+
+    <fieldset>
+
+    <legend>ส่วนที่ 2 ความคิดเห็นต่อซอฟต์แวร์สำเร็จรูปเดิม (ISO Master) สำหรับจัดการเอกสารควบคุมภายในบริษัท [ที่เลิกใช้งานไปแล้ว]</legend>
+    
+    <table class="table table-condence">
+        <thead>
+            <tr>
+                <th>ข้อที่</th>
+                <th>คำถาม</th>
+                <th>มากที่สุด</th>
+                <th>มาก</th>
+                <th>ปานกลาง</th>
+                <th>น้อย</th>
+                <th>น้อยที่สุด</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1.</td>
+                <td>เมื่อทราบว่าต้องใช้ซอฟต์แวร์ ISO Master ท่านเต็มใจที่จะใช้ซอฟต์แวร์ดังกล่าวในระดับใด</td>
+                <td><input type="radio" name="o1" value="5" /></td>
+                <td><input type="radio" name="o1" value="4" /></td>
+                <td><input type="radio" name="o1" value="3" /></td>
+                <td><input type="radio" name="o1" value="2" /></td>
+                <td><input type="radio" name="o1" value="1" /></td>
+            </tr>
+            <tr>
+                <td>2.</td>
+                <td>ก่อนใช้งานจริง ท่านมั่นใจว่าซอฟต์แวร์ ISO Master จะช่วยแบ่งเบาการทำงานของท่านได้มากขึ้น</td>
+                <td><input type="radio" name="o2" value="5" /></td>
+                <td><input type="radio" name="o2" value="4" /></td>
+                <td><input type="radio" name="o2" value="3" /></td>
+                <td><input type="radio" name="o2" value="2" /></td>
+                <td><input type="radio" name="o2" value="1" /></td>
+            </tr>
+            <tr>
+                <td>3.</td>
+                <td>การนำซอฟต์แวร์ ISO Master มาใช้ถือเป็นสิ่งจำเป็นในการพัฒนาการทำงานให้ดีขึ้น</td>
+                <td><input type="radio" name="o3" value="5" /></td>
+                <td><input type="radio" name="o3" value="4" /></td>
+                <td><input type="radio" name="o3" value="3" /></td>
+                <td><input type="radio" name="o3" value="2" /></td>
+                <td><input type="radio" name="o3" value="1" /></td>
+            </tr>
+            <tr>
+                <td>4.</td>
+                <td>การทำงานของซอฟต์แวร์ ISO Master ได้ผลลัพธ์ที่ถูกต้อง</td>
+                <td><input type="radio" name="o4" value="5" /></td>
+                <td><input type="radio" name="o4" value="4" /></td>
+                <td><input type="radio" name="o4" value="3" /></td>
+                <td><input type="radio" name="o4" value="2" /></td>
+                <td><input type="radio" name="o4" value="1" /></td>
+            </tr>
+            <tr>
+                <td>5.</td>
+                <td>ข้อมูลในระบบของซอฟต์แวร์ ISO Master มีความถูกต้อง</td>
+                <td><input type="radio" name="o5" value="5" /></td>
+                <td><input type="radio" name="o5" value="4" /></td>
+                <td><input type="radio" name="o5" value="3" /></td>
+                <td><input type="radio" name="o5" value="2" /></td>
+                <td><input type="radio" name="o5" value="1" /></td>
+            </tr>
+            <tr>
+                <td>6.</td>
+                <td>ซอฟต์แวร์ ISO Master มีการปรับปรุงแก้ไขให้ตรงตามการทำงานอยู่เสมอ</td>
+                <td><input type="radio" name="o6" value="5" /></td>
+                <td><input type="radio" name="o6" value="4" /></td>
+                <td><input type="radio" name="o6" value="3" /></td>
+                <td><input type="radio" name="o6" value="2" /></td>
+                <td><input type="radio" name="o6" value="1" /></td>
+            </tr>
+            <tr>
+                <td>7.</td>
+                <td>ท่านมีความเข้าใจในขั้นตอนการใช้งานซอฟต์แวร์ ISO Master เป็นอย่างดี</td>
+                <td><input type="radio" name="o7" value="5" /></td>
+                <td><input type="radio" name="o7" value="4" /></td>
+                <td><input type="radio" name="o7" value="3" /></td>
+                <td><input type="radio" name="o7" value="2" /></td>
+                <td><input type="radio" name="o7" value="1" /></td>
+            </tr>
+            <tr>
+                <td>8.</td>
+                <td>ท่านสามารถเข้าใจและใช้งานเครื่องมือต่างๆ ของซอฟต์แวร์ ISO Master ได้อย่างรวดเร็ว</td>
+                <td><input type="radio" name="o8" value="5" /></td>
+                <td><input type="radio" name="o8" value="4" /></td>
+                <td><input type="radio" name="o8" value="3" /></td>
+                <td><input type="radio" name="o8" value="2" /></td>
+                <td><input type="radio" name="o8" value="1" /></td>
+            </tr>
+            <tr>
+                <td>9.</td>
+                <td>ท่านสามารถเรียนรู้และใช้งานซอฟต์แวร์ ISO Master ได้อย่างรวดเร็ว</td>
+                <td><input type="radio" name="o9" value="5" /></td>
+                <td><input type="radio" name="o9" value="4" /></td>
+                <td><input type="radio" name="o9" value="3" /></td>
+                <td><input type="radio" name="o9" value="2" /></td>
+                <td><input type="radio" name="o9" value="1" /></td>
+            </tr>
+            <tr>
+                <td>10.</td>
+                <td>ซอฟต์แวร์ ISO Master ตอบสนองต่อการใช้งานได้เป็นอย่างดี</td>
+                <td><input type="radio" name="o10" value="5" /></td>
+                <td><input type="radio" name="o10" value="4" /></td>
+                <td><input type="radio" name="o10" value="3" /></td>
+                <td><input type="radio" name="o10" value="2" /></td>
+                <td><input type="radio" name="o10" value="1" /></td>
+            </tr>
+            <tr>
+                <td>11.</td>
+                <td>ท่านสามารถเรียกดูข้อมูลจากซอฟต์แวร์ ISO Master ได้อย่างรวดเร็ว</td>
+                <td><input type="radio" name="o11" value="5" /></td>
+                <td><input type="radio" name="o11" value="4" /></td>
+                <td><input type="radio" name="o11" value="3" /></td>
+                <td><input type="radio" name="o11" value="2" /></td>
+                <td><input type="radio" name="o11" value="1" /></td>
+            </tr>
+            <tr>
+                <td>12.</td>
+                <td>การดึงข้อมูลเพื่อนำมาสรุปรายงานของซอฟต์แวร์ ISO Master ทำได้อย่างรวดเร็ว</td>
+                <td><input type="radio" name="o12" value="5" /></td>
+                <td><input type="radio" name="o12" value="4" /></td>
+                <td><input type="radio" name="o12" value="3" /></td>
+                <td><input type="radio" name="o12" value="2" /></td>
+                <td><input type="radio" name="o12" value="1" /></td>
+            </tr>
+            <tr>
+                <td>13.</td>
+                <td>ซอฟต์แวร์ ISO Master ช่วยเพิ่มประสิทธิภาพในการปฏิบัติงานให้รวดเร็วขึ้น</td>
+                <td><input type="radio" name="o13" value="5" /></td>
+                <td><input type="radio" name="o13" value="4" /></td>
+                <td><input type="radio" name="o13" value="3" /></td>
+                <td><input type="radio" name="o13" value="2" /></td>
+                <td><input type="radio" name="o13" value="1" /></td>
+            </tr>
+            <tr>
+                <td>14.</td>
+                <td>ซอฟต์แวร์ ISO Master ช่วยลดปริมาณการใช้กระดาษและพื้นที่จัดเก็บได้</td>
+                <td><input type="radio" name="o14" value="5" /></td>
+                <td><input type="radio" name="o14" value="4" /></td>
+                <td><input type="radio" name="o14" value="3" /></td>
+                <td><input type="radio" name="o14" value="2" /></td>
+                <td><input type="radio" name="o14" value="1" /></td>
+            </tr>
+            <tr>
+                <td>15.</td>
+                <td>ซอฟต์แวร์ ISO Master ช่วยให้การติดตามเอกสารที่รอการอนุมัติได้ง่ายขึ้น</td>
+                <td><input type="radio" name="o15" value="5" /></td>
+                <td><input type="radio" name="o15" value="4" /></td>
+                <td><input type="radio" name="o15" value="3" /></td>
+                <td><input type="radio" name="o15" value="2" /></td>
+                <td><input type="radio" name="o15" value="1" /></td>
+            </tr>
+            <tr>
+                <td>16.</td>
+                <td>ซอฟต์แวร์ ISO Master มีการจัดวางรูปแบบโครงร่างของหน้าจอได้อย่างเหมาะสม</td>
+                <td><input type="radio" name="o16" value="5" /></td>
+                <td><input type="radio" name="o16" value="4" /></td>
+                <td><input type="radio" name="o16" value="3" /></td>
+                <td><input type="radio" name="o16" value="2" /></td>
+                <td><input type="radio" name="o16" value="1" /></td>
+            </tr>
+            <tr>
+                <td>17.</td>
+                <td>ซอฟต์แวร์ ISO Master มีการใช้ขนาดตัวอักษรที่เหมาะสม</td>
+                <td><input type="radio" name="o17" value="5" /></td>
+                <td><input type="radio" name="o17" value="4" /></td>
+                <td><input type="radio" name="o17" value="3" /></td>
+                <td><input type="radio" name="o17" value="2" /></td>
+                <td><input type="radio" name="o17" value="1" /></td>
+            </tr>
+            <tr>
+                <td>18.</td>
+                <td>ซอฟต์แวร์ ISO Master มีการใช้สีสันที่สื่อความหมายและเหมาะสม</td>
+                <td><input type="radio" name="o18" value="5" /></td>
+                <td><input type="radio" name="o18" value="4" /></td>
+                <td><input type="radio" name="o18" value="3" /></td>
+                <td><input type="radio" name="o18" value="2" /></td>
+                <td><input type="radio" name="o18" value="1" /></td>
+            </tr>
+        </tbody>
+    </table>
+    </fieldset>
+
+    <fieldset>
+
+    <legend>ส่วนที่ 3 ความคิดเห็นต่อซอฟต์แวร์ที่พัฒนาขึ้นเอง (Document Control) สำหรับจัดการเอกสารควบคุมภายในบริษัท [ที่กำลังใช้งานอยู่นี้]</legend>
+    
+    <table class="table table-condence">
+        <thead>
+            <tr>
+                <th>ข้อที่</th>
+                <th>คำถาม</th>
+                <th>มากที่สุด</th>
+                <th>มาก</th>
+                <th>ปานกลาง</th>
+                <th>น้อย</th>
+                <th>น้อยที่สุด</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1.</td>
+                <td>เมื่อทราบว่าต้องใช้ซอฟต์แวร์ Document Control ท่านเต็มใจที่จะใช้ซอฟต์แวร์ดังกล่าวในระดับใด</td>
+                <td><input type="radio" name="n1" value="5" /></td>
+                <td><input type="radio" name="n1" value="4" /></td>
+                <td><input type="radio" name="n1" value="3" /></td>
+                <td><input type="radio" name="n1" value="2" /></td>
+                <td><input type="radio" name="n1" value="1" /></td>
+            </tr>
+            <tr>
+                <td>2.</td>
+                <td>ก่อนใช้งานจริงท่านมั่นใจว่าซอฟต์แวร์ Document Control จะช่วยแบ่งเบาการทำงานของท่านได้มากขึ้น</td>
+                <td><input type="radio" name="n2" value="5" /></td>
+                <td><input type="radio" name="n2" value="4" /></td>
+                <td><input type="radio" name="n2" value="3" /></td>
+                <td><input type="radio" name="n2" value="2" /></td>
+                <td><input type="radio" name="n2" value="1" /></td>
+            </tr>
+            <tr>
+                <td>3.</td>
+                <td>การนำซอฟต์แวร์ Document Control มาใช้ถือเป็นสิ่งจำเป็นในการพัฒนาการทำงานให้ดีขึ้น</td>
+                <td><input type="radio" name="n3" value="5" /></td>
+                <td><input type="radio" name="n3" value="4" /></td>
+                <td><input type="radio" name="n3" value="3" /></td>
+                <td><input type="radio" name="n3" value="2" /></td>
+                <td><input type="radio" name="n3" value="1" /></td>
+            </tr>
+            <tr>
+                <td>4.</td>
+                <td>การทำงานของซอฟต์แวร์ Document Control ได้ผลลัพธ์ที่ถูกต้อง</td>
+                <td><input type="radio" name="n4" value="5" /></td>
+                <td><input type="radio" name="n4" value="4" /></td>
+                <td><input type="radio" name="n4" value="3" /></td>
+                <td><input type="radio" name="n4" value="2" /></td>
+                <td><input type="radio" name="n4" value="1" /></td>
+            </tr>
+            <tr>
+                <td>5.</td>
+                <td>ข้อมูลในระบบของซอฟต์แวร์ Document Control มีความถูกต้อง</td>
+                <td><input type="radio" name="n5" value="5" /></td>
+                <td><input type="radio" name="n5" value="4" /></td>
+                <td><input type="radio" name="n5" value="3" /></td>
+                <td><input type="radio" name="n5" value="2" /></td>
+                <td><input type="radio" name="n5" value="1" /></td>
+            </tr>
+            <tr>
+                <td>6.</td>
+                <td>ซอฟต์แวร์ Document Control มีการปรับปรุงแก้ไขให้ตรงตามการทำงานอยู่เสมอ</td>
+                <td><input type="radio" name="n6" value="5" /></td>
+                <td><input type="radio" name="n6" value="4" /></td>
+                <td><input type="radio" name="n6" value="3" /></td>
+                <td><input type="radio" name="n6" value="2" /></td>
+                <td><input type="radio" name="n6" value="1" /></td>
+            </tr>
+            <tr>
+                <td>7.</td>
+                <td>ท่านมีความเข้าใจในขั้นตอนการใช้งานซอฟต์แวร์ Document Control เป็นอย่างดี</td>
+                <td><input type="radio" name="n7" value="5" /></td>
+                <td><input type="radio" name="n7" value="4" /></td>
+                <td><input type="radio" name="n7" value="3" /></td>
+                <td><input type="radio" name="n7" value="2" /></td>
+                <td><input type="radio" name="n7" value="1" /></td>
+            </tr>
+            <tr>
+                <td>8.</td>
+                <td>ท่านสามารถเข้าใจและใช้งานเครื่องมือต่างๆ ของซอฟต์แวร์ Document Control ได้อย่างรวดเร็ว</td>
+                <td><input type="radio" name="n8" value="5" /></td>
+                <td><input type="radio" name="n8" value="4" /></td>
+                <td><input type="radio" name="n8" value="3" /></td>
+                <td><input type="radio" name="n8" value="2" /></td>
+                <td><input type="radio" name="n8" value="1" /></td>
+            </tr>
+            <tr>
+                <td>9.</td>
+                <td>ท่านสามารถเรียนรู้และใช้งานซอฟต์แวร์ Document Control ได้อย่างรวดเร็ว</td>
+                <td><input type="radio" name="n9" value="5" /></td>
+                <td><input type="radio" name="n9" value="4" /></td>
+                <td><input type="radio" name="n9" value="3" /></td>
+                <td><input type="radio" name="n9" value="2" /></td>
+                <td><input type="radio" name="n9" value="1" /></td>
+            </tr>
+            <tr>
+                <td>10.</td>
+                <td>ซอฟต์แวร์ Document Control ตอบสนองต่อการใช้งานได้เป็นอย่างดี</td>
+                <td><input type="radio" name="n10" value="5" /></td>
+                <td><input type="radio" name="n10" value="4" /></td>
+                <td><input type="radio" name="n10" value="3" /></td>
+                <td><input type="radio" name="n10" value="2" /></td>
+                <td><input type="radio" name="n10" value="1" /></td>
+            </tr>
+            <tr>
+                <td>11.</td>
+                <td>ท่านสามารถเรียกดูข้อมูลจากซอฟต์แวร์ Document Control ได้อย่างรวดเร็ว</td>
+                <td><input type="radio" name="n11" value="5" /></td>
+                <td><input type="radio" name="n11" value="4" /></td>
+                <td><input type="radio" name="n11" value="3" /></td>
+                <td><input type="radio" name="n11" value="2" /></td>
+                <td><input type="radio" name="n11" value="1" /></td>
+            </tr>
+            <tr>
+                <td>12.</td>
+                <td>การดึงข้อมูลเพื่อนำมาสรุปรายงานของซอฟต์แวร์ Document Control ทำได้อย่างรวดเร็ว</td>
+                <td><input type="radio" name="n12" value="5" /></td>
+                <td><input type="radio" name="n12" value="4" /></td>
+                <td><input type="radio" name="n12" value="3" /></td>
+                <td><input type="radio" name="n12" value="2" /></td>
+                <td><input type="radio" name="n12" value="1" /></td>
+            </tr>
+            <tr>
+                <td>13.</td>
+                <td>ซอฟต์แวร์ Document Control ช่วยเพิ่มประสิทธิภาพในการปฏิบัติงานให้รวดเร็วขึ้น</td>
+                <td><input type="radio" name="n13" value="5" /></td>
+                <td><input type="radio" name="n13" value="4" /></td>
+                <td><input type="radio" name="n13" value="3" /></td>
+                <td><input type="radio" name="n13" value="2" /></td>
+                <td><input type="radio" name="n13" value="1" /></td>
+            </tr>
+            <tr>
+                <td>14.</td>
+                <td>ซอฟต์แวร์ Document Control ช่วยลดปริมาณการใช้กระดาษและพื้นที่จัดเก็บได้</td>
+                <td><input type="radio" name="n14" value="5" /></td>
+                <td><input type="radio" name="n14" value="4" /></td>
+                <td><input type="radio" name="n14" value="3" /></td>
+                <td><input type="radio" name="n14" value="2" /></td>
+                <td><input type="radio" name="n14" value="1" /></td>
+            </tr>
+            <tr>
+                <td>15.</td>
+                <td>ซอฟต์แวร์ Document Control ช่วยให้การติดตามเอกสารที่รอการอนุมัติได้ง่ายขึ้น</td>
+                <td><input type="radio" name="n15" value="5" /></td>
+                <td><input type="radio" name="n15" value="4" /></td>
+                <td><input type="radio" name="n15" value="3" /></td>
+                <td><input type="radio" name="n15" value="2" /></td>
+                <td><input type="radio" name="n15" value="1" /></td>
+            </tr>
+            <tr>
+                <td>16.</td>
+                <td>ซอฟต์แวร์ Document Control มีการจัดวางรูปแบบโครงร่างของหน้าจอได้อย่างเหมาะสม</td>
+                <td><input type="radio" name="n16" value="5" /></td>
+                <td><input type="radio" name="n16" value="4" /></td>
+                <td><input type="radio" name="n16" value="3" /></td>
+                <td><input type="radio" name="n16" value="2" /></td>
+                <td><input type="radio" name="n16" value="1" /></td>
+            </tr>
+            <tr>
+                <td>17.</td>
+                <td>ซอฟต์แวร์ Document Control มีการใช้ขนาดตัวอักษรที่เหมาะสม</td>
+                <td><input type="radio" name="n17" value="5" /></td>
+                <td><input type="radio" name="n17" value="4" /></td>
+                <td><input type="radio" name="n17" value="3" /></td>
+                <td><input type="radio" name="n17" value="2" /></td>
+                <td><input type="radio" name="n17" value="1" /></td>
+            </tr>
+            <tr>
+                <td>18.</td>
+                <td>ซอฟต์แวร์ Document Control มีการใช้สีสันที่สื่อความหมายและเหมาะสม</td>
+                <td><input type="radio" name="n18" value="5" /></td>
+                <td><input type="radio" name="n18" value="4" /></td>
+                <td><input type="radio" name="n18" value="3" /></td>
+                <td><input type="radio" name="n18" value="2" /></td>
+                <td><input type="radio" name="n18" value="1" /></td>
+            </tr>
+        </tbody>
+    </table>
+    </fieldset>
+
+    <div style="text-align:center;">
+        <input class="btn btn-primary" type="submit" id="btnSubmit" value="Save changes" />
+        <input class="btn" type="reset" value="Clear" />
+    </div>
+
+    <div style="text-align:center;"><h3>ขอขอบคุณทุกท่านที่กรุณาเสียสละเวลาในการตอบแบบประเมิน</h3></div>
+</form>

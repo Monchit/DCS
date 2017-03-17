@@ -723,7 +723,7 @@ namespace ISODocument.Controllers
             string username = key == null ? Request.Form["Username"].ToString() : "";
             string pass = key == null ? Request.Form["Password"].ToString() : "";
 
-            var chklogin = secure.Login(username, pass, true);//set false to true for Real
+            var chklogin = secure.Login(username, pass, false);//set false to true for Real
 
             if (key != null)
             {
@@ -3136,7 +3136,7 @@ namespace ISODocument.Controllers
         }
 
         [HttpPost]
-        public ActionResult ApproveDoc(HttpPostedFileBase pathVDO)
+        public ActionResult ApproveDoc()//HttpPostedFileBase pathVDO
         {
             var actor = Session["DC_Auth"].ToString();
             if (!string.IsNullOrEmpty(actor))
@@ -3154,10 +3154,15 @@ namespace ISODocument.Controllers
                 int org = int.Parse(Request.Form["hdOR"].ToString());
                 string comment = Request.Form["txaComment"];
 
-                if (pathVDO != null && pathVDO.ContentLength > 0)
+                string pathVDO = Request.Form["pathVDO"];
+                if (!string.IsNullOrEmpty(pathVDO))
                 {
-                    UpdateVDOPath(docType, gCode, runno, revno, pathVDO.FileName);
+                    UpdateVDOPath(docType, gCode, runno, revno, pathVDO);
                 }
+                //if (pathVDO != null && pathVDO.ContentLength > 0)
+                //{
+                //    UpdateVDOPath(docType, gCode, runno, revno, pathVDO.FileName);
+                //}
 
                 if ((oper == 3 || oper == 4) && action == 3)
                 {
@@ -3195,7 +3200,7 @@ namespace ISODocument.Controllers
                 {
                     //string dir = Path.GetDirectoryName(p).Replace(@"\", "/");
                     //query.vdo_path = "file:" + dir;
-                    query.vdo_path = Path.GetDirectoryName(p);
+                    query.vdo_path = p;//Path.GetDirectoryName(p);
                     localdb.SaveChanges();
                 }
             }
